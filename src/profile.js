@@ -18,8 +18,8 @@ function findProfile(profileId) {
     return undefined;
 }
 
-function isProfileWiped() {
-    let profile = findProfile(constants.getActiveID());
+function isProfileWiped(sessionID = NaN) {
+    let profile = findProfile(sessionID);
 
     if (profile !== typeof "undefined") {
         return profile.wipe;
@@ -51,17 +51,17 @@ function getProfilePath(profileId = 0) {
 }
 
 function create(info) {
-    let accountFolder = "user/profiles/" + constants.getActiveID() + "/";
+    let accountFolder = "user/profiles/" + info.sid + "/";
     let character = json.parse(json.read(filepaths.profile.character));
     let storage = json.parse(json.read(filepaths.profile.storage));
     let userbuilds = json.parse(json.read(filepaths.profile.userbuilds));
 
-    character._id = "user" + constants.getActiveID() + "pmc";
-    character.aid = "user" + constants.getActiveID();
-    character.savage = "user" + constants.getActiveID() + "scav";
+    character._id = "user" + info.sid + "pmc";
+    character.aid = "user" + info.sid;
+    character.savage = "user" + info.sid + "scav";
     character.Info.Nickname = info.nickname;
     character.Info.LowerNickname = info.nickname.toLowerCase();
-    storage.data._id = "user" + constants.getActiveID() + "pmc";
+    storage.data._id = "user" + info.sid + "pmc";
 
     switch (info.side) {
         case "Bear":
@@ -104,13 +104,14 @@ function create(info) {
     }
 
     // don't wipe profile again
-    setProfileWipe(constants.getActiveID(), false);
+    setProfileWipe(info.sid, false);
 }
 
 function saveProfileProgress(offRaidData) {
     let offRaidExit = offRaidData.exit;
     let offRaidProfile = offRaidData.profile;
-    let tmpList = getCharacterData();
+    const sessionID = offRaidProfile.aid.replace(/[^0-9]/g, '') - 0;
+    let tmpList = getCharacterData(sessionID);
 
     // replace data
     tmpList.data[0].Info.Level = offRaidProfile.Info.Level;
@@ -260,20 +261,20 @@ function saveProfileProgress(offRaidData) {
     setCharacterData(tmpList);
 }
 
-function getCharacterData() {
+function getCharacterData(sessionID = NaN) {
     let ret = {err: 0, errmsg: null, data: []};
 
     // creating profile for first time
-    if (isProfileWiped()) {
+    if (isProfileWiped(sessionID || constants.getActiveID())) {
         return ret;
     }
 
     // create full profile data from simplified character data
-    let playerData = json.parse(json.read(getProfilePath()));
+    let playerData = json.parse(json.read(getProfilePath(sessionID || constants.getActiveID())));
     let scavData = bots.generatePlayerScav();
 
     scavData._id = playerData.savage;
-    scavData.aid = constants.getActiveID();
+    scavData.aid = sessionID || constants.getActiveID();
     ret.data.push(playerData);
     ret.data.push(scavData);
     return ret;
@@ -419,8 +420,8 @@ function exist(info) {
     return 0;
 }
 
-function getReservedNickname() {
-    let profile = findProfile(constants.getActiveID());
+function getReservedNickname(sessionID = 0) {
+    let profile = findProfile(sessionID || constants.getActiveID());
 
     if (profile !== typeof "undefined") {
         return profile.nickname;
@@ -432,8 +433,8 @@ function getReservedNickname() {
 function nicknameExist(info) {
     let profiles = getProfiles();
 
-    for (let i = 0; i < profiles.length; i++) {
-        let profile = json.parse(json.read(getProfilePath()));
+    for (let profile of profiles) {
+        profile = json.parse(json.read(getProfilePath(profile.id)));
 
         if (profile.Info.Nickname === info.nickname) {
             return true;
@@ -444,7 +445,7 @@ function nicknameExist(info) {
 }
 
 function changeNickname(info) {
-    let tmpList = getCharacterData();
+    let tmpList = getCharacterData(info.sid);
 
     // check if the nickname exists
     if (nicknameExist(info)) {
@@ -459,7 +460,7 @@ function changeNickname(info) {
 }
 
 function changeVoice(info) {
-    let tmpList = getCharacterData();
+    let tmpList = getCharacterData(info.sid);
 
     tmpList.data[0].Info.Voice = info.voice;
     setCharacterData(tmpList);
