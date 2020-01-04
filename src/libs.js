@@ -64,6 +64,7 @@ module.exports = function(isFirstLaunch = "no", time = 0) {
 	global.printf = console.log;
 	global.logger = require('./logger.js');							// logger
 	global.locale = require('./locale.js');							// locale changer function
+	global.req_hf = require('./request/helpFunctions.js');			// help functions for request
 	global.index_f = require('./response/_homeCredits.js');			// response/_homeCredits
 	global.repair_f = require('./item/_repair.js');					// response/_repair
 	global.insure_f = require('./item/_insure.js');					// response/_insure

@@ -447,12 +447,16 @@ function getProfileById(url, body) {
 function getResponse(req, body) {
     let output = "";
     let url = req.url;
-    let info = JSON.parse("{}");
+    let info = {};
+    const sessionID = req_hf.getCookies(req)['PHPSESSID'] - 0;
 
     // parse body
     if (body !== "") {
         info = JSON.parse(body);
     }
+
+    // set active id for request
+    info.sid = sessionID;
 
     // remove ?retry=X from URL
     if (url.indexOf("?retry=") != -1) {
