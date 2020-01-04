@@ -262,6 +262,7 @@ function saveProfileProgress(offRaidData) {
 }
 
 function getCharacterData(sessionID = NaN) {
+    console.debug(`profile.js getCharacterData(). sessionID is ${sessionID}`);
     let ret = {err: 0, errmsg: null, data: []};
 
     // creating profile for first time
@@ -421,7 +422,7 @@ function exist(info) {
 }
 
 function getReservedNickname(sessionID = 0) {
-    let profile = findProfile(sessionID || constants.getActiveID());
+    let profile = findProfile(sessionID);
 
     if (profile !== typeof "undefined") {
         return profile.nickname;

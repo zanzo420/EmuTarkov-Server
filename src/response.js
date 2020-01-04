@@ -223,7 +223,7 @@ function getBots(url, info) {
 }
 
 function getTraderList(url, info) {
-    return JSON.stringify(trader.loadAllTraders());
+    return JSON.stringify(trader.loadAllTraders(info.sid));
 }
 
 function getServer(url, info) {
@@ -425,7 +425,7 @@ function getProfilePurchases(url, info) {
 }
 
 function getTrader(url, info) {
-    return JSON.stringify(trader.get(url.replace("/client/trading/api/getTrader/", '')));
+    return JSON.stringify(trader.get(url.replace("/client/trading/api/getTrader/", ''), info.sid));
 }
 
 function getAssort(url, info) {

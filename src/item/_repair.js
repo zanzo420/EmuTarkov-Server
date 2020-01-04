@@ -6,7 +6,8 @@ function main(tmpList, body) {
     item.resetOutput();
 
     let output = item.getOutput();
-    let tmpTraderInfo = trader.get(body.tid);
+    const sessionID = tmpList.data[0].replace(/[^0-9]/g, '') - 0;
+    let tmpTraderInfo = trader.get(body.tid, sessionID);
     let repairRate = (tmpTraderInfo.data.repair.price_rate === 0) ? 1 : (tmpTraderInfo.data.repair.price_rate / 100 + 1);
     let RequestData = body.repairItems;
 

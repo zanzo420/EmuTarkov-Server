@@ -13,13 +13,13 @@ function updateTraders(url, info) {
     // update each hour
     let update_per = 3600;
     let timeNow = Math.floor(Date.now() / 1000);
-    let tradersToUpdateList = trader.loadAllTraders();
+    let tradersToUpdateList = trader.loadAllTraders(info.sid);
 
     tradersToUpdateList = tradersToUpdateList.data;
 
     for (let i = 0; i < tradersToUpdateList.length; i++) {
         // update level
-        trader.lvlUp(tradersToUpdateList[i]._id);
+        trader.lvlUp(tradersToUpdateList[i]._id, info.sid);
 
         // update restock timer
         if ((tradersToUpdateList[i].supply_next_time + update_per) > timeNow) {
@@ -35,7 +35,7 @@ function updateTraders(url, info) {
         compensateUpdate_per = compensateUpdate_per * update_per;
         newTraderTime = newTraderTime + compensateUpdate_per + update_per;
         tradersToUpdateList[i].supply_next_time = newTraderTime;
-        trader.setTrader(tradersToUpdateList[i]);
+        trader.setTrader(tradersToUpdateList[i], info.sid);
     }
 }
 
