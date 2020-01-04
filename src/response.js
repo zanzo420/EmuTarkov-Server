@@ -456,7 +456,7 @@ function getResponse(req, body) {
     }
 
     // set active id for request
-    info.sid = sessionID;
+    info.sid = sessionID || -1;
 
     // remove ?retry=X from URL
     if (url.indexOf("?retry=") != -1) {
