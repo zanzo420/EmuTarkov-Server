@@ -44,7 +44,7 @@ function getProfilePath(profileId = 0) {
     let profilePath = filepaths.user.profiles.character;
 
     if (profileId > 0) {
-        return json.parse(json.read(profilePath.replace("__REPLACEME__", profileId)));
+        return profilePath.replace("__REPLACEME__", profileId);
     } else {
         return profilePath.replace("__REPLACEME__", constants.getActiveID());
     }
@@ -134,7 +134,7 @@ function saveProfileProgress(offRaidData) {
         for (let item of tmpList.data[0].Inventory.items) {
             if (offRaidProfile.Inventory.items[offRaidItem]._id === item._id) {
                 found = true;
-            }            
+            }
         }
 
         if (found) {
@@ -239,8 +239,8 @@ function saveProfileProgress(offRaidData) {
             for (let insurance in tmpList.data[0].InsuredItems) {
                 if (items_to_delete[item_to_delete] === tmpList.data[0].InsuredItems[insurance].itemId) {
                     let insureReturnChance = utility.getRandomInt(0, 99);
-		
-	                if (insureReturnChance < settings.gameplay.trading.insureReturnChance) {
+
+                    if (insureReturnChance < settings.gameplay.trading.insureReturnChance) {
                         move_f.removeInsurance(tmpList, items_to_delete[item_to_delete]);
                         items_to_delete[item_to_delete] = "insured";
                         break;
@@ -297,7 +297,8 @@ function setCharacterData(data) {
         data = data.data[0];
     }
 
-    json.write(getProfilePath(), data);
+    const userID = data.aid.replace(/[^0-9]/g, '') - 0;
+    json.write(getProfilePath(userID), data);
 }
 
 function addChildPrice(data, parentID, childPrice) {
