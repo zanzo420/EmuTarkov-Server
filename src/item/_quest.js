@@ -25,15 +25,6 @@ function completeQuest(tmpList, body) {
     const sessionID = tmpList.data[0].aid;
     item.resetOutput();
 
-    for (let quest of tmpList.data[0].Quests) {
-        if (quest.qid === body.qid) {
-            quest.status = 4;
-            profilesDB.update(tmpList);
-            tmpList = profilesDB.get(sessionID);
-            break;
-        }
-    }
-
     // find Quest data and update trader loyalty
     for (let quest of quests.data) {
         if (quest._id === body.qid) {
@@ -69,6 +60,15 @@ function completeQuest(tmpList, body) {
                         break;
                 }
             }
+        }
+    }
+
+    for (let quest of tmpList.data[0].Quests) {
+        if (quest.qid === body.qid) {
+            quest.status = 4;
+            profilesDB.update(tmpList);
+            tmpList = profilesDB.get(sessionID);
+            break;
         }
     }
 
