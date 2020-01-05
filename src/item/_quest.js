@@ -29,7 +29,7 @@ function completeQuest(tmpList, body) {
         if (quest.qid === body.qid) {
             quest.status = 4;
             profile.setCharacterData(tmpList);
-            tmpList = profile.getCharacterData();
+            tmpList = profile.getCharacterData(sessionID);
             break;
         }
     }
@@ -46,14 +46,14 @@ function completeQuest(tmpList, body) {
                             newReq.count = parseInt(reward.value);
 
                             profile.addItemToStash(tmpList, newReq);
-                            tmpList = profile.getCharacterData(); //update it everytime otherwise every given items are deleted
+                            tmpList = profile.getCharacterData(sessionID); //update it everytime otherwise every given items are deleted
                         }
                         break;
 
                     case "Experience":
                         tmpList.data[0].Info.Experience += parseInt(reward.value);
                         profile.setCharacterData(tmpList);
-                        tmpList = profile.getCharacterData();// update it because it will be overrided otherwise
+                        tmpList = profile.getCharacterData(sessionID);// update it because it will be overrided otherwise
                         break;
 
                     case "TraderStanding":

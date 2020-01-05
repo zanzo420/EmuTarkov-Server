@@ -62,7 +62,7 @@ function buyItem(tmpList, body, trad = "") {
 
             for (let stacks = 0; stacks < MaxStacks; stacks++) {
                 // update profile on each stack so stash recalculate will have new items
-                tmpList = profile.getCharacterData();
+                tmpList = profile.getCharacterData(sessionID);
 
                 let StashFS_2D = itm_hf.recheckInventoryFreeSpace(tmpList);
                 let ItemSize = itm_hf.getSize(item._tpl, item._id, tmpTrader.data.items);
@@ -249,13 +249,14 @@ function confirmRagfairTrading(tmpList, body) {
     { Action: 'RagFairBuyOffer',  offerId: '56d59d3ad2720bdb418b4577',  count: 1,  items: [ { id: '1566757577968610909', count: 42 } ] }
     */
 
+    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
     item.resetOutput();
 
     let ragfairOffers = body.offers;
     let allOutput = item.getOutput()
 
     for (let oneOffer of ragfairOffers) {
-        tmpList = profile.getCharacterData();
+        tmpList = profile.getCharacterData(sessionID);
         body = {};
         body.Action = "TradingConfirm";
         body.type = "buy_from_trader";

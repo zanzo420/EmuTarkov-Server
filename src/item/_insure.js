@@ -4,7 +4,7 @@ require('../libs.js');
 
 function cost(info) {
     let output = {"err": 0, "errmsg": null, "data": {}};
-    let tmpList = profile.getCharacterData();
+    let tmpList = profile.getCharacterData(info.sid);
 
     for (let trader of info.traders) {
         let items = {};

@@ -521,7 +521,7 @@ function addItemToStash(tmpList, body, trad = "") {
 
             for (let stacks = 0; stacks < MaxStacks; stacks++) {
                 //update profile on each stack so stash recalculate will have new items
-                tmpList = profile.getCharacterData();
+                tmpList = profile.getCharacterData(sessionID);
 
                 let StashFS_2D = itm_hf.recheckInventoryFreeSpace(tmpList);
                 let ItemSize = itm_hf.getSize(item._tpl, item._id, tmpTrader.data.items);
