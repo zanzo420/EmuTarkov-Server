@@ -214,20 +214,24 @@ function saveProfileProgress(offRaidData) {
         let items_to_delete = [];
 
         for (let item of tmpList.data[0].Inventory.items) {
-            if (item.parentId === tmpList.data[0].Inventory.equipment) {
-                // store it and delete later because i dont know its not working otherwiswe
-                if (item.slotId === "Pockets" || item.slotId === "SecuredContainer" || item.slotId === "Scabbard") {
-                    continue;
-                }
-
+            if (item.parentId === tmpList.data[0].Inventory.equipment
+                && item.slotId !== "SecuredContainer"
+                && item.slotId !== "Scabbard"
+                && item.slotId !== "Pockets") {
+                //store it and delete later because i dont know its not working otherwiswe
                 items_to_delete.push(item._id);
+            }
+
+            //we need pocket id for later, its working differently
+            if (item.slotId === "Pockets") {
+                pocketid = item._id;
             }
         }
 
-        // and then delete inside pockets
+        //and then delete inside pockets
         for (let item of tmpList.data[0].Inventory.items) {
             if (item.parentId === pocketid) {
-                // store it and delete later because i dont know its not working otherwiswe
+                //store it and delete later because i dont know its not working otherwiswe
                 items_to_delete.push(item._id);
             }
         }
