@@ -112,7 +112,6 @@ function saveProfileProgress(offRaidData) {
 
     // replace data
     tmpList.data[0].Info.Level = offRaidProfile.Info.Level;
-    tmpList.data[0].Health = offRaidProfile.Health;
     tmpList.data[0].Skills = offRaidProfile.Skills;
     tmpList.data[0].Stats = offRaidProfile.Stats;
     tmpList.data[0].Encyclopedia = offRaidProfile.Encyclopedia;
