@@ -2,22 +2,20 @@
 
 require('./libs.js');
 
-const handbook = json.parse(json.read(filepaths.user.cache.templates));
-
 function getOffers(request) {
     let response = json.parse(json.read(filepaths.ragfair.search));
 
     if (Object.entries(request.buildItems).length != 0) {
         createOfferFromBuild(request.buildItems,response);
-    } else if (request.handbookId !== "" && request.linkedSearchId !== "") {
+    } else if (request.templatesId !== "" && request.linkedSearchId !== "") {
         //list specific category from a linked search
         let linkedSearch = getLinkedSearchList(request.linkedSearchId,response );
-        let categorySearch = getCategoryList(request.handbookId);
+        let categorySearch = getCategoryList(request.templatesId);
 
         for (let p1 in categorySearch) {
             for (let search in linkedSearch) {
                 if (p1 == search) {
-                    response.data.offers.push( createOffer(search, linkedSearch[search]));
+                    response.data.offers.push(createOffer(search, linkedSearch[search]));
                 }
             }   
         }
@@ -28,8 +26,8 @@ function getOffers(request) {
             response.data.offers.push(createOffer(price, offers[price]));
         }
         
-    } else if (request.handbookId !== "") {
-        let offers = getCategoryList(request.handbookId);
+    } else if (request.templatesId !== "") {
+        let offers = getCategoryList(request.templatesId);
 
         for (let price in offers) {
             response.data.offers.push(createOffer(price , offers[price]));
@@ -50,7 +48,7 @@ function getLinkedSearchList(linkedSearchId, response) {
         for (let itemSlot of itemLink._props.Slots) {
             for (let itemSlotFilter of itemSlot._props.filters) {
                 for (let mod of itemSlotFilter.Filter) {
-                    for (let someitem of handbook.data.Items) {
+                    for (let someitem of templates.data.Items) {
                         if (someitem.Id === mod) {
                             tableOfItems[mod] = someitem.Price;
                             response.data.categories[mod] = 1;
@@ -63,7 +61,7 @@ function getLinkedSearchList(linkedSearchId, response) {
 
     if (typeof itemLink._props.Chambers !== "undefined") {
         for (let patron of itemLink._props.Chambers[0]._props.filters[0].Filter) {
-            for (let someitem of handbook.data.Items) {
+            for (let someitem of templates.data.Items) {
                 if (someitem.Id === patron) {
                     tableOfItems[patron] = someitem.Price;
                     response.data.categories[patron] = 1;
@@ -75,17 +73,17 @@ function getLinkedSearchList(linkedSearchId, response) {
     return tableOfItems;
 }
 
-function getCategoryList(handbookId) {
+function getCategoryList(templatesId) {
     let tableOfItems = {};
     let isCateg = false;
 
     // if its "mods" great-parent category, do double recursive loop
-    if (handbookId == "5b5f71a686f77447ed5636ab") {
-        for (let categ2 of handbook.data.Categories) {
+    if (templatesId == "5b5f71a686f77447ed5636ab") {
+        for (let categ2 of templates.data.Categories) {
             if (categ2.ParentId === "5b5f71a686f77447ed5636ab") {
-                for (let categ3 of handbook.data.Categories) {
+                for (let categ3 of templates.data.Categories) {
                     if (categ3.ParentId == categ2.Id) {
-                        for (let item of handbook.data.Items) {
+                        for (let item of templates.data.Items) {
                             if (item.ParentId === categ3.Id) {
                                 tableOfItems[item.Id] = item.Price;
                             }
@@ -95,22 +93,22 @@ function getCategoryList(handbookId) {
             }
         }
     } else {
-        for (let categ of handbook.data.Categories) {
-            // find the category in the handbook
-            if (categ.Id === handbookId) {
+        for (let categ of templates.data.Categories) {
+            // find the category in the templates
+            if (categ.Id === templatesId) {
                 isCateg = true;
 
                 // list all item of the category
-                for (let item of handbook.data.Items) {
+                for (let item of templates.data.Items) {
                     if (item.ParentId === categ.Id) {
                         tableOfItems[item.Id] = item.Price;
                     }
                 }
 
                 // recursive loops for sub categories
-                for (let categ2 of handbook.data.Categories) {
+                for (let categ2 of templates.data.Categories) {
                     if (categ2.ParentId === categ.Id) {
-                        for (let item of handbook.data.Items) {
+                        for (let item of templates.data.Items) {
                             if (item.ParentId === categ2.Id) {
                                 tableOfItems[item.Id] = item.Price;
                             }   
@@ -123,9 +121,9 @@ function getCategoryList(handbookId) {
         // its a specific item searched then
         if (isCateg === false) {
             for (let curItem in items.data) {
-                if (curItem === handbookId) {
-                    for (let someitem of handbook.data.Items) {
-                        if (someitem.Id === handbookId) {
+                if (curItem === templatesId) {
+                    for (let someitem of templates.data.Items) {
+                        if (someitem.Id === templatesId) {
                             tableOfItems[curItem] = someitem.Price;
                         }
                     }
@@ -143,7 +141,7 @@ function createOfferFromBuild(buildItems,response) {
     for (var itemFromBuild in buildItems) {
         for (let curItem in items.data) {
             if (curItem === itemFromBuild) {
-                for (let someitem of handbook.data.Items) {
+                for (let someitem of templates.data.Items) {
                     if (someitem.Id === itemFromBuild) {
                         response.data.offers.push(createOffer(curItem, (someitem.Price)));
                         break;

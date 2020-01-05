@@ -243,9 +243,12 @@ function saveProfileProgress(offRaidData) {
                     let insureReturnChance = utility.getRandomInt(0, 99);
 
                     if (insureReturnChance < settings.gameplay.trading.insureReturnChance) {
+                        console.log("yes");
                         move_f.removeInsurance(tmpList, items_to_delete[item_to_delete]);
                         items_to_delete[item_to_delete] = "insured";
                         break;
+                    } else {
+                        console.log("no");
                     }
                 }
             }
