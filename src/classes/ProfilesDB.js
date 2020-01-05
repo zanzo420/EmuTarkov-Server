@@ -32,8 +32,13 @@ class ProfilesDB {
 
     // used for put or update profile data in memory cache
     update(profileData) {
-        const id = profileData.data[0].aid.replace(/[^0-9]/g, '') - 0;
-        
+        let id;
+        if (typeof profileData.data[0].aid === "string") {
+            id = profileData.data[0].aid.replace(/[^0-9]/g, '') - 0;
+        } else {
+            id = profileData.data[0].aid;
+        }
+
         this.profiles[id] = profileData;
         this.needUpdate = true;
     }
