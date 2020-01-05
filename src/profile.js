@@ -263,10 +263,6 @@ function saveProfileProgress(offRaidData) {
 }
 
 function getCharacterData(sessionID = NaN) {
-    console.debug(`profile.js getCharacterData(). sessionID is ${sessionID}`);
-    if (typeof sessionID === "number") {
-        sessionID = sessionID;
-    }
     let ret = {err: 0, errmsg: null, data: []};
 
     // creating profile for first time
