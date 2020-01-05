@@ -78,12 +78,12 @@ function lvlUp(id, sessionID = NaN) {
     // set profile level (TODO: move this to another function)
     let checkedExp = 0;
 
-    for (let level of globalSettings.data.config.exp.level.exp_table) {
+    for (let level in globalSettings.data.config.exp.level.exp_table) {
         if (currentProfile.data[0].Info.Experience < checkedExp) {
-            currentProfile.data[0].Info.Level = level + 1;
+            currentProfile.data[0].Info.Level = 1 + level;
         }
 
-        checkedExp += level.exp;
+        checkedExp += globalSettings.data.config.exp.level.exp_table[level].exp;
     }
 
     // check loyalty
