@@ -22,7 +22,7 @@ function acceptQuest(tmpList, body) {
 
 function completeQuest(tmpList, body) {
     // -> Complete quest (need rework for giving back quests)
-    const sessionID = tmpList.data[0].replace(/[^0-9]/g, '') - 0;
+    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
     item.resetOutput();
 
     for (let quest of tmpList.data[0].Quests) {
