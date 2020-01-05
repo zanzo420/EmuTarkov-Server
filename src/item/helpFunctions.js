@@ -106,7 +106,9 @@ function fromRUB(value, currency) {
 * */
 function payMoney(profileData, body) {
     output = item.getOutput();
-    const tmpTraderInfo = trader.get(body.tid);
+
+    const sessionID = profileData.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    const tmpTraderInfo = trader.get(body.tid, sessionID);
     const currencyTpl = getCurrency(tmpTraderInfo.data.currency);
     let profileItems = profileData.data[0].Inventory.items;
 
@@ -148,8 +150,10 @@ function payMoney(profileData, body) {
     let saleSum = tmpTraderInfo.data.loyalty.currentSalesSum += inRUB(barterPrice, tmpTraderInfo.data.currency);
 
     tmpTraderInfo.data.loyalty.currentSalesSum = saleSum;
-    trader.setTrader(tmpTraderInfo.data);
-    trader.lvlUp(body.tid);
+    trader.setTrader(tmpTraderInfo.data, sessionID);
+
+    trader.lvlUp(body.tid, sessionID);
+
     output.data.currentSalesSums[body.tid] = saleSum;
 
     // save changes
@@ -182,7 +186,8 @@ function findMoney(by, tmpList, barter_itemID) { // find required items to take 
 * output: none (output is sended to item.js, and profile is saved to file)
 * */
 function getMoney(tmpList, amount, body, output_temp) {
-    let tmpTraderInfo = trader.get(body.tid);
+    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    let tmpTraderInfo = trader.get(body.tid, sessionID);
     let currency = getCurrency();
     let value = inRUB(amount, currency);
     let calcAmount = fromRUB(amount, currency);
@@ -252,8 +257,10 @@ function getMoney(tmpList, amount, body, output_temp) {
     let saleSum = tmpTraderInfo.data.loyalty.currentSalesSum += inRUB(value, tmpTraderInfo.data.currency);
 
     tmpTraderInfo.data.loyalty.currentSalesSum = saleSum;
-    trader.setTrader(tmpTraderInfo.data);
-    trader.lvlUp(body.tid);
+    trader.setTrader(tmpTraderInfo.data, sessionID);
+
+    trader.lvlUp(body.tid, sessionID);
+
     output_temp.data.currentSalesSums[body.tid] = saleSum;
 
     profile.setCharacterData(tmpList);

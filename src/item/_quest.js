@@ -4,15 +4,15 @@ require('../libs.js');
 
 function acceptQuest(tmpList, body) {
     tmpList.data[0].Quests.push({
-		"qid": body.qid.toString(), 
-		"startTime": utility.getTimestamp(), 
-		"status": 2
-	}); 
-	// statuses seem as follow - 
-	// 1 - not accepted | 
-	// 2 - accepted | 
-	// 3 - failed | 
-	// 4 - completed
+        "qid": body.qid.toString(),
+        "startTime": utility.getTimestamp(),
+        "status": 2
+    });
+    // statuses seem as follow -
+    // 1 - not accepted |
+    // 2 - accepted |
+    // 3 - failed |
+    // 4 - completed
     profile.setCharacterData(tmpList);
 
     item.resetOutput();
@@ -20,8 +20,9 @@ function acceptQuest(tmpList, body) {
 
 }
 
-function completeQuest(tmpList, body) { 
+function completeQuest(tmpList, body) {
     // -> Complete quest (need rework for giving back quests)
+    const sessionID = tmpList.data[0].replace(/[^0-9]/g, '') - 0;
     item.resetOutput();
 
     for (let quest of tmpList.data[0].Quests) {
@@ -43,7 +44,7 @@ function completeQuest(tmpList, body) {
                             let newReq = {};
                             newReq.item_id = rewardItem._tpl;
                             newReq.count = parseInt(reward.value);
-                    
+
                             profile.addItemToStash(tmpList, newReq);
                             tmpList = profile.getCharacterData(); //update it everytime otherwise every given items are deleted
                         }
@@ -57,14 +58,14 @@ function completeQuest(tmpList, body) {
 
                     case "TraderStanding":
                         // improve trader standing
-                        let tmpTraderInfo = trader.get(quest.traderId);
+                        let tmpTraderInfo = trader.get(quest.traderId, sessionID);
 
                         tmpTraderInfo.data.loyalty.currentStanding
                         tmpTraderInfo.data.loyalty.currentStanding = tmpTraderInfo.data.loyalty.currentStanding + parseFloat(reward.value);
-                        trader.setTrader(tmpTraderInfo.data);
+                        trader.setTrader(tmpTraderInfo.data, sessionID);
 
                         // level up trader
-                        trader.lvlUp(quest.traderId);
+                        trader.lvlUp(quest.traderId, sessionID);
                         break;
                 }
             }
@@ -78,20 +79,17 @@ function handoverQuest(tmpList, body) {
     let counter = 0;
     let found = false;
     item.resetOutput();
-    
-    for (let itemHandover of body.items) 
-    {
+
+    for (let itemHandover of body.items) {
         counter += itemHandover.count;
         move_f.removeItem(tmpList, {
-			Action: 'Remove', 
-			item: itemHandover.id
-		});
+            Action: 'Remove',
+            item: itemHandover.id
+        });
     }
 
-    for (let backendCounter in tmpList.data[0].BackendCounters) 
-    {
-        if (backendCounter === body.conditionId) 
-        {
+    for (let backendCounter in tmpList.data[0].BackendCounters) {
+        if (backendCounter === body.conditionId) {
             tmpList.data[0].BackendCounters[body.conditionId].value += counter;
             found = true;
         }
@@ -99,10 +97,10 @@ function handoverQuest(tmpList, body) {
 
     if (!found) {
         tmpList.data[0].BackendCounters[body.conditionId] = {
-			"id": body.conditionId, 
-			"qid": body.qid, 
-			"value": counter
-		};
+            "id": body.conditionId,
+            "qid": body.qid,
+            "value": counter
+        };
     }
 
     profile.setCharacterData(tmpList);

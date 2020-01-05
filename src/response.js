@@ -96,7 +96,7 @@ function showIndex(url, info) {
 
 function showInventoryChecker(url, info) {
     let output = "";
-    let inv = itm_hf.recheckInventoryFreeSpace(profile.getCharacterData());
+    let inv = itm_hf.recheckInventoryFreeSpace(profile.getCharacterData(info.sid));
 
     output += "<style>td{border:1px solid #aaa;}</style>Inventory Stash Usage:<br><table><tr><td>-</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9<br>";
 
@@ -114,9 +114,9 @@ function showInventoryChecker(url, info) {
     return output;
 }
 
-function getGameConfig() {
+function getGameConfig(url, info) {
     let backendUrl = "https://" + ip;
-    return '{"err":0,"errmsg":null,"data":{"queued": false, "banTime": 0, "hash": "BAN0", "lang": "en", "aid": "user' + constants.getActiveID() + '", "token": "token_' + constants.getActiveID() + '", "taxonomy": "341", "activeProfileId": "user' + constants.getActiveID() + 'pmc", "nickname": "user", "backend": {"Trading":"' + backendUrl + '", "Messaging":"' + backendUrl + '", "Main":"' + backendUrl + '", "RagFair":"' + backendUrl + '"}, "totalInGame": 0}}';
+    return '{"err":0,"errmsg":null,"data":{"queued": false, "banTime": 0, "hash": "BAN0", "lang": "en", "aid": "user' + info.sid + '", "token": "token_' + info.sid + '", "taxonomy": "341", "activeProfileId": "user' + info.sid + 'pmc", "nickname": "user", "backend": {"Trading":"' + backendUrl + '", "Messaging":"' + backendUrl + '", "Main":"' + backendUrl + '", "RagFair":"' + backendUrl + '"}, "totalInGame": 0}}';
 }
 
 function getFriendList(url, info) {
@@ -153,7 +153,7 @@ function getGlobals(url, info) {
 }
 
 function getProfileData(url, info) {
-    const responseData = profile.getCharacterData();
+    const responseData = profile.getCharacterData(info.sid);
 
     // If we have experience gained after the raid, we save it
     if (responseData.data.length > 0 && responseData.data[0].Stats.TotalSessionExperience > 0) {
@@ -174,7 +174,7 @@ function selectProfile(url, info) {
 }
 
 function getProfileStatus(url, info) {
-    return '{"err":0, "errmsg":null, "data":[{"profileid":"user' + constants.getActiveID() + 'scav", "status":"Free", "sid":"", "ip":"", "port":0}, {"profileid":"user' + constants.getActiveID() + 'pmc", "status":"Free", "sid":"", "ip":"", "port":0}]}';
+    return '{"err":0, "errmsg":null, "data":[{"profileid":"user' + info.sid + 'scav", "status":"Free", "sid":"", "ip":"", "port":0}, {"profileid":"user' + info.sid + 'pmc", "status":"Free", "sid":"", "ip":"", "port":0}]}';
 }
 
 function getWeather(url, info) {
@@ -223,7 +223,7 @@ function getBots(url, info) {
 }
 
 function getTraderList(url, info) {
-    return JSON.stringify(trader.loadAllTraders());
+    return JSON.stringify(trader.loadAllTraders(info.sid));
 }
 
 function getServer(url, info) {
@@ -248,10 +248,10 @@ function joinMatch(url, info) {
     // check if the player is a scav
     if (info.savage === true) {
         shortid = "3XR5";
-        profileId = "user" + constants.getActiveID() + "scav";
+        profileId = "user" + info.sid + "scav";
     } else {
         shortid = "3SRC";
-        profileId = "user" + constants.getActiveID() + "pmc";
+        profileId = "user" + info.sid + "pmc";
     }
 
     return JSON.stringify({
@@ -292,7 +292,7 @@ function handleRepair(url, info) {
 }
 
 function handleKeepAlive(url, info) {
-    keepAlive_f.main();
+    keepAlive_f.main(url, info);
     return '{"err":0,"errmsg":null,"data":{"msg":"OK"}}';
 }
 
@@ -349,7 +349,7 @@ function createNotifierChannel(url, info) {
 }
 
 function getReservedNickname(url, info) {
-    return '{"err":0,"errmsg":null,"data":"' + profile.getReservedNickname() + '"}';
+    return '{"err":0,"errmsg":null,"data":"' + profile.getReservedNickname(info.sid) + '"}';
 }
 
 function validateNickname(url, info) {
@@ -359,7 +359,7 @@ function validateNickname(url, info) {
 
 function createProfile(url, info) {
     profile.create(info);
-    return '{"err":0,"errmsg":null,"data":{"uid":"user' + constants.getActiveID() + 'pmc"}}';
+    return '{"err":0,"errmsg":null,"data":{"uid":"user' + info.sid + 'pmc"}}';
 }
 
 function offlineRaidSave(url, info) {
@@ -367,7 +367,7 @@ function offlineRaidSave(url, info) {
         return "DONE";
     }
 
-    constants.setActiveID(info.profile.aid.replace("user", ""));
+    constants.setActiveID(info.profile.aid.replace(/[^0-9]/g, '') - 0);
     profile.saveProfileProgress(info);
     return "DONE";
 }
@@ -402,10 +402,10 @@ function getMailDialogView() {
 // request: {"dialogId":"54cb57776803fa99248b456e"}
 // response: {"err":0,"errmsg":null,"data":{"type":2,"message":{"dt":1577648943,"type":10,"text":"quest started","uid":"54cb57776803fa99248b456e","templateId":"5abe61a786f7746ad512da4e"},"new":1,"_id":"54cb57776803fa99248b456e","pinned":false}}
 // dialogId: user id, like user0pmc
-function getMailDialogInfo() {
+function getMailDialogInfo(url, info) {
     // an overview of the object is this:
 
-    return '{"err":0,"errmsg":null,"data":{"type":2,"message":{"dt":1577648943,"type":10,"text":"quest started","uid":"user' + constants.getActiveID() + 'pmc","templateId":"5abe61a786f7746ad512da4e"},"new":1,"_id":"user' + constants.getActiveID() + 'pmc","pinned":false}}';
+    return '{"err":0,"errmsg":null,"data":{"type":2,"message":{"dt":1577648943,"type":10,"text":"quest started","uid":"user' + info.sid + 'pmc","templateId":"5abe61a786f7746ad512da4e"},"new":1,"_id":"user' + info.sid + 'pmc","pinned":false}}';
 }
 
 function getMapLocation(url, info) {
@@ -425,7 +425,7 @@ function getProfilePurchases(url, info) {
 }
 
 function getTrader(url, info) {
-    return JSON.stringify(trader.get(url.replace("/client/trading/api/getTrader/", '')));
+    return JSON.stringify(trader.get(url.replace("/client/trading/api/getTrader/", ''), info.sid));
 }
 
 function getAssort(url, info) {

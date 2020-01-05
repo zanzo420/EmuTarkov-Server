@@ -2,24 +2,24 @@
 
 require('../libs.js');
 
-function main() {
-    if (!profile.isProfileWiped()) {
-        updateTraders();
-        updatePlayerHideout();
+function main(url, info) {
+    if (!profile.isProfileWiped(info.sid)) {
+        updateTraders(url, info);
+        updatePlayerHideout(url, info);
     }
 }
 
-function updateTraders() {
+function updateTraders(url, info) {
     // update each hour
     let update_per = 3600;
     let timeNow = Math.floor(Date.now() / 1000);
-    let tradersToUpdateList = trader.loadAllTraders();
+    let tradersToUpdateList = trader.loadAllTraders(info.sid);
 
     tradersToUpdateList = tradersToUpdateList.data;
-    
+
     for (let i = 0; i < tradersToUpdateList.length; i++) {
         // update level
-        trader.lvlUp(tradersToUpdateList[i]._id);
+        trader.lvlUp(tradersToUpdateList[i]._id, info.sid);
 
         // update restock timer
         if ((tradersToUpdateList[i].supply_next_time + update_per) > timeNow) {
@@ -35,15 +35,15 @@ function updateTraders() {
         compensateUpdate_per = compensateUpdate_per * update_per;
         newTraderTime = newTraderTime + compensateUpdate_per + update_per;
         tradersToUpdateList[i].supply_next_time = newTraderTime;
-        trader.setTrader(tradersToUpdateList[i]);
+        trader.setTrader(tradersToUpdateList[i], info.sid);
     }
 }
 
-function updatePlayerHideout() {
+function updatePlayerHideout(uriC) {
     let ply = profile.getCharacterData();
 
     // update production time
-    for (let prod in ply.data[0].Hideout.Production) { 
+    for (let prod in ply.data[0].Hideout.Production) {
         /* bitcoin farm : manage multiples bitcoins but fuck this shit
         for (let keyObj of Object.keys(ply.data[0].Hideout.Production)) {
             if (keyObj == '20') {
@@ -66,18 +66,18 @@ function updatePlayerHideout() {
             if production needs gennerator activated true, then check if generator activated == true
 
         */
-        let time_elapsed = Math.floor( Date.now()/1000) - ply.data[0].Hideout.Production[prod].StartTime;
-        ply.data[0].Hideout.Production[prod].Progress = time_elapsed; 
+        let time_elapsed = Math.floor(Date.now() / 1000) - ply.data[0].Hideout.Production[prod].StartTime;
+        ply.data[0].Hideout.Production[prod].Progress = time_elapsed;
     }
 
-    for (let area in ply.data[0].Hideout.Areas) {            
+    for (let area in ply.data[0].Hideout.Areas) {
         // update resource of first slot
         if (ply.data[0].Hideout.Areas[area].slots.length > 0) {
             // hmmm ...? 
         }
     }
 
-    profile.setCharacterData(ply); 
+    profile.setCharacterData(ply);
 }
 
 module.exports.main = main;
