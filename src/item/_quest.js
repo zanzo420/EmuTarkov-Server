@@ -24,6 +24,7 @@ function completeQuest(tmpList, body) {
     // -> Complete quest (need rework for giving back quests)
     const sessionID = tmpList.data[0].aid;
     item.resetOutput();
+    console.log(sessionID);
 
     // find Quest data and update trader loyalty
     for (let quest of quests.data) {
