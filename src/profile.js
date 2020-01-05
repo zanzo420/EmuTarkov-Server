@@ -150,7 +150,7 @@ function saveProfileProgress(offRaidData) {
 
             currentItem.upd["SpawnedInSession"] = true;
         } else {
-            currentItem["udp"] = {"SpawnedInSession": true};
+            currentItem["upd"] = {"SpawnedInSession": true};
         }
 
         offRaidProfile.Inventory.items[offRaidItem] = currentItem;
