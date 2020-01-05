@@ -54,7 +54,7 @@ function create(info) {
     let userbuilds = json.parse(json.read(filepaths.profile.userbuilds));
 
     character._id = "user" + info.sid + "pmc";
-    character.aid = "user" + info.sid;
+    character.aid = info.sid;
     character.savage = "user" + info.sid + "scav";
     character.Info.Nickname = info.nickname;
     character.Info.LowerNickname = info.nickname.toLowerCase();
