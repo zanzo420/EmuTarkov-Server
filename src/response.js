@@ -153,6 +153,10 @@ function getGlobals(url, info) {
 }
 
 function getProfileData(url, info) {
+    if (profile.isProfileWiped(info.sid)) {
+        return nullArrayResponse(url, info);
+    }
+    
     const profileData = profilesDB.get(info.sid);
     let response = null;
 
@@ -280,7 +284,7 @@ function changeNickname(url, info) {
 
 function changeVoice(url, info) {
     profile.changeVoice(info);
-    return '{"err":0, "errmsg":null, "data":null}';
+    return nullResponse(url, info);
 }
 
 function getGroupStatus(url, info) {
@@ -298,7 +302,7 @@ function handleKeepAlive(url, info) {
 
 function validateGameVersion(url, info) {
     constants.setVersion(info.version.major);
-    return '{"err":0,"errmsg":null,"data":null}';
+    return nullResponse(url, info);
 }
 
 function getCustomization(info) {
@@ -489,7 +493,7 @@ function getResponse(req, body) {
         if (typeof crctest.crc != "undefined") {
             if (info.crc.toString() === crctest.crc.toString()) {
                 console.log("[Loading from game cache files]", "", "", true);
-                output = '{"err":0, "errmsg":null, "data":null}';
+                output = nullResponse(url, info);
             } else {
                 output = JSON.stringify(crctest).replace(/\s\s+/g, '');
             }
