@@ -6,19 +6,19 @@ const hideout_areas_config = json.parse(json.read(filepaths.user.cache.hideout_a
 const crafting_receipes = json.parse(json.read(filepaths.user.cache.hideout_production));
 
 // upgrading can take times,the first step is to pay what needed for upgrade and start construction
-function HideoutUpgrade(tmplist, body) {
+function HideoutUpgrade(tmpList, body) {
     // pay money or delete items
     for (let itemToPay of body.items) {
-        for (let inventoryItem in tmplist.data[0].Inventory.items) {
+        for (let inventoryItem in tmpList.data[0].Inventory.items) {
             //find the specific item in inventory
-            if (tmplist.data[0].Inventory.items[inventoryItem]._id == itemToPay.id) {
+            if (tmpList.data[0].Inventory.items[inventoryItem]._id == itemToPay.id) {
                 // if it's not money, its construction / barter items
-                if (tmplist.data[0].Inventory.items[inventoryItem]._tpl == "5449016a4bdc2d6f028b456f") {
-                    tmplist.data[0].Inventory.items[inventoryItem].upd.StackObjectsCount -= itemToPay.count;
+                if (tmpList.data[0].Inventory.items[inventoryItem]._tpl == "5449016a4bdc2d6f028b456f") {
+                    tmpList.data[0].Inventory.items[inventoryItem].upd.StackObjectsCount -= itemToPay.count;
                 } else {
-                    move_f.removeItem(tmplist, {
+                    move_f.removeItem(tmpList, {
                         "Action": "Remove",
-                        "item": tmplist.data[0].Inventory.items[inventoryItem]._id
+                        "item": tmpList.data[0].Inventory.items[inventoryItem]._id
                     });
                 }
             }
@@ -26,55 +26,55 @@ function HideoutUpgrade(tmplist, body) {
     }
 
     // time construction management
-    for (let hideoutArea in tmplist.data[0].Hideout.Areas) {
+    for (let hideoutArea in tmpList.data[0].Hideout.Areas) {
         // find areaType in profile
-        if (tmplist.data[0].Hideout.Areas[hideoutArea].type == body.areaType) {
+        if (tmpList.data[0].Hideout.Areas[hideoutArea].type == body.areaType) {
             for (let hideout_stage in hideout_areas_config.data) {
                 // find the  good stage from config
                 if (hideout_areas_config.data[hideout_stage].type == body.areaType) {
                     // get construction time
-                    let ctime = hideout_areas_config.data[hideout_stage].stages[tmplist.data[0].Hideout.Areas[hideoutArea].level + 1].constructionTime;
+                    let ctime = hideout_areas_config.data[hideout_stage].stages[tmpList.data[0].Hideout.Areas[hideoutArea].level + 1].constructionTime;
 
                     if (ctime > 0) {
                         let timestamp = Math.floor(Date.now() / 1000);
 
-                        tmplist.data[0].Hideout.Areas[hideoutArea].completeTime = timestamp + ctime;
-                        tmplist.data[0].Hideout.Areas[hideoutArea].constructing = true;
+                        tmpList.data[0].Hideout.Areas[hideoutArea].completeTime = timestamp + ctime;
+                        tmpList.data[0].Hideout.Areas[hideoutArea].constructing = true;
                     }
                 }
             }
         }
     }
 
-    profilesDB.update(tmplist);
+    profilesDB.update(tmpList);
     item.resetOutput();
     return item.getOutput();
 }
 
 // validating the upgrade
-function HideoutUpgradeComplete(tmplist, body) {
-    for (let hideoutArea in tmplist.data[0].Hideout.Areas) {
-        if (tmplist.data[0].Hideout.Areas[hideoutArea].type == body.areaType) {
-            tmplist.data[0].Hideout.Areas[hideoutArea].level++;
-            tmplist.data[0].Hideout.Areas[hideoutArea].completeTime = 0;
-            tmplist.data[0].Hideout.Areas[hideoutArea].constructing = false;
+function HideoutUpgradeComplete(tmpList, body) {
+    for (let hideoutArea in tmpList.data[0].Hideout.Areas) {
+        if (tmpList.data[0].Hideout.Areas[hideoutArea].type == body.areaType) {
+            tmpList.data[0].Hideout.Areas[hideoutArea].level++;
+            tmpList.data[0].Hideout.Areas[hideoutArea].completeTime = 0;
+            tmpList.data[0].Hideout.Areas[hideoutArea].constructing = false;
 
             //and then apply bonusses or its auto ?
         }
     }
 
-    profilesDB.update(tmplist);
+    profilesDB.update(tmpList);
     item.resetOutput();
     return item.getOutput();
 }
 
 //move items from hideout
-function HideoutPutItemsInAreaSlots(tmplist, body) {
+function HideoutPutItemsInAreaSlots(tmpList, body) {
     for (let itemToMove in body.items) {
-        for (let inventoryItem of tmplist.data[0].Inventory.items) {
+        for (let inventoryItem of tmpList.data[0].Inventory.items) {
             if (body.items[itemToMove].id == inventoryItem._id) {
-                for (let area in tmplist.data[0].Hideout.Areas) {
-                    if (tmplist.data[0].Hideout.Areas[area].type == body.areaType) {
+                for (let area in tmpList.data[0].Hideout.Areas) {
+                    if (tmpList.data[0].Hideout.Areas[area].type == body.areaType) {
                         let slot_to_add = {
                             "item": [{
                                 "_id": inventoryItem._id,
@@ -83,70 +83,70 @@ function HideoutPutItemsInAreaSlots(tmplist, body) {
                             }]
                         }
 
-                        tmplist.data[0].Hideout.Areas[area].slots.push(slot_to_add);
-                        move_f.removeItem(tmplist, {"Action": "Remove", "item": inventoryItem._id});
+                        tmpList.data[0].Hideout.Areas[area].slots.push(slot_to_add);
+                        move_f.removeItem(tmpList, {"Action": "Remove", "item": inventoryItem._id});
                     }
                 }
             }
         }
     }
 
-    profilesDB.update(tmplist);
+    profilesDB.update(tmpList);
     return item.getOutput();
 }
 
-function HideoutTakeItemsFromAreaSlots(tmplist, body) {
+function HideoutTakeItemsFromAreaSlots(tmpList, body) {
 	const sessionID = tmpList.data[0].aid;
     item.resetOutput();
 
-    for (let area in tmplist.data[0].Hideout.Areas) {
-        if (tmplist.data[0].Hideout.Areas[area].type == body.areaType) {
+    for (let area in tmpList.data[0].Hideout.Areas) {
+        if (tmpList.data[0].Hideout.Areas[area].type == body.areaType) {
             // should use body.slots[0] to get the array index but since its not managed like that, its different
-            // move tmplist.data[0].Hideout.Areas[area].slots[0].item[0] to inventory with new location --> special function needed
-            // then manual remove --> tmplist.data[0].Hideout.Areas[area].slots.splice(0,1);
+            // move tmpList.data[0].Hideout.Areas[area].slots[0].item[0] to inventory with new location --> special function needed
+            // then manual remove --> tmpList.data[0].Hideout.Areas[area].slots.splice(0,1);
 
             let newReq = {};
 
-            newReq.item_id = tmplist.data[0].Hideout.Areas[area].slots[0].item[0]._tpl;
+            newReq.item_id = tmpList.data[0].Hideout.Areas[area].slots[0].item[0]._tpl;
             newReq.count = 1;
-            profile.addItemToStash(tmplist, newReq);
-            tmplist = profilesDB.get(sessionID);
-            tmplist.data[0].Hideout.Areas[area].slots.splice(0, 1);
-            profilesDB.update(tmplist);
+            profile.addItemToStash(tmpList, newReq);
+            tmpList = profilesDB.get(sessionID);
+            tmpList.data[0].Hideout.Areas[area].slots.splice(0, 1);
+            profilesDB.update(tmpList);
         }
     }
 
     return item.getOutput();
 }
 
-function HideoutToggleArea(tmplist, body) {
-    for (let area in tmplist.data[0].Hideout.Areas) {
-        if (tmplist.data[0].Hideout.Areas[area].type == body.areaType) {
-            tmplist.data[0].Hideout.Areas[area].active = body.enabled;
+function HideoutToggleArea(tmpList, body) {
+    for (let area in tmpList.data[0].Hideout.Areas) {
+        if (tmpList.data[0].Hideout.Areas[area].type == body.areaType) {
+            tmpList.data[0].Hideout.Areas[area].active = body.enabled;
         }
     }
 
-    profilesDB.update(tmplist);
+    profilesDB.update(tmpList);
     item.resetOutput();
     return item.getOutput();
 }
 
-function HideoutSingleProductionStart(tmplist, body) {
-    registerProduction(tmplist, body);
+function HideoutSingleProductionStart(tmpList, body) {
+    registerProduction(tmpList, body);
 
     for (let itemToDelete of body.items) {
-        move_f.removeItem(tmplist, {"Action": "Remove", "item": itemToDelete.id});
+        move_f.removeItem(tmpList, {"Action": "Remove", "item": itemToDelete.id});
     }
 
     item.resetOutput();
     return item.getOutput();
 }
 
-function HideoutScavCaseProductionStart(tmplist, body) {
+function HideoutScavCaseProductionStart(tmpList, body) {
     for (let moneyToEdit of body.items) {
-        for (let inventoryItem in tmplist.data[0].Inventory.items) {
-            if (tmplist.data[0].Inventory.items[inventoryItem]._id == moneyToEdit.id) {
-                tmplist.data[0].Inventory.items[inventoryItem].upd.StackObjectsCount -= moneyToEdit.count;
+        for (let inventoryItem in tmpList.data[0].Inventory.items) {
+            if (tmpList.data[0].Inventory.items[inventoryItem]._id == moneyToEdit.id) {
+                tmpList.data[0].Inventory.items[inventoryItem].upd.StackObjectsCount -= moneyToEdit.count;
             }
         }
     }
@@ -183,7 +183,7 @@ function HideoutScavCaseProductionStart(tmplist, body) {
                 }
             }
 
-            tmplist.data[0].Hideout.Production["14"] = {
+            tmpList.data[0].Hideout.Production["14"] = {
                 "Progress": 0,
                 "inProgress": true,
                 "RecipeId": body.recipeId,
@@ -193,18 +193,18 @@ function HideoutScavCaseProductionStart(tmplist, body) {
         }
     }
 
-    profilesDB.update(tmplist);
+    profilesDB.update(tmpList);
     item.resetOutput();
     return item.getOutput();
 }
 
-function HideoutContinuousProductionStart(tmplist, body) {
-    registerProduction(tmplist, body);
+function HideoutContinuousProductionStart(tmpList, body) {
+    registerProduction(tmpList, body);
     item.resetOutput();
     return item.getOutput();
 }
 
-function HideoutTakeProduction(tmplist, body) {
+function HideoutTakeProduction(tmpList, body) {
 	const sessionID = tmpList.data[0].aid;
     let found = false;
 
@@ -213,10 +213,10 @@ function HideoutTakeProduction(tmplist, body) {
             found = true;
 
             // delete the production in profile Hideout.Production
-            for (let prod in tmplist.data[0].Hideout.Production) {
-                if (tmplist.data[0].Hideout.Production[prod].RecipeId == body.recipeId) {
-                    delete tmplist.data[0].Hideout.Production[prod]
-                    profilesDB.update(tmplist);
+            for (let prod in tmpList.data[0].Hideout.Production) {
+                if (tmpList.data[0].Hideout.Production[prod].RecipeId == body.recipeId) {
+                    delete tmpList.data[0].Hideout.Production[prod]
+                    profilesDB.update(tmpList);
                 }
             }
 
@@ -225,7 +225,7 @@ function HideoutTakeProduction(tmplist, body) {
 
             newReq.item_id = crafting_receipes.data[receipe].endProduct;
             newReq.count = crafting_receipes.data[receipe].count;
-            profile.addItemToStash(tmplist, newReq);
+            profile.addItemToStash(tmpList, newReq);
             item.resetOutput();
             return item.getOutput();
         }
@@ -241,17 +241,17 @@ function HideoutTakeProduction(tmplist, body) {
             if (body.recipeId == scavcase_receipes.data[receipe]._id) {
                 found = true;
 
-                for (let prod in tmplist.data[0].Hideout.Production) {
-                    if (tmplist.data[0].Hideout.Production[prod].RecipeId == body.recipeId) {
+                for (let prod in tmpList.data[0].Hideout.Production) {
+                    if (tmpList.data[0].Hideout.Production[prod].RecipeId == body.recipeId) {
                         // give items BEFORE deleting the production
-                        for (let itemProd of tmplist.data[0].Hideout.Production[prod].Products) {
+                        for (let itemProd of tmpList.data[0].Hideout.Production[prod].Products) {
                             let newReq = {};
 
-                            tmplist = profilesDB.get(sessionID);
+                            tmpList = profilesDB.get(sessionID);
                             newReq.item_id = itemProd._tpl;
                             newReq.count = 1;
 
-                            let tempOutput = profile.addItemToStash(tmplist, newReq);
+                            let tempOutput = profile.addItemToStash(tmpList, newReq);
 
                             for (let newItem of tempOutput.data.items.new) {
                                 allOutput.data.items.new.push(newItem);
@@ -259,8 +259,8 @@ function HideoutTakeProduction(tmplist, body) {
 
                         }
 
-                        delete tmplist.data[0].Hideout.Production[prod];
-                        profilesDB.update(tmplist);
+                        delete tmpList.data[0].Hideout.Production[prod];
+                        profilesDB.update(tmpList);
                         return allOutput;
                     }
                 }
@@ -271,10 +271,10 @@ function HideoutTakeProduction(tmplist, body) {
     return "";
 }
 
-function registerProduction(tmplist, body) {
+function registerProduction(tmpList, body) {
     for (let receipe in crafting_receipes.data) {
         if (body.recipeId == crafting_receipes.data[receipe]._id) {
-            tmplist.data[0].Hideout.Production[crafting_receipes.data[receipe].areaType] = {
+            tmpList.data[0].Hideout.Production[crafting_receipes.data[receipe].areaType] = {
                 "Progress": 0,
                 "inProgress": true,
                 "RecipeId": body.recipeId,
@@ -284,7 +284,7 @@ function registerProduction(tmplist, body) {
         }
     }
 
-    profilesDB.update(tmplist);
+    profilesDB.update(tmpList);
 }
 
 module.exports.hideoutUpgrade = HideoutUpgrade;
