@@ -156,7 +156,7 @@ function getProfileData(url, info) {
     if (profile.isProfileWiped(info.sid)) {
         return nullArrayResponse(url, info);
     }
-    
+
     const profileData = profilesDB.get(info.sid);
     let response = null;
 
@@ -371,7 +371,7 @@ function offlineRaidSave(url, info) {
         return "DONE";
     }
 
-    constants.setActiveID(info.profile.aid.replace(/[^0-9]/g, '') - 0);
+    constants.setActiveID(info.profile.aid);
     profile.saveProfileProgress(info);
     return "DONE";
 }

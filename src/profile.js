@@ -105,7 +105,7 @@ function create(info) {
 }
 
 function saveProfileProgress(offRaidData) {
-    const sessionID = offRaidData.profile.aid.replace(/[^0-9]/g, '') - 0;
+    const sessionID = offRaidData.profile.aid;
     let offRaidExit = offRaidData.exit;
     let offRaidProfile = offRaidData.profile;
     let tmpList = profilesDB.get(sessionID);
@@ -171,7 +171,7 @@ function saveProfileProgress(offRaidData) {
 
         // do not replace important ID's
         if (insuredItem) {
-            break;
+            continue;
         }
 
         if (offRaidProfile.Inventory.items[item]._id === offRaidProfile.Inventory.equipment) {
