@@ -163,7 +163,7 @@ function saveProfileProgress(offRaidData) {
 
         // insured items shouldn't be renamed
         for (let insurance in tmpList.data[0].InsuredItems) {
-            if (tmpList.data[0].InsuredItems[insurance].itemId === offRaidProfile.Inventory.items[item]) {
+            if (tmpList.data[0].InsuredItems[insurance].itemId === offRaidProfile.Inventory.items[item]._id) {
                 console.log("editing id found insured item");
                 insuredItem = true;
             }
