@@ -77,12 +77,14 @@ function lvlUp(id, sessionID = NaN) {
 
     // set profile level (TODO: move this to another function)
     let checkedExp = 0;
+    let checkLvl = 1;
 
     for (let level in globalSettings.data.config.exp.level.exp_table) {
         if (currentProfile.data[0].Info.Experience < checkedExp) {
-            currentProfile.data[0].Info.Level = 1 + parseInt(level);
+            break;
         }
 
+        currentProfile.data[0].Info.Level = 1 + parseInt(level);
         checkedExp += globalSettings.data.config.exp.level.exp_table[level].exp;
     }
 
