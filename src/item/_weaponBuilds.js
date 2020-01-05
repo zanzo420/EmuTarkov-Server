@@ -8,7 +8,7 @@ function getUserBuildsPath(sessionID = NaN) {
 }
 
 function SaveBuild(tmpList, body) {
-    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    const sessionID = tmpList.data[0].aid;
     delete body.Action;
     body.id = utility.generateNewItemId();
 
@@ -64,7 +64,7 @@ function SaveBuild(tmpList, body) {
 }
 
 function RemoveBuild(tmpList, body) {
-	const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+	const sessionID = tmpList.data[0].aid;
     let savedBuilds = json.parse(json.read(getUserBuildsPath(sessionID)));
 
     for (let wBuild of savedBuilds.data) {

@@ -17,7 +17,7 @@ function setInternalOutput(data) {
 * output: table[y][x]
 * */
 function recheckInventoryFreeSpace(tmpList) { // recalculate stach taken place
-    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    const sessionID = tmpList.data[0].aid;
     let PlayerStash = getPlayerStash(sessionID);
     let Stash2D = Array(PlayerStash[1]).fill(0).map(x => Array(PlayerStash[0]).fill(0));
     for (let item of tmpList.data[0].Inventory.items) {
@@ -107,7 +107,7 @@ function fromRUB(value, currency) {
 function payMoney(profileData, body) {
     output = item.getOutput();
 
-    const sessionID = profileData.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    const sessionID = profileData.data[0].aid;
     const tmpTraderInfo = trader.get(body.tid, sessionID);
     const currencyTpl = getCurrency(tmpTraderInfo.data.currency);
     let profileItems = profileData.data[0].Inventory.items;
@@ -186,7 +186,7 @@ function findMoney(by, tmpList, barter_itemID) { // find required items to take 
 * output: none (output is sended to item.js, and profile is saved to file)
 * */
 function getMoney(tmpList, amount, body, output_temp) {
-    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    const sessionID = tmpList.data[0].aid;
     let tmpTraderInfo = trader.get(body.tid, sessionID);
     let currency = getCurrency();
     let value = inRUB(amount, currency);

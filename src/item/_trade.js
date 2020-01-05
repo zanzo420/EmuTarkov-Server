@@ -5,7 +5,7 @@ require('../libs.js');
 var output = "";
 
 function buyItem(tmpList, body, trad = "") {
-    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    const sessionID = tmpList.data[0].aid;
     let PlayerStash = itm_hf.getPlayerStash(sessionID);
     let stashY = PlayerStash[1];
     let stashX = PlayerStash[0];
@@ -183,7 +183,7 @@ function buyItem(tmpList, body, trad = "") {
 // Selling item to trader
 function sellItem(tmpList, body) {
     let money = 0;
-    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    const sessionID = tmpList.data[0].aid;
     let prices = JSON.parse(profile.getPurchasesData(sessionID));
 
     item.resetOutput();
@@ -249,7 +249,7 @@ function confirmRagfairTrading(tmpList, body) {
     { Action: 'RagFairBuyOffer',  offerId: '56d59d3ad2720bdb418b4577',  count: 1,  items: [ { id: '1566757577968610909', count: 42 } ] }
     */
 
-    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    const sessionID = tmpList.data[0].aid;
     item.resetOutput();
 
     let ragfairOffers = body.offers;

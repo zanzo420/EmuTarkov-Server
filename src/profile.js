@@ -299,7 +299,7 @@ function setCharacterData(data) {
         data = data.data[0];
     }
 
-    const sessionID = data.aid.replace(/[^0-9]/g, '') - 0;
+    const sessionID = data.aid;
     json.write(getProfilePath(sessionID), data);
 }
 
@@ -481,7 +481,7 @@ function find(data) {
 function addItemToStash(tmpList, body, trad = "") {
     item.resetOutput();
 
-    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    const sessionID = tmpList.data[0].aid;
     let PlayerStash = itm_hf.getPlayerStash(sessionID);
     let stashY = PlayerStash[1];
     let stashX = PlayerStash[0];

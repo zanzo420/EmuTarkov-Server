@@ -33,7 +33,7 @@ function wearClothing(tmpList, body) {
 
 function buyClothing(tmpList, body) {
     item.resetOutput();
-    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    const sessionID = tmpList.data[0].aid;
 
     let output = item.getOutput();
     let item_toPay = body.items;

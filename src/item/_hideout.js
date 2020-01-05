@@ -96,7 +96,7 @@ function HideoutPutItemsInAreaSlots(tmplist, body) {
 }
 
 function HideoutTakeItemsFromAreaSlots(tmplist, body) {
-	const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+	const sessionID = tmpList.data[0].aid;
     item.resetOutput();
 
     for (let area in tmplist.data[0].Hideout.Areas) {
@@ -205,7 +205,7 @@ function HideoutContinuousProductionStart(tmplist, body) {
 }
 
 function HideoutTakeProduction(tmplist, body) {
-	const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+	const sessionID = tmpList.data[0].aid;
     let found = false;
 
     for (let receipe in crafting_receipes.data) {
