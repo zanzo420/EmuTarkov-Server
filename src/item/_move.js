@@ -33,7 +33,7 @@ function moveItem(tmpList, body) {
                 }
             }
 
-            profile.setCharacterData(tmpList);
+            profilesDB.update(tmpList);
             return output;
         }
     }
@@ -68,7 +68,7 @@ function removeItem(tmpList, body, output = item.getOutput()) {
             }
         }
 
-        profile.setCharacterData(tmpList); //save tmplist to profile
+        profilesDB.update(tmpList); //save tmplist to profile
         return output;
     } else {
         console.log("item id is not vaild");
@@ -96,7 +96,7 @@ function removeInsurance(tmpList, body) {
             }
         }
 
-        profile.setCharacterData(tmpList); //save tmplist to profile
+        profilesDB.update(tmpList); //save tmplist to profile
     } else {
         console.log("item id is not vaild");
         //maybe return something because body.item id wasn't valid.
@@ -138,7 +138,7 @@ function splitItem(tmpList, body) { // -> Spliting item / Create new item with s
                 "location": location,
                 "upd": {"StackObjectsCount": body.count}
             });
-            profile.setCharacterData(tmpList);
+            profilesDB.update(tmpList);
             return output;
         }
     }
@@ -172,7 +172,7 @@ function mergeItem(tmpList, body) {
                         output.data.items.del.push({"_id": tmpList.data[0].Inventory.items[key2]._id});
                         tmpList.data[0].Inventory.items.splice(key2, 1);
 
-                        profile.setCharacterData(tmpList);
+                        profilesDB.update(tmpList);
                         return output;
                     }
                 }
@@ -213,7 +213,7 @@ function transferItem(tmpList, body) {
             item.upd.StackObjectsCount = stackItemWith + body.count;
         }
     }
-    profile.setCharacterData(tmpList);
+    profilesDB.update(tmpList);
     return output;
 }
 
@@ -235,7 +235,7 @@ function swapItem(tmpList, body) {
             delete item.location;
         }
     }
-    profile.setCharacterData(tmpList);
+    profilesDB.update(tmpList);
     return output;
 }
 
@@ -248,7 +248,7 @@ function addItem(tmpList, body) {
 	
 	
 	tmpList.data[0].Inventory.items.push(new_item);
-    profile.setCharacterData(tmpList);
+    profilesDB.update(tmpList);
     return output;
 }
 

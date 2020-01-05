@@ -46,7 +46,7 @@ function HideoutUpgrade(tmplist, body) {
         }
     }
 
-    profile.setCharacterData(tmplist);
+    profilesDB.update(tmplist);
     item.resetOutput();
     return item.getOutput();
 }
@@ -63,7 +63,7 @@ function HideoutUpgradeComplete(tmplist, body) {
         }
     }
 
-    profile.setCharacterData(tmplist);
+    profilesDB.update(tmplist);
     item.resetOutput();
     return item.getOutput();
 }
@@ -91,7 +91,7 @@ function HideoutPutItemsInAreaSlots(tmplist, body) {
         }
     }
 
-    profile.setCharacterData(tmplist);
+    profilesDB.update(tmplist);
     return item.getOutput();
 }
 
@@ -112,7 +112,7 @@ function HideoutTakeItemsFromAreaSlots(tmplist, body) {
             profile.addItemToStash(tmplist, newReq);
             tmplist = profile.getCharacterData(sessionID);
             tmplist.data[0].Hideout.Areas[area].slots.splice(0, 1);
-            profile.setCharacterData(tmplist);
+            profilesDB.update(tmplist);
         }
     }
 
@@ -126,7 +126,7 @@ function HideoutToggleArea(tmplist, body) {
         }
     }
 
-    profile.setCharacterData(tmplist);
+    profilesDB.update(tmplist);
     item.resetOutput();
     return item.getOutput();
 }
@@ -193,7 +193,7 @@ function HideoutScavCaseProductionStart(tmplist, body) {
         }
     }
 
-    profile.setCharacterData(tmplist);
+    profilesDB.update(tmplist);
     item.resetOutput();
     return item.getOutput();
 }
@@ -216,7 +216,7 @@ function HideoutTakeProduction(tmplist, body) {
             for (let prod in tmplist.data[0].Hideout.Production) {
                 if (tmplist.data[0].Hideout.Production[prod].RecipeId == body.recipeId) {
                     delete tmplist.data[0].Hideout.Production[prod]
-                    profile.setCharacterData(tmplist);
+                    profilesDB.update(tmplist);
                 }
             }
 
@@ -260,7 +260,7 @@ function HideoutTakeProduction(tmplist, body) {
                         }
 
                         delete tmplist.data[0].Hideout.Production[prod];
-                        profile.setCharacterData(tmplist);
+                        profilesDB.update(tmplist);
                         return allOutput;
                     }
                 }
@@ -284,7 +284,7 @@ function registerProduction(tmplist, body) {
         }
     }
 
-    profile.setCharacterData(tmplist);
+    profilesDB.update(tmplist);
 }
 
 module.exports.hideoutUpgrade = HideoutUpgrade;

@@ -26,7 +26,7 @@ function wearClothing(tmpList, body) {
         }
     }
 
-    profile.setCharacterData(tmpList);
+    profilesDB.update(tmpList);
     item.resetOutput();
     return item.getOutput();
 }
@@ -71,7 +71,7 @@ function buyClothing(tmpList, body) {
     }
 
     json.write(getCustomizationStoragePath(sessionID), customization_storage);
-    profile.setCharacterData(tmpList);
+    profilesDB.update(tmpList);
     return output;
 }
 

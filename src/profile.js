@@ -40,7 +40,7 @@ function setProfileWipe(profileId, state) {
     json.write(filepaths.user.profiles.list, profiles);
 }
 
-function getProfilePath(profileId = 0) {
+function getProfilePath(profileId = NaN) {
     console.debug(`profile.js getProfilePath(). profileID is ${profileId}`);
     let profilePath = filepaths.user.profiles.character;
 
@@ -108,7 +108,7 @@ function saveProfileProgress(offRaidData) {
     let offRaidExit = offRaidData.exit;
     let offRaidProfile = offRaidData.profile;
     const sessionID = offRaidProfile.aid.replace(/[^0-9]/g, '') - 0;
-    let tmpList = getCharacterData(sessionID);
+    let tmpList = profilesDB.get(sessionID);
 
     // replace data
     tmpList.data[0].Info.Level = offRaidProfile.Info.Level;
@@ -259,7 +259,7 @@ function saveProfileProgress(offRaidData) {
         }
     }
 
-    setCharacterData(tmpList);
+    profilesDB.update(tmpList);
 }
 
 function getCharacterData(sessionID = NaN) {
@@ -274,6 +274,10 @@ function getCharacterData(sessionID = NaN) {
         return ret;
     }
 
+    // return profileData from memory cache if we have it
+    const profileData = profilesDB.get(sessionID);
+    if (profileData) return profileData;
+
     // create full profile data from simplified character data
     let playerData = json.parse(json.read(getProfilePath(sessionID)));
     let scavData = bots.generatePlayerScav();
@@ -282,6 +286,9 @@ function getCharacterData(sessionID = NaN) {
     scavData.aid = sessionID;
     ret.data.push(playerData);
     ret.data.push(scavData);
+
+    // put profileData in to memory cache
+    profilesDB.update(ret);
     return ret;
 }
 
@@ -450,7 +457,7 @@ function nicknameExist(info) {
 }
 
 function changeNickname(info) {
-    let tmpList = getCharacterData(info.sid);
+    let tmpList = profilesDB.get(info.sid);
 
     // check if the nickname exists
     if (nicknameExist(info)) {
@@ -460,15 +467,15 @@ function changeNickname(info) {
     // change nickname
     tmpList.data[0].Info.Nickname = info.nickname;
     tmpList.data[0].Info.LowerNickname = info.nickname.toLowerCase();
-    setCharacterData(tmpList);
+    profilesDB.update(tmpList);
     return ('{"err":0, "errmsg":null, "data":{"status":0, "nicknamechangedate":' + Math.floor(new Date() / 1000) + "}}");
 }
 
 function changeVoice(info) {
-    let tmpList = getCharacterData(info.sid);
+    let tmpList = profilesDB.get(info.sid);
 
     tmpList.data[0].Info.Voice = info.voice;
-    setCharacterData(tmpList);
+    profilesDB.update(tmpList);
 }
 
 function find(data) {

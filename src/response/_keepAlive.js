@@ -77,7 +77,7 @@ function updatePlayerHideout(url, info) {
         }
     }
 
-    profile.setCharacterData(ply);
+    profilesDB.update(ply);
 }
 
 module.exports.main = main;

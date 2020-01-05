@@ -161,7 +161,7 @@ function getProfileData(url, info) {
         responseData.data[0].Info.Experience += sessionExp;
         responseData.data[0].Stats.TotalSessionExperience = 0;
 
-        profile.setCharacterData(responseData);
+        profilesDB.update(responseData);
 
         responseData.data[0].Info.Experience -= sessionExp;
     }

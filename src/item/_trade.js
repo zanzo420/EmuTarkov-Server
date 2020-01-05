@@ -170,7 +170,7 @@ function buyItem(tmpList, body, trad = "") {
                     }
 
                 // save after each added item
-                profile.setCharacterData(tmpList);
+                profilesDB.update(tmpList);
             }
 
             return output;

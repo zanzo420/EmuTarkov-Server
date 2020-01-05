@@ -13,7 +13,7 @@ function acceptQuest(tmpList, body) {
     // 2 - accepted |
     // 3 - failed |
     // 4 - completed
-    profile.setCharacterData(tmpList);
+    profilesDB.update(tmpList);
 
     item.resetOutput();
     return item.getOutput();
@@ -28,7 +28,7 @@ function completeQuest(tmpList, body) {
     for (let quest of tmpList.data[0].Quests) {
         if (quest.qid === body.qid) {
             quest.status = 4;
-            profile.setCharacterData(tmpList);
+            profilesDB.update(tmpList);
             tmpList = profile.getCharacterData(sessionID);
             break;
         }
@@ -52,7 +52,7 @@ function completeQuest(tmpList, body) {
 
                     case "Experience":
                         tmpList.data[0].Info.Experience += parseInt(reward.value);
-                        profile.setCharacterData(tmpList);
+                        profilesDB.update(tmpList);
                         tmpList = profile.getCharacterData(sessionID);// update it because it will be overrided otherwise
                         break;
 
@@ -103,7 +103,7 @@ function handoverQuest(tmpList, body) {
         };
     }
 
-    profile.setCharacterData(tmpList);
+    profilesDB.update(tmpList);
     return item.getOutput();
 }
 

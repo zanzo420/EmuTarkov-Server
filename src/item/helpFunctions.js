@@ -157,7 +157,7 @@ function payMoney(profileData, body) {
     output.data.currentSalesSums[body.tid] = saleSum;
 
     // save changes
-    profile.setCharacterData(profileData);
+    profilesDB.update(profileData);
     console.log("Items taken. Status OK.", "white", "green", true);
     item.setOutput(output);
     return true;
@@ -263,7 +263,7 @@ function getMoney(tmpList, amount, body, output_temp) {
 
     output_temp.data.currentSalesSums[body.tid] = saleSum;
 
-    profile.setCharacterData(tmpList);
+    profilesDB.update(tmpList);
     return output_temp;
 }
 

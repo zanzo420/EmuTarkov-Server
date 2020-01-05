@@ -62,7 +62,7 @@ function insure(tmpList, body) {
         }
     }
 
-    profile.setCharacterData(tmpList);
+    profilesDB.update(tmpList);
     return item.getOutput();
 }
 
