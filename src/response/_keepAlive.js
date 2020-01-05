@@ -39,8 +39,8 @@ function updateTraders(url, info) {
     }
 }
 
-function updatePlayerHideout(uriC) {
-    let ply = profile.getCharacterData();
+function updatePlayerHideout(url, info) {
+    let ply = profile.getCharacterData(info.sid);
 
     // update production time
     for (let prod in ply.data[0].Hideout.Production) {

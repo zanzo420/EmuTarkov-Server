@@ -3,23 +3,23 @@
 require('../libs.js');
 
 const mime = {
-	html: 'text/html',
-	txt: 'text/plain',
-	css: 'text/css',
-	gif: 'image/gif',
-	jpg: 'image/jpeg',
-	png: 'image/png',
-	svg: 'image/svg+xml',
-	js: 'application/javascript',
-	json: 'application/json'
+    html: 'text/html',
+    txt: 'text/plain',
+    css: 'text/css',
+    gif: 'image/gif',
+    jpg: 'image/jpeg',
+    png: 'image/png',
+    svg: 'image/svg+xml',
+    js: 'application/javascript',
+    json: 'application/json'
 };
 
-function sendZlibJson(resp, output) {
+function sendZlibJson(resp, output, sessionID = NaN) {
     resp.writeHead(200, "OK", {
-		'Content-Type': mime['json'], 
-		'content-encoding' : 'deflate', 
-		'Set-Cookie' : 'PHPSESSID=' + constants.getActiveID()
-	});
+        'Content-Type': mime['json'],
+        'content-encoding': 'deflate',
+        'Set-Cookie': 'PHPSESSID=' + sessionID
+    });
 
     zlib.deflate(output, function (err, buf) {
         resp.end(buf);
@@ -38,7 +38,7 @@ function sendHTML(resp, output) {
 
 function sendFile(resp, file) {
     let pathSlic = file.split("/");
-    let type = mime[pathSlic[pathSlic.length -1].split(".")[1]] || mime['txt'];
+    let type = mime[pathSlic[pathSlic.length - 1].split(".")[1]] || mime['txt'];
     let fileStream = fs.createReadStream(file);
 
     fileStream.on('open', function () {

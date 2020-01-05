@@ -5,7 +5,8 @@ require('../libs.js');
 var output = "";
 
 function buyItem(tmpList, body, trad = "") {
-    let PlayerStash = itm_hf.getPlayerStash();
+    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    let PlayerStash = itm_hf.getPlayerStash(sessionID);
     let stashY = PlayerStash[1];
     let stashX = PlayerStash[0];
     let tmpTrader = 0;
@@ -182,7 +183,8 @@ function buyItem(tmpList, body, trad = "") {
 // Selling item to trader
 function sellItem(tmpList, body) {
     let money = 0;
-    let prices = JSON.parse(profile.getPurchasesData());
+    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    let prices = JSON.parse(profile.getPurchasesData(sessionID));
 
     item.resetOutput();
     output = item.getOutput();

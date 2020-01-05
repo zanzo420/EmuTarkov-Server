@@ -321,7 +321,7 @@ function getCustomizationOffers(url, info) {
 }
 
 function getCustomizationStorage(url, info) {
-    return json.read(customization_f.getCustomizationStoragePath());
+    return json.read(customization_f.getCustomizationStoragePath(info.sid));
 }
 
 function getHideoutRecipes(url, info) {
@@ -341,7 +341,7 @@ function getScavcaseRecipes(url, info) {
 }
 
 function getHandbookUserlist(url, info) {
-    return json.read(weaponBuilds_f.getUserBuildsPath());
+    return json.read(weaponBuilds_f.getUserBuildsPath(info.sid));
 }
 
 function createNotifierChannel(url, info) {
@@ -421,7 +421,7 @@ function handleNotifierCustomLink(url, info) {
 }
 
 function getProfilePurchases(url, info) {
-    return profile.getPurchasesData();
+    return profile.getPurchasesData(info.sid);
 }
 
 function getTrader(url, info) {

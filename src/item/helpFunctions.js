@@ -17,7 +17,8 @@ function setInternalOutput(data) {
 * output: table[y][x]
 * */
 function recheckInventoryFreeSpace(tmpList) { // recalculate stach taken place
-    let PlayerStash = getPlayerStash();
+    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    let PlayerStash = getPlayerStash(sessionID);
     let Stash2D = Array(PlayerStash[1]).fill(0).map(x => Array(PlayerStash[0]).fill(0));
     for (let item of tmpList.data[0].Inventory.items) {
         // hideout  // added proper stash ID older was "5c71b934354682353958ea35"
@@ -222,7 +223,7 @@ function getMoney(tmpList, amount, body, output_temp) {
         let StashFS_2D = recheckInventoryFreeSpace(tmpList);
 
         // creating item
-        let stashSize = getPlayerStash();
+        let stashSize = getPlayerStash(sessionID);
 
         addedMoney:
             for (let My = 0; My <= stashSize[1]; My++) {
@@ -270,8 +271,8 @@ function getMoney(tmpList, amount, body, output_temp) {
 * input: null
 * output: [stashSizeWidth, stashSizeHeight]
 * */
-function getPlayerStash() { //this sets automaticly a stash size from items.json (its not added anywhere yet cause we still use base stash)
-    let stashTPL = profile.getStashType();
+function getPlayerStash(sessionId = NaN) { //this sets automaticly a stash size from items.json (its not added anywhere yet cause we still use base stash)
+    let stashTPL = profile.getStashType(sessionId);
     let stashX = (items.data[stashTPL]._props.Grids[0]._props.cellsH !== 0) ? items.data[stashTPL]._props.Grids[0]._props.cellsH : 10;
     let stashY = (items.data[stashTPL]._props.Grids[0]._props.cellsV !== 0) ? items.data[stashTPL]._props.Grids[0]._props.cellsV : 66;
     return [stashX, stashY];

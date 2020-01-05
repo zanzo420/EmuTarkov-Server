@@ -100,14 +100,15 @@ function sendResponse(req, resp, body) {
     if (req.url === "/" || req.url === "/inv") {
         header_f.sendHTML(resp, output);
     } else {
-        header_f.sendZlibJson(resp, output);
+        const sessionID = req_hf.getCookies(req)['PHPSESSID'] - 0;
+        header_f.sendZlibJson(resp, output, sessionID);
     }
 }
 
 function handleRequest(req, resp) {
     let IP = req.connection.remoteAddress.replace("::ffff:", "");
 
-    const sessionID = getCookies(req)['PHPSESSID'];
+    const sessionID = req_hf.getCookies(req)['PHPSESSID'] - 0;
     constants.setActiveID(sessionID);
 
     if (req.method === "POST") {
@@ -118,7 +119,7 @@ function handleRequest(req, resp) {
                 let jsonData = ((body !== null && body != "" && body != "{}") ? body.toString() : "{}");
 
                 // get the IP address of the client
-                console.log("[" + constants.getActiveID() + "][" + IP + "] " + req.url + " -> " + jsonData, "cyan");
+                console.log("[" + sessionID + "][" + IP + "] " + req.url + " -> " + jsonData, "cyan");
 
                 sendResponse(req, resp, jsonData);
             });
@@ -147,7 +148,7 @@ function handleRequest(req, resp) {
             });
         });
     } else {
-        console.log("[" + constants.getActiveID() + "][" + IP + "] " + req.url, "cyan");
+        console.log("[" + sessionID + "][" + IP + "] " + req.url, "cyan");
         sendResponse(req, resp, null);
     }
 }

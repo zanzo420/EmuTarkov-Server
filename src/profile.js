@@ -41,13 +41,10 @@ function setProfileWipe(profileId, state) {
 }
 
 function getProfilePath(profileId = 0) {
+    console.debug(`profile.js getProfilePath(). profileID is ${profileId}`);
     let profilePath = filepaths.user.profiles.character;
 
-    if (profileId > 0) {
-        return profilePath.replace("__REPLACEME__", profileId);
-    } else {
-        return profilePath.replace("__REPLACEME__", constants.getActiveID());
-    }
+    return profilePath.replace("__REPLACEME__", profileId);
 }
 
 function create(info) {
@@ -267,26 +264,29 @@ function saveProfileProgress(offRaidData) {
 
 function getCharacterData(sessionID = NaN) {
     console.debug(`profile.js getCharacterData(). sessionID is ${sessionID}`);
+    if (typeof sessionID === "number") {
+        sessionID = sessionID;
+    }
     let ret = {err: 0, errmsg: null, data: []};
 
     // creating profile for first time
-    if (isProfileWiped(sessionID || constants.getActiveID())) {
+    if (isProfileWiped(sessionID)) {
         return ret;
     }
 
     // create full profile data from simplified character data
-    let playerData = json.parse(json.read(getProfilePath(sessionID || constants.getActiveID())));
+    let playerData = json.parse(json.read(getProfilePath(sessionID)));
     let scavData = bots.generatePlayerScav();
 
     scavData._id = playerData.savage;
-    scavData.aid = sessionID || constants.getActiveID();
+    scavData.aid = sessionID;
     ret.data.push(playerData);
     ret.data.push(scavData);
     return ret;
 }
 
-function getStashType() {
-    let temp = json.parse(json.read(getProfilePath()));
+function getStashType(sessionID = NaN) {
+    let temp = json.parse(json.read(getProfilePath(sessionID)));
 
     for (let key in temp.Inventory.items) {
         if (temp.Inventory.items.hasOwnProperty(key) && temp.Inventory.items[key]._id === temp.Inventory.stash) {
@@ -303,8 +303,8 @@ function setCharacterData(data) {
         data = data.data[0];
     }
 
-    const userID = data.aid.replace(/[^0-9]/g, '') - 0;
-    json.write(getProfilePath(userID), data);
+    const sessionID = data.aid.replace(/[^0-9]/g, '') - 0;
+    json.write(getProfilePath(sessionID), data);
 }
 
 function addChildPrice(data, parentID, childPrice) {
@@ -322,9 +322,9 @@ function addChildPrice(data, parentID, childPrice) {
     return data;
 }
 
-function getPurchasesData() {
+function getPurchasesData(sessionID = NaN) {
     let multiplier = 0.9;
-    let data = json.parse(json.read(getProfilePath()));
+    let data = json.parse(json.read(getProfilePath(sessionID)));
 
     items = json.parse(json.read(filepaths.user.cache.items));
 
@@ -485,7 +485,8 @@ function find(data) {
 function addItemToStash(tmpList, body, trad = "") {
     item.resetOutput();
 
-    let PlayerStash = itm_hf.getPlayerStash();
+    const sessionID = tmpList.data[0].aid.replace(/[^0-9]/g, '') - 0;
+    let PlayerStash = itm_hf.getPlayerStash(sessionID);
     let stashY = PlayerStash[1];
     let stashX = PlayerStash[0];
     let output = item.getOutput();

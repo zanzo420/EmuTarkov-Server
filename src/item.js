@@ -64,8 +64,8 @@ function resetOutput() {
     );
 }
 
-function handleMoving(body) {
-    let tmpList = profile.getCharacterData();
+function handleMoving(body, sessionID = NaN) {
+    let tmpList = profile.getCharacterData(sessionID);
 
     if (typeof staticRoutes[body.Action] !== "undefined") {
         return staticRoutes[body.Action](tmpList, body);
@@ -79,7 +79,7 @@ function moving(info) {
 
     // handle all items
     for (let i = 0; i < info.data.length; i++) {
-        output = handleMoving(info.data[i]);
+        output = handleMoving(info.data[i], info.sid);
     }
 
     // return items
