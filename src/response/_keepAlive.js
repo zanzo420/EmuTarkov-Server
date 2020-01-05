@@ -40,7 +40,7 @@ function updateTraders(url, info) {
 }
 
 function updatePlayerHideout(url, info) {
-    let ply = profile.getCharacterData(info.sid);
+    let ply = profilesDB.get(info.sid);
 
     // update production time
     for (let prod in ply.data[0].Hideout.Production) {

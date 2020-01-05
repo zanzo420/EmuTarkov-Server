@@ -105,9 +105,9 @@ function create(info) {
 }
 
 function saveProfileProgress(offRaidData) {
+    const sessionID = offRaidData.profile.aid.replace(/[^0-9]/g, '') - 0;
     let offRaidExit = offRaidData.exit;
     let offRaidProfile = offRaidData.profile;
-    const sessionID = offRaidProfile.aid.replace(/[^0-9]/g, '') - 0;
     let tmpList = profilesDB.get(sessionID);
 
     // replace data
@@ -270,10 +270,6 @@ function getCharacterData(sessionID = NaN) {
         return ret;
     }
 
-    // return profileData from memory cache if we have it
-    const profileData = profilesDB.get(sessionID);
-    if (profileData) return profileData;
-
     // create full profile data from simplified character data
     let playerData = json.parse(json.read(getProfilePath(sessionID)));
     let scavData = bots.generatePlayerScav();
@@ -283,8 +279,6 @@ function getCharacterData(sessionID = NaN) {
     ret.data.push(playerData);
     ret.data.push(scavData);
 
-    // put profileData in to memory cache
-    profilesDB.update(ret);
     return ret;
 }
 

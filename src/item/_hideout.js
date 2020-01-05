@@ -110,7 +110,7 @@ function HideoutTakeItemsFromAreaSlots(tmplist, body) {
             newReq.item_id = tmplist.data[0].Hideout.Areas[area].slots[0].item[0]._tpl;
             newReq.count = 1;
             profile.addItemToStash(tmplist, newReq);
-            tmplist = profile.getCharacterData(sessionID);
+            tmplist = profilesDB.get(sessionID);
             tmplist.data[0].Hideout.Areas[area].slots.splice(0, 1);
             profilesDB.update(tmplist);
         }
@@ -247,7 +247,7 @@ function HideoutTakeProduction(tmplist, body) {
                         for (let itemProd of tmplist.data[0].Hideout.Production[prod].Products) {
                             let newReq = {};
 
-                            tmplist = profile.getCharacterData(sessionID);
+                            tmplist = profilesDB.get(sessionID);
                             newReq.item_id = itemProd._tpl;
                             newReq.count = 1;
 

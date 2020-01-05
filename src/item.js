@@ -65,7 +65,7 @@ function resetOutput() {
 }
 
 function handleMoving(body, sessionID = NaN) {
-    let tmpList = profile.getCharacterData(sessionID);
+    let tmpList = profilesDB.get(sessionID);
 
     if (typeof staticRoutes[body.Action] !== "undefined") {
         return staticRoutes[body.Action](tmpList, body);

@@ -96,7 +96,7 @@ function showIndex(url, info) {
 
 function showInventoryChecker(url, info) {
     let output = "";
-    let inv = itm_hf.recheckInventoryFreeSpace(profile.getCharacterData(info.sid));
+    let inv = itm_hf.recheckInventoryFreeSpace(profilesDB.get(info.sid));
 
     output += "<style>td{border:1px solid #aaa;}</style>Inventory Stash Usage:<br><table><tr><td>-</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9<br>";
 
@@ -153,20 +153,20 @@ function getGlobals(url, info) {
 }
 
 function getProfileData(url, info) {
-    const responseData = profile.getCharacterData(info.sid);
+    const profileData = profilesDB.get(info.sid);
 
     // If we have experience gained after the raid, we save it
-    if (responseData.data.length > 0 && responseData.data[0].Stats.TotalSessionExperience > 0) {
-        const sessionExp = responseData.data[0].Stats.TotalSessionExperience;
-        responseData.data[0].Info.Experience += sessionExp;
-        responseData.data[0].Stats.TotalSessionExperience = 0;
+    if (profileData.data.length > 0 && profileData.data[0].Stats.TotalSessionExperience > 0) {
+        const sessionExp = profileData.data[0].Stats.TotalSessionExperience;
+        profileData.data[0].Info.Experience += sessionExp;
+        profileData.data[0].Stats.TotalSessionExperience = 0;
 
-        profilesDB.update(responseData);
+        profilesDB.update(profileData);
 
-        responseData.data[0].Info.Experience -= sessionExp;
+        profileData.data[0].Info.Experience -= sessionExp;
     }
 
-    return JSON.stringify(responseData);
+    return JSON.stringify(profileData);
 }
 
 function selectProfile(url, info) {

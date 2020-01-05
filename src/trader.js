@@ -67,7 +67,7 @@ function setTrader(data, sessionID = NaN) {
 }
 
 function lvlUp(id, sessionID = NaN) {
-    let currentProfile = profile.getCharacterData(sessionID);
+    let currentProfile = profilesDB.get(sessionID);
     let currentTrader = get(id, sessionID);
     let loyaltyLevels = currentTrader.data.loyalty.loyaltyLevels;
 
