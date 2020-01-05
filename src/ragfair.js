@@ -5,34 +5,32 @@ require('./libs.js');
 function getOffers(request) {
     let response = json.parse(json.read(filepaths.ragfair.search));
 
-    if (Object.entries(request.buildItems).length != 0) {
-        createOfferFromBuild(request.buildItems,response);
-    } else if (request.templatesId !== "" && request.linkedSearchId !== "") {
+    if (Object.entries(request.buildItems).length !== 0) {
+        createOfferFromBuild(request.buildItems, response);
+    } else if (request.handbookId !== "" && request.linkedSearchId !== "") {
         //list specific category from a linked search
-        let linkedSearch = getLinkedSearchList(request.linkedSearchId,response );
-        let categorySearch = getCategoryList(request.templatesId);
+        let linkedSearch = getLinkedSearchList(request.linkedSearchId, response);
+        let categorySearch = getCategoryList(request.handbookId);
 
         for (let p1 in categorySearch) {
             for (let search in linkedSearch) {
-                if (p1 == search) {
+                if (p1 === search) {
                     response.data.offers.push(createOffer(search, linkedSearch[search]));
                 }
             }   
         }
     } else if (request.linkedSearchId !== "") {
-        let offers = getLinkedSearchList(request.linkedSearchId,response);
+        let offers = getLinkedSearchList(request.linkedSearchId, response);
 
         for (let price in offers) {
             response.data.offers.push(createOffer(price, offers[price]));
         }
-        
-    } else if (request.templatesId !== "") {
-        let offers = getCategoryList(request.templatesId);
+    } else if (request.handbookId !== "") {
+        let offers = getCategoryList(request.handbookId);
 
         for (let price in offers) {
             response.data.offers.push(createOffer(price , offers[price]));
         }
-        
     }
 
     return JSON.stringify(response);
@@ -73,16 +71,16 @@ function getLinkedSearchList(linkedSearchId, response) {
     return tableOfItems;
 }
 
-function getCategoryList(templatesId) {
+function getCategoryList(handbookId) {
     let tableOfItems = {};
     let isCateg = false;
 
     // if its "mods" great-parent category, do double recursive loop
-    if (templatesId == "5b5f71a686f77447ed5636ab") {
+    if (handbookId === "5b5f71a686f77447ed5636ab") {
         for (let categ2 of templates.data.Categories) {
             if (categ2.ParentId === "5b5f71a686f77447ed5636ab") {
                 for (let categ3 of templates.data.Categories) {
-                    if (categ3.ParentId == categ2.Id) {
+                    if (categ3.ParentId === categ2.Id) {
                         for (let item of templates.data.Items) {
                             if (item.ParentId === categ3.Id) {
                                 tableOfItems[item.Id] = item.Price;
@@ -95,7 +93,7 @@ function getCategoryList(templatesId) {
     } else {
         for (let categ of templates.data.Categories) {
             // find the category in the templates
-            if (categ.Id === templatesId) {
+            if (categ.Id === handbookId) {
                 isCateg = true;
 
                 // list all item of the category
@@ -121,9 +119,9 @@ function getCategoryList(templatesId) {
         // its a specific item searched then
         if (isCateg === false) {
             for (let curItem in items.data) {
-                if (curItem === templatesId) {
+                if (curItem === handbookId) {
                     for (let someitem of templates.data.Items) {
-                        if (someitem.Id === templatesId) {
+                        if (someitem.Id === handbookId) {
                             tableOfItems[curItem] = someitem.Price;
                         }
                     }
@@ -137,8 +135,8 @@ function getCategoryList(templatesId) {
     return tableOfItems;
 }
 
-function createOfferFromBuild(buildItems,response) {
-    for (var itemFromBuild in buildItems) {
+function createOfferFromBuild(buildItems, response) {
+    for (let itemFromBuild in buildItems) {
         for (let curItem in items.data) {
             if (curItem === itemFromBuild) {
                 for (let someitem of templates.data.Items) {
