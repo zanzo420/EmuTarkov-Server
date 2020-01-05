@@ -215,14 +215,11 @@ function saveProfileProgress(offRaidData) {
         for (let item of tmpList.data[0].Inventory.items) {
             if (item.parentId === tmpList.data[0].Inventory.equipment) {
                 // store it and delete later because i dont know its not working otherwiswe
-                if (item.slotId !== "Pockets" || item.slotId !== "SecuredContainer" || item.slotId !== "Scabbard") {
-                    items_to_delete.push(item._id);
+                if (item.slotId === "Pockets" || item.slotId === "SecuredContainer" || item.slotId === "Scabbard") {
+                    continue;
                 }
 
-                // we need pocket id for later, its working differently
-                if (item.slotId === "Pockets") {
-                    pocketid = item._id;
-                }
+                items_to_delete.push(item._id);
             }
         }
 
