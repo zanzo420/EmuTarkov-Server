@@ -18,6 +18,9 @@ class ProfilesDB {
 
     // used for get profile data from memory cache by sessionID
     get(sessionID = NaN) {
+        if (typeof sessionID === "string")
+            sessionID = sessionID.replace(/[^0-9]/g, '') - 0;
+
         let profileData = this.profiles[sessionID];
         if (profileData === undefined) {
             profileData = profile.getCharacterData(sessionID);
@@ -29,7 +32,8 @@ class ProfilesDB {
 
     // used for put or update profile data in memory cache
     update(profileData) {
-        const id = profileData.data[0].aid;
+        const id = profileData.data[0].aid.replace(/[^0-9]/g, '') - 0;
+        
         this.profiles[id] = profileData;
         this.needUpdate = true;
     }

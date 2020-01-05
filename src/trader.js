@@ -4,6 +4,10 @@ require('./libs.js');
 
 function getPath(id, sessionID = NaN) {
     let traderPath = filepaths.user.profiles.traders[id];
+
+    if (typeof sessionID === "string")
+        sessionID = sessionID.replace(/[^0-9]/g, '') - 0;
+    
     return traderPath.replace("__REPLACEME__", sessionID);
 }
 
