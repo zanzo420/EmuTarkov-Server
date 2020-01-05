@@ -154,19 +154,19 @@ function getGlobals(url, info) {
 
 function getProfileData(url, info) {
     const profileData = profilesDB.get(info.sid);
+    let response = null;
 
     // If we have experience gained after the raid, we save it
-    if (profileData.data.length > 0 && profileData.data[0].Stats.TotalSessionExperience > 0) {
+    if (profileData.data[0].Stats.TotalSessionExperience > 0) {
         const sessionExp = profileData.data[0].Stats.TotalSessionExperience;
-        profileData.data[0].Info.Experience += sessionExp;
         profileData.data[0].Stats.TotalSessionExperience = 0;
+        response = JSON.stringify(profileData);
 
+        profileData.data[0].Info.Experience += sessionExp;
         profilesDB.update(profileData);
-
-        profileData.data[0].Info.Experience -= sessionExp;
     }
 
-    return JSON.stringify(profileData);
+    return response || JSON.stringify(profileData);
 }
 
 function selectProfile(url, info) {
