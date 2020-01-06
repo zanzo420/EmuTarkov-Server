@@ -122,16 +122,19 @@ function payMoney(profileData, body) {
     let profileItems = profileData.data[0].Inventory.items;
 
     // delete barter things(not a money) from inventory
-    body.scheme_items.forEach((schemeItem, index) => {
-        let item = profileItems.find(inventoryItem => schemeItem.id === inventoryItem._id);
+    if (body.Action === 'TradingConfirm') {
+        body.scheme_items.forEach((schemeItem, index) => {
+            let item = profileItems.find(inventoryItem => schemeItem.id === inventoryItem._id);
 
-        if (item !== undefined && !isMoneyTpl(item._tpl)) {
-            profileItems = profileItems.filter(inventoryItem => item._id !== inventoryItem._id);
+            if (item !== undefined && !isMoneyTpl(item._tpl)) {
+                console.debug(`delete barter things. Item ID: ${item._id}`);
+                profileItems = profileItems.filter(inventoryItem => item._id !== inventoryItem._id);
 
-            output.data.items.del.push({"_id": item._id});
-            body.scheme_items[index].count = 0;
-        }
-    });
+                output.data.items.del.push({"_id": item._id});
+                body.scheme_items[index].count = 0;
+            }
+        });
+    }
 
     // find all items with currency _tpl id
     const moneyItems = itm_hf.findMoney("tpl", profileData, currencyTpl);
@@ -180,6 +183,7 @@ function payMoney(profileData, body) {
     // save changes
     profilesDB.update(profileData);
     console.log("Items taken. Status OK.", "white", "green", true);
+    console.debug(`Items taken. Output: ${JSON.stringify(output)}`);
     item.setOutput(output);
     return true;
 }
