@@ -87,7 +87,7 @@ function create(info) {
     // create profile
     json.write(accountFolder + "character.json", character);
     json.write(accountFolder + "storage.json", storage);
-    json.write(accountFolder + "userBuilds.json", userbuilds);
+    json.write(accountFolder + "userbuilds.json", userbuilds);
 
     // create traders
     let inputFiles = filepaths.traders;
