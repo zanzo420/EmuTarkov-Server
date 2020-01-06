@@ -70,6 +70,15 @@ function getCurrency(currency) {
     }
 }
 
+/*
+* Check that tpl is money
+*/
+function isMoneyTpl(tpl) {
+    const moneysTplArray = ['569668774bdc2da2298b4568', '5696686a4bdc2da3298b456a', '5449016a4bdc2d6f028b456f'];
+
+    return moneysTplArray.findIndex(moneyTlp => moneyTlp === tpl) > -1;
+}
+
 /* Gets Currency to Ruble conversion Value
 * input:  value, currency tpl
 * output: value after conversion
@@ -111,6 +120,18 @@ function payMoney(profileData, body) {
     const tmpTraderInfo = trader.get(body.tid, sessionID);
     const currencyTpl = getCurrency(tmpTraderInfo.data.currency);
     let profileItems = profileData.data[0].Inventory.items;
+
+    // delete barter things(not a money) from inventory
+    body.scheme_items.forEach((schemeItem, index) => {
+        let item = profileItems.find(inventoryItem => schemeItem.id === inventoryItem._id);
+
+        if (item !== undefined && !isMoneyTpl(item._tpl)) {
+            profileItems = profileItems.filter(inventoryItem => item._id !== inventoryItem._id);
+
+            output.data.items.del.push({"_id": item._id});
+            body.scheme_items[index].count = 0;
+        }
+    });
 
     // find all items with currency _tpl id
     const moneyItems = itm_hf.findMoney("tpl", profileData, currencyTpl);

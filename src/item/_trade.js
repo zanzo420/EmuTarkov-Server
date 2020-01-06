@@ -21,6 +21,7 @@ function buyItem(tmpList, body, trad = "") {
         tmpTrader = json.parse(json.read(filepaths.user.cache.assort_everything));
     }
 
+    console.debug(`buyItem(). body: ${JSON.stringify(body)}`);
     // pay the item	to profile
     if (!itm_hf.payMoney(tmpList, body)) {
         console.log("no money found");
@@ -250,10 +251,11 @@ function confirmRagfairTrading(tmpList, body) {
     */
 
     const sessionID = tmpList.data[0].aid;
+    console.debug(`confirmRagfairTrading() sessionID: ${sessionID}`);
     item.resetOutput();
 
     let ragfairOffers = body.offers;
-    let allOutput = item.getOutput()
+    let allOutput = item.getOutput();
 
     for (let oneOffer of ragfairOffers) {
         tmpList = profilesDB.get(sessionID);
