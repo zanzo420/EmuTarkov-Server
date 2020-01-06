@@ -24,7 +24,8 @@ class ProfilesDB {
         let profileData = this.profiles[sessionID];
         if (profileData === undefined) {
             profileData = profile.getCharacterData(sessionID);
-            this.update(profileData);
+
+            if (profileData.data.length > 0) this.update(profileData);
         }
 
         return profileData;
@@ -32,11 +33,9 @@ class ProfilesDB {
 
     // used for put or update profile data in memory cache
     update(profileData) {
-        let id;
-        if (typeof profileData.data[0].aid === "string") {
-            id = profileData.data[0].aid.replace(/[^0-9]/g, '') - 0;
-        } else {
-            id = profileData.data[0].aid;
+        let id = profileData.data[0].aid;
+        if (typeof id === "string") {
+            id = id.replace(/[^0-9]/g, '') - 0;
         }
 
         this.profiles[id] = profileData;
