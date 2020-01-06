@@ -126,36 +126,21 @@ function saveProfileProgress(offRaidData) {
     }
 
     // mark items found in raid
-    for (let offRaidItem in offRaidProfile.Inventory.items) {
-        let found = false;
-
+    offRaidProfile.Inventory.items.forEach((offReidItem, index) => {
         // check if item exists already
-        for (let item of tmpList.data[0].Inventory.items) {
-            if (offRaidProfile.Inventory.items[offRaidItem]._id === item._id) {
-                found = true;
-            }
-        }
+        let exists = tmpList.data[0].Inventory.items.findIndex(item => {
+            return item._id === offReidItem._id;
+        });
+        if (exists > -1) return;
 
-        if (found) {
-            continue;
-        }
+        if (!offReidItem.hasOwnProperty("upd"))
+            offReidItem.upd = {};
 
-        // mark item found in raid when unfound
-        let currentItem = offRaidProfile.Inventory.items[offRaidItem];
+        if (!offReidItem.upd.hasOwnProperty("SpawnedInSession"))
+            offReidItem.upd.SpawnedInSession = true;
 
-        if (currentItem.hasOwnProperty("upd")) {
-            // property already exists, so we can skip it
-            if (currentItem.upd.hasOwnProperty("SpawnedInSession")) {
-                continue;
-            }
-
-            currentItem.upd["SpawnedInSession"] = true;
-        } else {
-            currentItem["upd"] = {"SpawnedInSession": true};
-        }
-
-        offRaidProfile.Inventory.items[offRaidItem] = currentItem;
-    }
+        offRaidProfile.Inventory.items[index] = offReidItem;
+    });
 
     // replace bsg shit long ID with proper one
     let string_inventory = JSON.stringify(offRaidProfile.Inventory.items);
