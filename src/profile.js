@@ -128,9 +128,7 @@ function saveProfileProgress(offRaidData) {
     // mark items found in raid
     offRaidProfile.Inventory.items.forEach((offReidItem, index) => {
         // check if item exists already
-        let exists = tmpList.data[0].Inventory.items.findIndex(item => {
-            return item._id === offReidItem._id;
-        });
+        let exists = tmpList.data[0].Inventory.items.findIndex(item => item._id === offReidItem._id);
         if (exists > -1) return;
 
         if (!offReidItem.hasOwnProperty("upd"))
