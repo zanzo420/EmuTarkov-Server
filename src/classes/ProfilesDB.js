@@ -46,7 +46,6 @@ class ProfilesDB {
     // executed every given period, specified in the class constructor
     run() {
         if (!this.needUpdate) return void 0;
-        console.info("ProfilesDB.run(), we have a new data for update");
 
         this.needUpdate = false;
 
