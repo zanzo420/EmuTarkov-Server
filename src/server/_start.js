@@ -107,9 +107,7 @@ function sendResponse(req, resp, body) {
 
 function handleRequest(req, resp) {
     let IP = req.connection.remoteAddress.replace("::ffff:", "");
-
     const sessionID = req_hf.getCookies(req)['PHPSESSID'] - 0;
-    constants.setActiveID(sessionID);
 
     if (req.method === "POST") {
         // received data
@@ -130,7 +128,6 @@ function handleRequest(req, resp) {
             if (req.headers.hasOwnProperty("expect")) {
                 const requestLength = req.headers["content-length"] - 0;
                 const sessionID = req.headers.sessionid - 0;
-                constants.setActiveID(sessionID);
 
                 if (!constants.putInBuffer(sessionID, data, requestLength)) {
                     resp.writeContinue();

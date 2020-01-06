@@ -371,7 +371,6 @@ function offlineRaidSave(url, info) {
         return "DONE";
     }
 
-    constants.setActiveID(info.profile.aid);
     profile.saveProfileProgress(info);
     return "DONE";
 }

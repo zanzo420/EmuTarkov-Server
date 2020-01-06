@@ -452,7 +452,6 @@ function find(data) {
     let info = json.parse(text);
     let profileId = exist(info);
 
-    constants.setActiveID(profileId);
     return JSON.stringify({profileId: profileId});
 }
 
