@@ -133,6 +133,13 @@ function saveProfileProgress(offRaidData) {
         });
         if (exists > -1) return;
 
+        // for debug
+        if (offReidItem.hasOwnProperty("upd") && offReidItem.upd.hasOwnProperty("SpawnedInSession")) {
+            console.debug(`offReidItem: ${offReidItem._id}, SpawnedInSession: ${offReidItem.upd.SpawnedInSession}`);
+        } else {
+            console.debug(`offReidItem: ${offReidItem._id}, SpawnedInSession: false`);
+        }
+
         if (!offReidItem.hasOwnProperty("upd"))
             offReidItem.upd = {};
 
