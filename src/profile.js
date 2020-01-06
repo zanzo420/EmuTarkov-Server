@@ -45,9 +45,7 @@ function getProfilePath(sessionID = NaN) {
     if (typeof sessionID === "string")
         sessionID = sessionID.replace(/[^0-9]/g, '') - 0;
 
-    console.debug(`profile.js getProfilePath(). sessionID is ${sessionID}`);
     let profilePath = filepaths.user.profiles.character;
-
     return profilePath.replace("__REPLACEME__", sessionID);
 }
 
