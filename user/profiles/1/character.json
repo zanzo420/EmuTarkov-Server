@@ -6,7 +6,7 @@
 		"Nickname": "Senko-san",
 		"LowerNickname": "senko-san",
 		"Side": "Bear",
-		"Voice": "Usec_1",
+		"Voice": "Bear_2",
 		"Level": 70,
 		"Experience": 13131571,
 		"RegistrationDate": 1576516011,
@@ -4305,7 +4305,7 @@
 	"Hideout": {
 		"Production": {
 			"20": {
-				"Progress": 1206191,
+				"Progress": 1206560,
 				"inProgress": true,
 				"RecipeId": "5d5c205bd582a50d042a3c0e",
 				"Products": [],
