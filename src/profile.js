@@ -9,6 +9,9 @@ function getProfiles() {
 function findProfile(profileId) {
     let profiles = getProfiles();
 
+    if (typeof profileId === "string")
+        profileId = profileId.replace(/[^0-9]/g, '') - 0;
+
     for (let profile of profiles) {
         if (profile.id === profileId) {
             return profile;
@@ -22,7 +25,7 @@ function findProfile(profileId) {
 function isProfileWiped(sessionID = NaN) {
     let profile = findProfile(sessionID);
 
-    if (profile !== typeof "undefined") {
+    if (profile !== undefined) {
         return profile.wipe;
     }
 
