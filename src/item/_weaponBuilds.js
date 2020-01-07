@@ -4,6 +4,10 @@ require('../libs.js');
 
 function getUserBuildsPath(sessionID = NaN) {
     let filepath = filepaths.user.profiles.userbuilds;
+
+    if (typeof sessionID === "string")
+        sessionID = sessionID.replace(/[^0-9]/g, '') - 0;
+
     return filepath.replace("__REPLACEME__", sessionID);
 }
 
@@ -64,7 +68,7 @@ function SaveBuild(tmpList, body) {
 }
 
 function RemoveBuild(tmpList, body) {
-	const sessionID = tmpList.data[0].aid;
+    const sessionID = tmpList.data[0].aid;
     let savedBuilds = json.parse(json.read(getUserBuildsPath(sessionID)));
 
     for (let wBuild of savedBuilds.data) {
