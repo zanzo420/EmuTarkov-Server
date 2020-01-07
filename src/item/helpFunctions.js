@@ -134,9 +134,8 @@ function payMoney(profileData, body) {
                 output.data.items.del.push({"_id": item._id});
                 body.scheme_items[x].count = 0;
             }
-            else
-            {
-                // otherwise, it's probably just money so we can safely just grab the barter item tpl
+            else if (isMoneyTpl(item._tpl)){
+                // grab the barter item tpl when it is money barter
                 currencyTpl = item._tpl;
                 break;
             }
