@@ -123,23 +123,22 @@ function payMoney(profileData, body) {
 
     // delete barter things(not a money) from inventory
     if (body.Action === 'TradingConfirm') {
-        for(let x = 0; x < body.scheme_items.length; x++)
-        {
-            let item = profileItems.find(inventoryItem => body.scheme_items[x].id === inventoryItem._id);
+        body.scheme_items.forEach((schemeItem, index) => {
+            let item = profileItems.find(inventoryItem => schemeItem.id === inventoryItem._id);
 
-            if (item !== undefined && !isMoneyTpl(item._tpl)) {
-                console.debug(`delete barter things. Item ID: ${item._id}`);
-                profileItems = profileItems.filter(inventoryItem => item._id !== inventoryItem._id);
+            if (item !== undefined) {
+                if (!isMoneyTpl(item._tpl)) {
+                    console.debug(`delete barter things. Item ID: ${item._id}`);
+                    profileItems = profileItems.filter(inventoryItem => item._id !== inventoryItem._id);
 
-                output.data.items.del.push({"_id": item._id});
-                body.scheme_items[x].count = 0;
+                    output.data.items.del.push({"_id": item._id});
+                    body.scheme_items[index].count = 0;
+                } else {
+                    // grab the barter item tpl when it is money barter
+                    currencyTpl = item._tpl;
+                }
             }
-            else if (isMoneyTpl(item._tpl)){
-                // grab the barter item tpl when it is money barter
-                currencyTpl = item._tpl;
-                break;
-            }
-        }
+        });
     }
 
     // find all items with currency _tpl id
