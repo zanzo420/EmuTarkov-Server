@@ -92,6 +92,8 @@ module.exports = function (isFirstLaunch = "no", time = 0) {
     global.response = require('./response.js');						// response
 
     global.profilesDB = require('./classes/ProfilesDB.js').profilesDB; // in-memory profile database
+    global.invGen = require('./classes/bots/InventoryGenerator').inventoryGen;
+    global.weaponGen = require('./classes/bots/WeaponGenerator').weapGenerator;
 
     if (isFirstLaunch == "first") {
         printf("Finished loading game server functions... [%dms]", new Date() - StartingTimeTemporalVariable);

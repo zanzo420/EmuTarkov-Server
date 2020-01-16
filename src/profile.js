@@ -110,6 +110,7 @@ function create(info) {
 }
 
 function saveProfileProgress(offRaidData) {
+    if (offRaidData.hasOwnProperty('type')) return;
     const sessionID = offRaidData.profile.aid;
     let offRaidExit = offRaidData.exit;
     let offRaidProfile = offRaidData.profile;
