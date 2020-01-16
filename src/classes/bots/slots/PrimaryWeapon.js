@@ -56,6 +56,7 @@ module.exports = class PrimaryWeapon {
 
             // get randomly mod id
             let randomModID = slotFilters[Math.floor(Math.random() * slotFilters.length)];
+            if (this.isItemIDInBlackList(randomModID)) return;
 
             // check all installed mods on conflicting with that randomModID
             if (this.isConflicting(randomModID)) {
@@ -140,5 +141,11 @@ module.exports = class PrimaryWeapon {
 
         console.error(`PrimaryWeapon.resolveConflicting(). weapon assembling stopped. Houston, we have a problem, modID is conflicting with other items!!!!!!!!!`);
         return null;
+    }
+
+    isItemIDInBlackList(itemID) {
+        // launcher_ak74_izhmash_gp34
+        const blackList = ['5648b62b4bdc2d9d488b4585'];
+        return blackList.includes(itemID);
     }
 };

@@ -133,7 +133,7 @@ class InventoryGenerator {
 
         result.push(...this.weaponGenerator.generateGrenadesForPockets(result[0]._id, this.pocketsItem, 3));
 
-        const medAmount = Math.floor(Math.random() * (5 - result.length)) + 1;
+        const medAmount = Math.floor(Math.random() * (5 - result.length)) - 1;
         const meds = this.medItems.filter(item => item._props.Width === 1 && item._props.Height === 1);
 
         for (let i = 0; i < medAmount; i++) {

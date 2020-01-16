@@ -5,6 +5,7 @@ const crypto = require('crypto');
 
 module.exports = class HeadWear {
     constructor() {
+        this.conflictingIDs = [];
     }
 
     generate(parentID, slot) {
@@ -24,7 +25,7 @@ module.exports = class HeadWear {
         return result;
     }
 
-    generateItemsForSlots(parentID, {Slots}, conflictingItemIDs = []) {
+    generateItemsForSlots(parentID, {Slots}) {
         const result = [];
 
         Slots.forEach(slot => {
@@ -34,11 +35,11 @@ module.exports = class HeadWear {
                 let slotFilters = slot._props.filters[0].Filter;
                 let randomItemID = slotFilters[Math.floor(Math.random() * slotFilters.length)];
 
-                if (conflictingItemIDs.includes(randomItemID)) return;
+                if (!randomItemID || this.isConflicting(result, randomItemID)) return;
 
                 let randomItem = global.items.data[randomItemID];
                 if (!randomItem) return;
-                
+
                 let generatedItem = {
                     "_id": crypto.randomBytes(12).toString('hex'),
                     "_tpl": randomItem._id,
@@ -46,12 +47,27 @@ module.exports = class HeadWear {
                     "slotId": slot._name
                 };
                 result.push(generatedItem);
-                conflictingItemIDs.push(randomItem._props.ConflictingItems);
+                this.conflictingIDs.push(randomItem._props.ConflictingItems);
 
-                result.push(...this.generateItemsForSlots(generatedItem._id, randomItem._props, conflictingItemIDs));
+                result.push(...this.generateItemsForSlots(generatedItem._id, randomItem._props));
             }
         });
 
         return result;
+    }
+
+    isConflicting(allItems, itemID) {
+        if (this.conflictingIDs.includes(itemID)) return true;
+
+        let item = global.items.data[itemID];
+        console.debug(itemID);
+
+        for (let itemConflictID of item._props.ConflictingItems) {
+            let conflictingItem = allItems.find(slot => slot._tpl === itemConflictID);
+            if (conflictingItem) {
+                return true;
+            }
+        }
+        return false;
     }
 };
