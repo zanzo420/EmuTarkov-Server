@@ -120,9 +120,13 @@ function generateBot(botBase, role) {
     botBase.Customization.Body = json.parse(json.read(getRandomValue(botNode.appearance.body)));
     botBase.Customization.Feet = json.parse(json.read(getRandomValue(botNode.appearance.feet)));
     botBase.Customization.Hands = json.parse(json.read(getRandomValue(botNode.appearance.hands)));
-    botBase.Inventory = json.parse(json.read(getRandomValue(botNode.inventory)));
+    const isBoss = role.startsWith('boss');
 
-    botBase.Inventory = global.invGen.generate(botBase);
+    if (isBoss) {
+        botBase.Inventory = json.parse(json.read(getRandomValue(botNode.inventory)));
+    } else {
+        botBase.Inventory = global.invGen.generate(botBase);
+    }
 
     // 35% to add add dogtag to scavs, 100% for PMC's
     let dogtagChance = utility.getRandomInt(0, 99);
