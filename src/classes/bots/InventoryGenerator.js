@@ -34,8 +34,6 @@ class InventoryGenerator {
         this.backPackItems = this.itemsValues.filter(item => item._parent === backNode._id);
 
         this.lootNodes = this.itemsValues.filter(item => item._parent === '54009119af1c881c07000029');
-
-        this.grenadeItems = this.itemsValues.filter(item => item._parent === '543be6564bdc2df4348b4568');
     }
 
     generate(botBase = {Info: {Settings: {Role: 'assault'}}}) {

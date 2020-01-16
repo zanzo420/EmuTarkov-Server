@@ -60,7 +60,6 @@ module.exports = class HeadWear {
         if (this.conflictingIDs.includes(itemID)) return true;
 
         let item = global.items.data[itemID];
-        console.debug(itemID);
 
         for (let itemConflictID of item._props.ConflictingItems) {
             let conflictingItem = allItems.find(slot => slot._tpl === itemConflictID);

@@ -29,6 +29,9 @@ class WeaponGenerator {
         // exclude SpecialWeapon and GrenadeLauncher, because that types not have a weapons
         this.allWeaponTypes = this.itemsValues.filter(item => item._parent === weaponItemID && ['SpecialWeapon', 'GrenadeLauncher'].indexOf(item._name) < 0);
 
+        // get all grenade items
+        this.grenadeItems = this.itemsValues.filter(item => item._parent === '543be6564bdc2df4348b4568' && item._id !== '5a2a57cfc4a2826c6e06d44a');
+
         // get all ammo items
         this.allAmmoItems = this.itemsValues.filter(item => {
             return item._props.hasOwnProperty('ammoType') && item._name.startsWith('patron');
@@ -205,7 +208,7 @@ class WeaponGenerator {
     }
 
     generateGrenade(parentID) {
-        const grenadeItems = this.inventoryGenerator.grenadeItems;
+        const grenadeItems = this.grenadeItems;
         const grenadeItem = grenadeItems[Math.floor(Math.random() * grenadeItems.length)];
 
         return {
