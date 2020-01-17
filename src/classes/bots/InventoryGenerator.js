@@ -106,7 +106,7 @@ class InventoryGenerator {
 
         // back pack generation
         let backPack = new backPackObject(this.backPackItems, this.lootNodes);
-while (true)        backPack.generate(equipment._id);
+        backPack.generate(equipment._id);
         generatedInventory.items.push(...backPack.items);
 
         // generate pockets
