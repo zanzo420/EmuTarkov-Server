@@ -121,7 +121,7 @@ module.exports = class BackPack {
         if (childItem && childItem._type === 'Node')
             return this.getRandomlyItemFromNode(childItem);
 
-        if (childItem && Math.random() * 100 >= childItem._props.SpawnChance) return childItem;
+        if (childItem && !childItem._props.QuestItem && Math.random() * 100 >= childItem._props.SpawnChance) return childItem;
 
         return null;
     }
