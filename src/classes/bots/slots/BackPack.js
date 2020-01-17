@@ -125,9 +125,9 @@ module.exports = class BackPack {
 
         // check for an expensive item
         const {CreditsPrice, SpawnChance} = childItem._props;
-        childItem._props.SpawnChance = (CreditsPrice > 50000) ? 10 : SpawnChance;
+        childItem._props.SpawnChance = (CreditsPrice > 50000) ? 25 : SpawnChance;
 
-        if (Math.floor(Math.random() * 100) <= childItem._props.SpawnChance) return childItem;
+        if (Math.floor(Math.random() * 30) >= childItem._props.SpawnChance) return childItem;
 
         return null;
     }
