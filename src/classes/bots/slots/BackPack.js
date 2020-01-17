@@ -121,7 +121,13 @@ module.exports = class BackPack {
         if (childItem && childItem._type === 'Node')
             return this.getRandomlyItemFromNode(childItem);
 
-        if (childItem && !childItem._props.QuestItem && Math.random() * 100 >= childItem._props.SpawnChance) return childItem;
+        if (!childItem || childItem._props.QuestItem) return null;
+
+        // check for an expensive item
+        const {CreditsPrice, SpawnChance} = childItem._props;
+        childItem._props.SpawnChance = (CreditsPrice > 50000) ? 10 : SpawnChance;
+
+        if (Math.floor(Math.random() * 100) <= childItem._props.SpawnChance) return childItem;
 
         return null;
     }

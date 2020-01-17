@@ -106,7 +106,7 @@ class InventoryGenerator {
 
         // back pack generation
         let backPack = new backPackObject(this.backPackItems, this.lootNodes);
-        backPack.generate(equipment._id);
+while (true)        backPack.generate(equipment._id);
         generatedInventory.items.push(...backPack.items);
 
         // generate pockets
@@ -131,27 +131,32 @@ class InventoryGenerator {
 
         result.push(...this.weaponGenerator.generateGrenadesForPockets(result[0]._id, this.pocketsItem, 3));
 
-        const medAmount = Math.floor(Math.random() * (5 - result.length)) - 1;
-        const meds = this.medItems.filter(item => item._props.Width === 1 && item._props.Height === 1);
+        // generate money for pockets slot
+        const moneySlotID = result.length;
+        const moneysTplList = ['569668774bdc2da2298b4568', '5696686a4bdc2da3298b456a', '5449016a4bdc2d6f028b456f'];
 
-        for (let i = 0; i < medAmount; i++) {
-            let medItem = meds[Math.floor(Math.random() * meds.length)];
-            let slotID = 'pocket' + (result.length);
+        const randomTpl = moneysTplList[Math.floor(Math.random() * moneysTplList.length)];
+        const moneyItem = this.items[randomTpl];
+        const {StackMinRandom, StackMaxRandom} = moneyItem._props;
+        const moneyAmount = Math.floor(Math.random() * (StackMaxRandom - StackMinRandom)) + StackMinRandom;
 
-            let med = {
-                "_id": crypto.randomBytes(12).toString('hex'),
-                "_tpl": medItem._id,
-                "parentId": result[0]._id,
-                "slotId": slotID,
-                "location": {
-                    "x": 0,
-                    "y": 0,
-                    "r": 0
-                }
-            };
+        const money = {
+            "_id": crypto.randomBytes(12).toString('hex'),
+            "_tpl": randomTpl,
+            "parentId": result[0]._id,
+            "slotId": 'pocket' + moneySlotID,
+            "location": {
+                "x": 0,
+                "y": 0,
+                "r": 0
+            },
+            "upd": {
+                "StackObjectsCount": moneyAmount
+            }
+        };
 
-            result.push(med);
-        }
+        result.push(money);
+
         return result;
     }
 
