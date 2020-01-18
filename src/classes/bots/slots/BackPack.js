@@ -40,20 +40,18 @@ module.exports = class BackPack {
         this.fillBackPackLoot();
     }
 
-    getBackPackRandomly(chance = 50) {
-        let spawn = chance > Math.floor(Math.random() * 100);
-        if (!spawn) return null;
-
+    getBackPackRandomly() {
         let backPack = this.backPackItems[Math.floor(Math.random() * this.backPackItems.length)];
-        if (backPack._props.SpawnChance <= 10) backPack._props.SpawnChance *= 15;
-        spawn = Math.random() * 100 < backPack._props.SpawnChance;
+        if (backPack._props.SpawnChance <= 10) backPack._props.SpawnChance *= 10;
+
+        let spawn = Math.random() * 100 < backPack._props.SpawnChance;
         if (spawn) return backPack;
 
         return null;
     }
 
-    fillBackPackLoot(maxLootAmount = 10) {
-        let randomLootCount = Math.floor(Math.random() * maxLootAmount);
+    fillBackPackLoot() {
+        let randomLootCount = Math.floor(Math.random() * (this.cellsV * this.cellsH));
 
         while (randomLootCount-- > 0) {
             let randomNode = this.lootNodes[Math.floor(Math.random() * this.lootNodes.length)];
@@ -115,19 +113,25 @@ module.exports = class BackPack {
 
     getRandomlyItemFromNode(nodeItem = {}) {
         if (Math.random() * 100 < nodeItem._props.SpawnChance) return null;
+
+        // exclude from loot maps, stash nodes
+        let excludedNodes = ['567849dd4bdc2d150f8b456e', '566abbb64bdc2d144c8b457d'];
+        if (excludedNodes.includes(nodeItem._id)) return null;
+
         let childItems = this.itemsValues.filter(item => item._parent === nodeItem._id);
         let childItem = childItems[Math.floor(Math.random() * childItems.length)];
+
+        if (!childItem || childItem._props.QuestItem) return null;
 
         if (childItem && childItem._type === 'Node')
             return this.getRandomlyItemFromNode(childItem);
 
-        if (!childItem || childItem._props.QuestItem) return null;
-
         // check for an expensive item
-        const {CreditsPrice, SpawnChance} = childItem._props;
-        childItem._props.SpawnChance = (CreditsPrice > 50000) ? 25 : SpawnChance;
+        const {CreditsPrice} = childItem._props;
+        childItem._props.SpawnChance += 15;
+        if (CreditsPrice > 50000) childItem._props.SpawnChance = 5;
 
-        if (Math.floor(Math.random() * 30) >= childItem._props.SpawnChance) return childItem;
+        if (Math.floor(Math.random() * 100) <= childItem._props.SpawnChance) return childItem;
 
         return null;
     }
