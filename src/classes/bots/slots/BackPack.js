@@ -67,6 +67,8 @@ module.exports = class BackPack {
         let freePosition = this.getFreeSlotPosition(lootItem._props);
         if (freePosition.x < 0) return;
 
+        const {StackMaxRandom} = lootItem._props;
+
         let item = {
             "_id": crypto.randomBytes(12).toString('hex'),
             "_tpl": lootItem._id,
@@ -78,6 +80,9 @@ module.exports = class BackPack {
                 "r": 0
             }
         };
+        if (StackMaxRandom && StackMaxRandom > 1) {
+            item.upd = {StackObjectsCount: Math.floor(Math.random() * StackMaxRandom)}
+        }
         this.items.push(item);
     }
 
@@ -112,10 +117,8 @@ module.exports = class BackPack {
     }
 
     getRandomlyItemFromNode(nodeItem = {}) {
-        if (Math.random() * 100 < nodeItem._props.SpawnChance) return null;
-
-        // exclude from loot maps, stash nodes
-        let excludedNodes = ['567849dd4bdc2d150f8b456e', '566abbb64bdc2d144c8b457d'];
+        // exclude from loot maps, stash, inventory, spec, ThrowWeap nodes
+        let excludedNodes = ['567849dd4bdc2d150f8b456e', '566abbb64bdc2d144c8b457d', '55d720f24bdc2d88028b456d', '5447e0e74bdc2d3c308b4567', '543be6564bdc2df4348b4568'];
         if (excludedNodes.includes(nodeItem._id)) return null;
 
         let childItems = this.itemsValues.filter(item => item._parent === nodeItem._id);
@@ -128,7 +131,7 @@ module.exports = class BackPack {
 
         // check for an expensive item
         const {CreditsPrice} = childItem._props;
-        childItem._props.SpawnChance += 15;
+        childItem._props.SpawnChance += 35;
         if (CreditsPrice > 50000) childItem._props.SpawnChance = 5;
 
         if (Math.floor(Math.random() * 100) <= childItem._props.SpawnChance) return childItem;
