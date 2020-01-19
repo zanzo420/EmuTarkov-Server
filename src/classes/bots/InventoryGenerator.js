@@ -31,7 +31,7 @@ class InventoryGenerator {
         this.vestItems = this.itemsValues.filter(item => item._parent === vestNode._id);
 
         let backNode = this.itemsValues.find(item => item._type === 'Node' && item._name === 'Backpack');
-        this.backPackItems = this.itemsValues.filter(item => item._parent === backNode._id);
+        this.backPackItems = this.itemsValues.filter(item => item._parent === backNode._id && item._id !== '56e294cdd2720b603a8b4575');
 
         this.lootNodes = this.itemsValues.filter(item => item._parent === '54009119af1c881c07000029');
     }

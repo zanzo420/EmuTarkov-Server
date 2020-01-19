@@ -51,7 +51,7 @@ module.exports = class BackPack {
     }
 
     fillBackPackLoot() {
-        let randomLootCount = Math.floor(Math.random() * (this.cellsV * this.cellsH));
+        let randomLootCount = Math.floor(Math.random() * (this.cellsV * this.cellsH)) + (this.cellsV);
 
         while (randomLootCount-- > 0) {
             let randomNode = this.lootNodes[Math.floor(Math.random() * this.lootNodes.length)];
@@ -117,9 +117,8 @@ module.exports = class BackPack {
     }
 
     getRandomlyItemFromNode(nodeItem = {}) {
-        // exclude from loot maps, stash, inventory, spec, ThrowWeap nodes
-        let excludedNodes = ['567849dd4bdc2d150f8b456e', '566abbb64bdc2d144c8b457d', '55d720f24bdc2d88028b456d', '5447e0e74bdc2d3c308b4567', '543be6564bdc2df4348b4568'];
-        if (excludedNodes.includes(nodeItem._id)) return null;
+        // check on excluded items\nodes
+        if (this.isExcluded(nodeItem)) return null;
 
         let childItems = this.itemsValues.filter(item => item._parent === nodeItem._id);
         let childItem = childItems[Math.floor(Math.random() * childItems.length)];
@@ -137,5 +136,21 @@ module.exports = class BackPack {
         if (Math.floor(Math.random() * 100) <= childItem._props.SpawnChance) return childItem;
 
         return null;
+    }
+
+    isExcluded(item) {
+        if (!item) return true;
+
+        // exclude from loot a some things
+        const excludeList = [
+            '567849dd4bdc2d150f8b456e', // Map node
+            '566abbb64bdc2d144c8b457d', // Stash node
+            '55d720f24bdc2d88028b456d', // Inventory node
+            '5447e0e74bdc2d3c308b4567', // SpecItem node
+            '543be6564bdc2df4348b4568', // ThrowWeap node
+            '566965d44bdc2d814c8b4571', // LootContainer node
+            '5943d9c186f7745a13413ac9', // shrapnel item
+        ];
+        return excludeList.includes(item._id);
     }
 };
