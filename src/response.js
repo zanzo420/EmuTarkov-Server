@@ -4,10 +4,10 @@ require('./libs.js');
 const staticRoutes = {
     "/": showIndex,
     "/inv": showInventoryChecker,
+    "/favicon.ico": nullResponse,
     "/client/friend/list": getFriendList,
     "/client/game/profile/items/moving": handleItems,
     "/client/languages": getLocale,
-    "/client/queue/status": getQueueStatus,
     "/client/items": getItems,
     "/client/globals": getGlobals,
     "/client/game/profile/list": getProfileData,
@@ -23,8 +23,6 @@ const staticRoutes = {
     "/client/server/list": getServer,
     "/client/ragfair/search": searchRagfair,
     "/client/ragfair/find": searchRagfair,
-    "/client/match/available": getAvailableMatch,
-    "/client/match/join": joinMatch,
     "/client/chatServer/list": getChatServerList,
     "/client/game/profile/nickname/change": changeNickname,
     "/client/game/profile/voice/change": changeVoice,
@@ -47,13 +45,9 @@ const staticRoutes = {
     "/client/game/profile/nickname/validate": validateNickname,
     "/client/game/profile/create": createProfile,
     "/client/insurance/items/list/cost": getInsuranceCost,
-    "/favicon.ico": nullResponse,
     "/client/game/logout": nullResponse,
     "/client/putMetrics": nullResponse,
-    "/client/match/group/looking/stop": nullResponse,
-    "/client/match/group/exit_from_menu": nullResponse,
     "/client/match/exit": nullResponse,
-    "/client/match/updatePing": nullResponse,
     "/client/game/profile/savage/regenerate": regenerateScav,
     "/client/mail/dialog/list": getMailDialogList,
     "/client/mail/dialog/view": getMailDialogView,
@@ -67,7 +61,11 @@ const staticRoutes = {
     "/client/friend/request/list/inbox": nullArrayResponse,
 
     // EmuTarkov-Launcher
-    "/launcher/profile/login": loginUser
+    "/launcher/profile/login": loginUser,
+
+    // EmuLib
+    "/OfflineRaidSave": saveProgress,
+    "/player/health/events": updateHealth
 };
 
 const dynamicRoutes = {
@@ -147,10 +145,6 @@ function getInsuranceCost(url, info, sessionID) {
     return insure_f.cost(info, sessionID);
 }
 
-function getQueueStatus(url, info, sessionID) {
-    return '{"err":0, "errmsg":null, "data":{"status": 0, "position": 0}}';
-}
-
 function getItems(url, info, sessionID) {
     return JSON.stringify(json.parse(json.read(filepaths.user.cache.items)));
 }
@@ -209,42 +203,6 @@ function getServer(url, info, sessionID) {
 
 function searchRagfair(url, info, sessionID) {
     return ragfair_f.getOffers(info);
-}
-
-function getAvailableMatch(url, info, sessionID) {
-    return '{"err":404, "errmsg":"EmuTarkov-0.8.0 does not supports online raids. Please use offline match.\n", "data":false}';
-
-    // use this for online lan testing
-    //return '{"err":0, "errmsg":null, "data":true}';
-}
-
-function joinMatch(url, info, sessionID) {
-    let shortid = "";
-    let profileId = "";
-
-    // check if the player is a scav
-    if (info.savage === true) {
-        shortid = "3XR5";
-        profileId = "scav" + sessionID;
-    } else {
-        shortid = "3SRC";
-        profileId = "pmc" + sessionID;
-    }
-
-    return JSON.stringify({
-        "err": 0,
-        "errmsg": null,
-        "data": [{
-            "profileid": profileId,
-            "status": "busy",
-            "ip": "",
-            "port": 0,
-            "location": info.location,
-            "sid": "",
-            "gamemode": "deathmatch",
-            "shortid": shortid
-        }]
-    });
 }
 
 function getChatServerList(url, info, sessionID) {
@@ -376,6 +334,17 @@ function setRead(url, info, sessionID) {
     return nullArrayResponse;
 }
 
+function saveProgress(url, info, sessionID) {
+    offraid_f.saveProgress(info, sessionID);
+    return nullResponse;
+}
+
+
+function updateHealth(url, info, sessionID) {
+    offraid_f.updateHealth(info, sessionID);
+    return nullResponse;
+}
+
 function getAllAttachments(url, info, sessionID) {
     let data = dialogue_f.getAllAttachments(info.dialogId, sessionID);
     return '{"err":0,"errmsg":null,"data":' + json.stringify(data) + '}';
@@ -417,11 +386,11 @@ function getGlobalLocale(url, info, sessionID) {
 function getResponse(req, body, sessionID) {
     let output = "";
     let url = req.url;
-    let info = JSON.parse("{}");
+    let info = json.parse("{}");
 
     // parse body
     if (body !== "") {
-        info = JSON.parse(body);
+        info = json.parse(body);
     }
 
     // remove ?retry=X from URL

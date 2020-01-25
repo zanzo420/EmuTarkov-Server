@@ -79,6 +79,8 @@ function sendResponse(req, resp, body, sessionID) {
     // get response
     if (req.method === "POST") {
         output = response.getResponse(req, body, sessionID);
+    } else if (req.method === "PUT") {
+        output = response.getResponse(req, json.stringify(body), sessionID);
     } else {
         output = response.getResponse(req, "{}", sessionID);
     }
@@ -206,13 +208,9 @@ function handleRequest(req, resp) {
             // unpack data
             zlib.inflate(data, function (err, body) {
                 let jsonData = json.parse((body !== undefined) ? body.toString() : "{}");
-
-                if (!settings.gameplay.features.lootSavingEnabled) {
-                    return;
-                }
             
                 logger.logRequest("[" + sessionID + "][" + IP + "] " + req.url + " -> " + jsonData);
-                offraid_f.saveProgress(jsonData, sessionID);
+                sendResponse(req, resp, jsonData, sessionID);
             });
         });
     }

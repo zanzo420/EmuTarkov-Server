@@ -87,10 +87,14 @@ function deleteInventory(pmcData, sessionID) {
 }
 
 function saveProgress(offraidData, sessionID) {
+    if (!settings.gameplay.features.saveLootEnabled) {
+        return;
+    }
+
     let pmcData = profile_f.getPmcData(sessionID);
     let scavData = profile_f.getScavData(sessionID);
     const isPlayerScav = offraidData.isPlayerScav;
-    
+
     // set pmc data
     if (!isPlayerScav) {
         pmcData.Info.Level = offraidData.profile.Info.Level;
@@ -131,4 +135,14 @@ function saveProgress(offraidData, sessionID) {
     profile_f.setPmcData(pmcData, sessionID);
 }
 
+function updateHealth(info, sessionID) {
+    if (!settings.gameplay.features.saveHealthEnabled) {
+        return;
+    }
+
+    logger.logError("Health data");
+    logger.logData(info);
+}
+
 module.exports.saveProgress = saveProgress;
+module.exports.updateHealth = updateHealth;

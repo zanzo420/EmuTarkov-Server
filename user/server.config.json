@@ -5,7 +5,8 @@
 	},
 	"gameplay": {
 		"features": {
-			"lootSavingEnabled": true
+			"saveLootEnabled": true,
+			"saveHealthEnabled": true
 		},
 		"bots": {
 			"pmcEnabled": true,
