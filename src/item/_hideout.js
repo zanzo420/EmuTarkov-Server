@@ -231,7 +231,7 @@ function HideoutTakeProduction(pmcData, body, sessionID) {
 		newReq.item_id = hideoutProduction.data[receipe].endProduct;
 		newReq.count = hideoutProduction.data[receipe].count;
 		newReq.tid = "ragfair";
-		return move_f.addItem(pmcData, newReq, output, sessionID);	
+		return move_f.addItem(pmcData, newReq, output, sessionID, true);	
 	}
 
 	for (let receipe in hideoutScavcase.data) {
