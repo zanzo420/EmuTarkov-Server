@@ -253,15 +253,26 @@ function HideoutTakeProduction(pmcData, body, sessionID) {
 				newReq.count = 1;
 				newReq.tid = "ragfair";
 
-				let tmpOutput = move_f.addItem(pmcData, newReq, output, sessionID);
-
-				for (let newItem of tmpOutput.data.items.new) {
-					output.data.items.new.push(newItem);
-				}
+				move_f.addItem(pmcData, newReq, output, sessionID);
+				
 			}
 
 			delete pmcData.Hideout.Production[prod];
 			profile_f.setPmcData(pmcData, sessionID);
+			
+			for (let newitem of output.data.items.new) {
+					if (newitem.hasOwnProperty("upd")) {
+						// property already exists, so we can skip it
+						if (newitem.upd.hasOwnProperty("SpawnedInSession")) {
+							continue;
+						}
+			
+						newitem.upd["SpawnedInSession"] = true;
+					} else {
+						newitem["upd"] = {"SpawnedInSession": true};
+					}
+				}
+			
 			return output;
 		}
 	}
