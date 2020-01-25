@@ -9,7 +9,7 @@ function generate() {
     if (settings.gameplay.location.forceWeatherEnabled) {
         output.data = weather.data[settings.gameplay.location.forceWeatherId];
     } else {
-        output.data = weather.data[utility.getRandomInt(0, weather.length - 1)];
+        output.data = weather.data[utility.getRandomInt(0, weather.data.length - 1)];
     }
 
     // replace date and time
