@@ -103,7 +103,6 @@ function getPmcData(sessionID) {
         pmcData.Info.Experience += sessionExp;
         pmcData.Stats.TotalSessionExperience = 0;
         setPmcData(pmcData, sessionID);
-        pmcData.Info.Experience -= sessionExp;
     }
     
     return pmcData;
