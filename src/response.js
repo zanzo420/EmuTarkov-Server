@@ -176,7 +176,7 @@ function getProfileStatus(url, info, sessionID) {
 }
 
 function getWeather(url, info, sessionID) {
-    weather_f.generate(sessionID);
+    return weather_f.generate();
 }
 
 function getLocations(url, info, sessionID) {
