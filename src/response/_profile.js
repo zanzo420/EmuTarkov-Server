@@ -135,7 +135,7 @@ function get(sessionID) {
 
 function addChildPrice(data, parentID, childPrice) {
     for (let invItems in data) {
-        if (data.hasOwnProperty(invItems) && data[invItems]._id === parentID) {
+        if (data[invItems]._id === parentID) {
             if (data[invItems].hasOwnProperty("childPrice")) {
                 data[invItems].childPrice += childPrice;
             } else {
@@ -180,21 +180,6 @@ function getPurchasesData(tmpTraderInfo, sessionID) {
         "5696686a4bdc2da3298b456a" // dolars
     ];
 
-    for (let invItems in data) {
-        if (data[invItems]._id !== equipment
-        && data[invItems]._id !== stash
-        && data[invItems]._id !== questRaidItems
-        && data[invItems]._id !== questStashItems
-        && notSoldableItems.indexOf(data[invItems]._tpl) === -1) {
-            let templateId = data[invItems]._tpl;
-            let itemCount = (typeof data[invItems].upd !== "undefined" ? (typeof data[invItems].upd.StackObjectsCount !== "undefined" ? data[invItems].upd.StackObjectsCount : 1) : 1);
-            let basePrice = (items.data[templateId]._props.CreditsPrice >= 1 ? items.data[templateId]._props.CreditsPrice : 1);
-            
-            // multiplyer is used at parent item
-            data = addChildPrice(data, data[invItems].parentId, itemCount * basePrice);
-        }
-    }
-
     //start output string here
     let purchaseOutput = '{"err": 0,"errmsg":null,"data":{';
     let i = 0;
@@ -215,6 +200,8 @@ function getPurchasesData(tmpTraderInfo, sessionID) {
             let templateId = data[invItems]._tpl;
             let basePrice = (items.data[templateId]._props.CreditsPrice >= 1 ? items.data[templateId]._props.CreditsPrice : 1);
 
+            data = addChildPrice(data, data[invItems].parentId, itemCount * basePrice);
+
             if (data[invItems].hasOwnProperty("childPrice")) {
                 basePrice += data[invItems].childPrice;
             }
@@ -222,15 +209,12 @@ function getPurchasesData(tmpTraderInfo, sessionID) {
             let preparePrice = basePrice * multiplier * itemCount;
 
             // convert the price using the lastTrader's currency
-            let currency = trader_f.get(tmpTraderInfo, sessionID).data.currency;
-            preparePrice = itm_hf.fromRUB(preparePrice, itm_hf.getCurrency(currency));
+            preparePrice = itm_hf.fromRUB(preparePrice, itm_hf.getCurrency(trader_f.get(tmpTraderInfo, sessionID).data.currency));
 
             // uses profile information to get the level of the dogtag and multiplies
             // the prepare price after conversion with this factor
-            if (itm_hf.isDogtag(data[invItems]._tpl)) {
-                if (data[invItems].upd.hasOwnProperty("Dogtag")) {
-                    preparePrice = preparePrice * data[invItems].upd.Dogtag.Level;
-                }
+            if (itm_hf.isDogtag(data[invItems]._tpl) && data[invItems].upd.hasOwnProperty("Dogtag")) {
+                preparePrice = preparePrice * data[invItems].upd.Dogtag.Level;
             }
 
             preparePrice = (preparePrice > 0 && preparePrice !== "NaN" ? preparePrice : 1);
