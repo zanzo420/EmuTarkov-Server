@@ -90,17 +90,15 @@ function saveProgress(offraidData, sessionID) {
     let pmcData = profile_f.getPmcData(sessionID);
     let scavData = profile_f.getScavData(sessionID);
     const isPlayerScav = offraidData.isPlayerScav;
-
-    offraidData = offraidData.profile;
     
     // set pmc data
     if (!isPlayerScav) {
-        pmcData.Info.Level = offraidData.Info.Level;
-        pmcData.Skills = offraidData.Skills;
-        pmcData.Stats = offraidData.Stats;
-        pmcData.Encyclopedia = offraidData.Encyclopedia;
-        pmcData.ConditionCounters = offraidData.ConditionCounters;
-        pmcData.Quests = offraidData.Quests;
+        pmcData.Info.Level = offraidData.profile.Info.Level;
+        pmcData.Skills = offraidData.profile.Skills;
+        pmcData.Stats = offraidData.profile.Stats;
+        pmcData.Encyclopedia = offraidData.profile.Encyclopedia;
+        pmcData.ConditionCounters = offraidData.profile.ConditionCounters;
+        pmcData.Quests = offraidData.profile.Quests;
 
         // level 69 cap to prevent visual bug occuring at level 70
         if (pmcData.Info.Experience > 13129881) {
@@ -109,14 +107,14 @@ function saveProgress(offraidData, sessionID) {
     }
 
     // mark found items and replace item ID's
-    offraidData = markFoundItems(pmcData, offraidData, isPlayerScav);
-    offraidData.Inventory.items = itm_hf.replaceIDs(offraidData, offraidData.Inventory.items);
+    offraidData.profile = markFoundItems(pmcData, offraidData.profile, isPlayerScav);
+    offraidData.profile.Inventory.items = itm_hf.replaceIDs(offraidData.profile, offraidData.profile.Inventory.items);
 
     // set profile equipment to the raid equipment
     if (isPlayerScav) {
-        scavData = setInventory(scavData, offraidData);
+        scavData = setInventory(scavData, offraidData.profile);
     } else {
-        pmcData = setInventory(pmcData, offraidData);
+        pmcData = setInventory(pmcData, offraidData.profile);
     }
 
     // terminate early for player scavs because we don't care about whether they died.
