@@ -69,7 +69,7 @@ function lvlUp(id, sessionID) {
     }
 
     currentTrader.data.loyalty.currentLevel = targetLevel;
-    setTrader(currentTrader.data, sessionID);
+    set(currentTrader.data, sessionID);
 
     // set assort
     assort_f.generate(id, sessionID);
