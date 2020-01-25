@@ -381,7 +381,7 @@ function swapItem(pmcData, body, sessionID) {
 /* Give Item
 * its used for "add" item like gifts etc.
 * */
-function addItem(pmcData, body, output, sessionID) {
+function addItem(pmcData, body, output, sessionID, foundInRaid = false) {
     let PlayerStash = itm_hf.getPlayerStash(sessionID);
     let stashY = PlayerStash[1];
     let stashX = PlayerStash[0];
@@ -444,6 +444,12 @@ function addItem(pmcData, body, output, sessionID) {
                             logger.logInfo("Item placed at position [" + x + "," + y + "]", "", "", true);
                             let newItem = utility.generateNewItemId();
                             let toDo = [[item._id, newItem]];
+                            let upd = {"StackObjectsCount": StacksValue[stacks]};
+
+                            // hideout items need to be marked as found in raid
+                            if (foundInRaid) {
+                                upd["SpawnedInSession"] = true;
+                            }
 
                             output.data.items.new.push({
                                 "_id": newItem,
@@ -451,7 +457,7 @@ function addItem(pmcData, body, output, sessionID) {
                                 "parentId": pmcData.Inventory.stash,
                                 "slotId": "hideout",
                                 "location": {"x": x, "y": y, "r": 0},
-                                "upd": {"StackObjectsCount": StacksValue[stacks]}
+                                "upd": upd
                             });
 
                             pmcData.Inventory.items.push({
@@ -460,7 +466,7 @@ function addItem(pmcData, body, output, sessionID) {
                                 "parentId": pmcData.Inventory.stash,
                                 "slotId": "hideout",
                                 "location": {"x": x, "y": y, "r": 0},
-                                "upd": {"StackObjectsCount": StacksValue[stacks]}
+                                "upd": upd
                             });
 
                             while (true) {
@@ -479,7 +485,7 @@ function addItem(pmcData, body, output, sessionID) {
                                                 "parentId": toDo[0][1],
                                                 "slotId": SlotID,
                                                 "location": {"x": x, "y": y, "r": "Horizontal"},
-                                                "upd": {"StackObjectsCount": StacksValue[stacks]}
+                                                "upd": upd
                                             });
 
                                             pmcData.Inventory.items.push({
@@ -488,7 +494,7 @@ function addItem(pmcData, body, output, sessionID) {
                                                 "parentId": toDo[0][1],
                                                 "slotId": tmpTraderAssort.data.items[tmpKey].slotId,
                                                 "location": {"x": x, "y": y, "r": "Horizontal"},
-                                                "upd": {"StackObjectsCount": StacksValue[stacks]}
+                                                "upd": upd
                                             });
                                         } else {
                                             output.data.items.new.push({
@@ -496,7 +502,7 @@ function addItem(pmcData, body, output, sessionID) {
                                                 "_tpl": tmpTraderAssort.data.items[tmpKey]._tpl,
                                                 "parentId": toDo[0][1],
                                                 "slotId": SlotID,
-                                                "upd": {"StackObjectsCount": StacksValue[stacks]}
+                                                "upd": upd
                                             });
 
                                             pmcData.Inventory.items.push({
@@ -504,7 +510,7 @@ function addItem(pmcData, body, output, sessionID) {
                                                 "_tpl": tmpTraderAssort.data.items[tmpKey]._tpl,
                                                 "parentId": toDo[0][1],
                                                 "slotId": tmpTraderAssort.data.items[tmpKey].slotId,
-                                                "upd": {"StackObjectsCount": StacksValue[stacks]}
+                                                "upd": upd
                                             });
                                         }
 
