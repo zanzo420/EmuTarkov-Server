@@ -1,15 +1,15 @@
 {
 	"weather": {
 		"timestamp": 1577890800,
-		"cloud": 0,
-		"wind_speed": 0,
-		"wind_direction": 0,
-		"wind_gustiness": 0,
-		"rain": 0,
+		"cloud": -0.1,
+		"wind_speed": 1,
+		"wind_direction": 1,
+		"wind_gustiness": 0.05,
+		"rain": 1,
 		"rain_intensity": 0,
-		"fog": 0,
-		"temp": 16,
-		"pressure": 763,
+		"fog": 0.001,
+		"temp": 10,
+		"pressure": 764,
 		"date": "2020-01-01",
 		"time": "16:00:00"
 	},
