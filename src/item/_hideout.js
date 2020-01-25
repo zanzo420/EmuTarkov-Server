@@ -253,7 +253,7 @@ function HideoutTakeProduction(pmcData, body, sessionID) {
 				newReq.count = 1;
 				newReq.tid = "ragfair";
 
-				move_f.addItem(pmcData, newReq, output, sessionID, true);
+				output = move_f.addItem(pmcData, newReq, output, sessionID, true);
 			}
 
 			delete pmcData.Hideout.Production[prod];
