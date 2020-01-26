@@ -20,7 +20,7 @@ class ProfileServer {
         this.profiles[sessionID]['pmc'] = json.parse(json.read(getPmcPath(sessionID)));
 
         if (!fs.existsSync(getScavPath(sessionID))) {
-            this.profiles[sessionID]['scav'] = this.generateScav(sessionID);
+            this.generateScav(sessionID);
         } else {
             this.profiles[sessionID]['scav'] = json.parse(json.read(getScavPath(sessionID)));
         }
@@ -128,6 +128,7 @@ class ProfileServer {
         let scavData = bots.generatePlayerScav();
         scavData._id = pmcData.savage;
         scavData.aid = sessionID;
+        this.profiles[sessionID]['scav'] = scavData;
         return scavData;
     }
 
