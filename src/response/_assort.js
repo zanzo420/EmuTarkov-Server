@@ -52,14 +52,14 @@ function generate(id, sessionID) {
     }
 
     let base = json.parse(json.read(filepaths.user.cache["assort_" + id]));
-    let keyNames = Object.keys(base.data.loyal_level_items);
+    let keys = Object.keys(base.data.loyal_level_items);
     let level = trader_f.get(id, sessionID).data.loyalty.currentLevel;
 
     // 1 is min level, 4 is max level
-    for (let i = 4; i > 0; i--) {
-        for (let key in keyNames) {
-            if (base.data.loyal_level_items[keyNames[key]] > level) {
-                base = removeItem(base, keyNames[key]);
+    for (let i = 1; i < 4; i++) {
+        for (let key of keys) {
+            if (base.data.loyal_level_items[key] > level) {
+                base = removeItem(base, key);
             }
         }
     }
@@ -94,6 +94,8 @@ function get(id, sessionID) {
     if (id === "579dc571d53a0658a154fbec") {
         logger.logWarning("generating fence");
         generateFence(sessionID);
+    } else {
+        generate(id, sessionID);
     }
 
 	return json.parse(json.read(getPath(id, sessionID)));
