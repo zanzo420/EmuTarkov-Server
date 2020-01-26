@@ -48,12 +48,16 @@ function completeQuest(pmcData, body, sessionID) {
             switch (reward.type) {
                 case "Item":
                     for (let rewardItem of reward.items) {
-                        // let newReq = {};
-
-                        // newReq.item_id = rewardItem._tpl;
-                        // newReq.count = parseInt(reward.value);
-                        // newReq.tid = "ragfair";
-                
+                        // Quest rewards bundle up items whose max stack size is 1. Break them up.
+                        let itemTmplData = json.parse(json.read(filepaths.items[rewardItem._tpl]));
+                        if (typeof rewardItem.upd !== "undefined" && itemTmplData._props.StackMaxSize === 1) {
+                            let count = rewardItem.upd.StackObjectsCount;
+                            rewardItem.upd.StackObjectsCount = 1;
+                            [...Array(count)].forEach(() => {
+                                questRewards.push(rewardItem);
+                            });
+                            continue;
+                        }
                         questRewards.push(rewardItem);
                     }
                     break;
@@ -65,17 +69,21 @@ function completeQuest(pmcData, body, sessionID) {
 
                 case "TraderStanding":
                     // improve trader standing
-                    let tmpTraderInfo = trader.get(quest.traderId, sessionID);
+                    let tmpTraderInfo = trader_f.traderServer.getTrader(quest.traderId, sessionID);
 
                     tmpTraderInfo.data.loyalty.currentStanding
                     tmpTraderInfo.data.loyalty.currentStanding = tmpTraderInfo.data.loyalty.currentStanding + parseFloat(reward.value);
-                    trader.setTrader(tmpTraderInfo.data, sessionID);
 
                     // level up trader
                     trader_f.traderServer.lvlUp(quest.traderId, sessionID);
                     break;
             }
         }
+    }
+
+    // De-dupe quest rewards.
+    if (questRewards.length > 0) {
+        questRewards = itm_hf.replaceIDs(pmcData, questRewards);
     }
 
     // Create a dialog message for completing the quest.
