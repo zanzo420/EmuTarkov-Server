@@ -24,6 +24,10 @@ class TraderServer {
         }
     }
 
+    getOpenSessions() {
+        return Object.keys(this.traders);
+    }
+
     saveToDisk(sessionID) {
         for (let trader of this.traders) {
             json.write(getPath(trader._id, sessionID), trader);

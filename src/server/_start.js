@@ -180,6 +180,7 @@ function handleRequest(req, resp) {
     if (req.method === "GET") {
         logger.logRequest("[" + sessionID + "][" + IP + "] " + req.url);
         sendResponse(req, resp, null, sessionID);
+        return;
     }
 
     // request with data
@@ -192,10 +193,7 @@ function handleRequest(req, resp) {
                 sendResponse(req, resp, jsonData, sessionID);
             });
         });
-    }
-    
-    // offline profile saving
-    if (req.method === "PUT") {
+    } else if (req.method === "PUT") { // offline profile saving
         req.on('data', function (data) {
             // receive data
             if (req.headers.hasOwnProperty("expect")) {
@@ -218,6 +216,10 @@ function handleRequest(req, resp) {
                 sendResponse(req, resp, jsonData, sessionID);
             });
         });
+    }
+
+    if (settings.autosave.saveOnReceive) {
+        saveHandler.saveOpenSessions();
     }
 }
 

@@ -21,6 +21,18 @@ class ProfileServer {
         this.profiles[sessionID]['scav'] = json.parse(json.read(getScavPath(sessionID)));
     }
 
+    getOpenSessions() {
+        return Object.keys(this.profiles);
+    }
+
+    savePmcData(sessionID) {
+        json.write(getPmcPath(sessionID), this.profiles[sessionID]['pmc']);
+    }
+
+    saveScavData(sessionID) {
+        json.write(getScavPath(sessionID), this.profiles[sessionID]['scav']);
+    }
+
     /* 
     * Get profile with sessionID of type (profile type in string, i.e. 'pmc').
     * If we don't have a profile for this sessionID yet, then load it from disk.
@@ -49,7 +61,7 @@ class ProfileServer {
         return this.getProfile(sessionID, 'scav');
     }
 
-    createProfile(sessionID) {
+    createProfile(info, sessionID) {
         let account = account_f.accountServer.find(sessionID);
         let folder = account_f.getPath(account.id);
         let pmcData = json.parse(json.read(filepaths.profile.character[account.edition + "_" + info.side.toLowerCase()]));
@@ -101,14 +113,6 @@ class ProfileServer {
 
         // don't wipe profile again
         account_f.accountServer.setWipe(account.id, false);
-    }
-
-    savePmcData(sessionID) {
-        json.write(getPmcPath(sessionID), this.profiles[sessionID]['pmc']);
-    }
-
-    saveScavData(sessionID) {
-        json.write(getScavPath(sessionID), this.profiles[sessionID]['scav']);
     }
 
     generateScav(sessionID) {

@@ -3,6 +3,11 @@
 		"ip": "127.0.0.1",
 		"generateIp": false
 	},
+    "autosave": {
+        "saveOnExit": true,
+        "saveIntervalSec": 300,
+        "saveOnReceive": false
+    },
 	"gameplay": {
 		"features": {
 			"saveLootEnabled": true,

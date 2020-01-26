@@ -70,6 +70,7 @@ module.exports = function(isFirstLaunch = false, time = 0) {
 	global.keepAlive_f = require('./response/_keepAlive.js');
 	global.offraid_f = require('./response/_offraid.js');
 	global.server = require('./server/_start.js');
+	global.saveHandler = require('./server/_saveHandler.js');
 	global.constants = require('./server/_constants.js');
 	global.header_f = require('./server/_sendHeader.js');
 	global.dialogue_f = require('./response/_dialogue.js');
@@ -97,7 +98,6 @@ module.exports = function(isFirstLaunch = false, time = 0) {
 	global.response = require('./response.js');
 	
 	if (isFirstLaunch) {
-		account_f.init();
 		logger.logSuccess("Finished loading game server functions... [" + String(new Date() - time) + "]");
 		logger.logSuccess("[Library Loaded]");
 	}

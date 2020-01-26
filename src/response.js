@@ -154,7 +154,14 @@ function getGlobals(url, info, sessionID) {
 }
 
 function getProfileData(url, info, sessionID) {
-    return JSON.stringify(profile_f.get(sessionID));
+    let output = {err: 0, errmsg: null, data: []};
+
+    if (!account_f.accountServer.isWiped(sessionID)) {
+        output.data.push(profile_f.profileServer.getPmcProfile(sessionID));
+        output.data.push(profile_f.profileServer.getScavProfile(sessionID));
+    }
+
+    return JSON.stringify(output);
 }
 
 function regenerateScav(url, info, sessionID) {

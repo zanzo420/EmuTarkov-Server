@@ -11,6 +11,10 @@ class DialogueServer {
 		this.dialogues[sessionID] = json.parse(json.read(getPath(sessionID)));
 	}
 
+	getOpenSessions() {
+		return Object.keys(this.dialogues);
+	}
+
 	saveToDisk(sessionID) {
 		json.write(getPath(sessionID), this.dialogues[sessionID]);
 	}

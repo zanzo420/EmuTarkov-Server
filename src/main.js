@@ -19,5 +19,20 @@ process.on('uncaughtException', (error, promise) => {
     logger.logInfo("Finished Dumping Error", "cyan");
 });
 
+if (settings.autosave.saveOnExit) {
+	process.on('exit', (code) => {
+		saveHandler.saveOpenSessions();
+	});
+	process.on('SIGINT', (code) => {
+		saveHandler.saveOpenSessions();
+	});
+}
+
+if (settings.autosave.saveIntervalSec > 0) {
+	setInterval(function() {
+		saveHandler.saveOpenSessions();
+	}, settings.autosave.saveIntervalSec * 1000);
+}
+
 // start application
 server.start();
