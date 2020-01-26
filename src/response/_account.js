@@ -16,9 +16,11 @@ class AccountServer {
     }
 
     find(sessionID) {
-        for (let account of this.accounts) {
-            if (account.id === sessionID) {
-                return account;
+        for (let accountId in this.accounts) {
+            let account = this.accounts[accountId];
+
+            if (this.accounts[account].id === sessionID) {
+                return this.accounts[account];
             }
         }
         return undefined;
@@ -33,8 +35,9 @@ class AccountServer {
     }
 
     exists(info) {
-        for (let accountId of Object.keys(this.accounts)) {
+        for (let accountId in this.accounts) {
             let account = this.accounts[accountId];
+
             if (info.email === account.email && info.password === account.password) {
                 return account.id;
             }
