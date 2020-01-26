@@ -1,5 +1,5 @@
 {
-	1: {
+	"1": {
 		"id": 1,
 		"nickname": "senko",
 		"email": "senko@jetdev.com",
@@ -7,7 +7,7 @@
 		"wipe": false,
 		"edition": "eod"
 	},
-	2: {
+	"2": {
 		"id": 2,
 		"nickname": "user",
 		"email": "user@jet.com",
@@ -15,7 +15,7 @@
 		"wipe": true,
 		"edition": "std"
 	},
-	3: {
+	"3": {
 		"id": 3,
 		"nickname": "hardcore",
 		"email": "hardcore@jet.com",
