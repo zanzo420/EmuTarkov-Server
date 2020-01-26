@@ -11,8 +11,6 @@ function saveOpenSessions() {
 		trader_f.traderServer.saveToDisk(sessionId);
 		dialogue_f.dialogueServer.saveToDisk(sessionId);
 	}
-
-	logger.logSuccess("Player progress successfully saved to disk!");
 }
 
 module.exports.saveOpenSessions = saveOpenSessions;

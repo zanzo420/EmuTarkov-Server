@@ -31,6 +31,7 @@ if (settings.autosave.saveOnExit) {
 if (settings.autosave.saveIntervalSec > 0) {
 	setInterval(function() {
 		saveHandler.saveOpenSessions();
+		logger.logSuccess("Player progress autosaved!");
 	}, settings.autosave.saveIntervalSec * 1000);
 }
 
