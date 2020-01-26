@@ -62,7 +62,7 @@ function completeQuest(pmcData, body, sessionID) {
                     break;
 
                 case "Experience":
-                    pmcData = profile_f.getPmcProfile(sessionID);
+                    pmcData = profile_f.profileServer.getPmcProfile(sessionID);
                     pmcData.Info.Experience += parseInt(reward.value);
                     profile_f.setPmcData(pmcData, sessionID);
                     break;

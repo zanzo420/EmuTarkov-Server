@@ -11,7 +11,7 @@ function moveItem(pmcData, body, sessionID) {
     item.resetOutput();
 
     let output = item.getOutput();
-    let scavData = profile_f.getScavProfile(sessionID);
+    let scavData = profile_f.profileServer.getScavProfile(sessionID);
 
     if (typeof body.fromOwner !== 'undefined' && body.fromOwner.id === scavData._id) {
         // Handle changes to items from scav inventory should update the item
@@ -374,7 +374,7 @@ function addItem(pmcData, body, output, sessionID, foundInRaid = false) {
 
             for (let stacks = 0; stacks < MaxStacks; stacks++) {
                 //update profile on each stack so stash recalculate will have new items
-                pmcData = profile_f.getPmcProfile(sessionID);
+                pmcData = profile_f.profileServer.getPmcProfile(sessionID);
 
                 let StashFS_2D = itm_hf.recheckInventoryFreeSpace(pmcData, sessionID);
                 let ItemSize = itm_hf.getSize(item._tpl, item._id, tmpTraderAssort.data.items);

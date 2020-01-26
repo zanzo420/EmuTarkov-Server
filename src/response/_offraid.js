@@ -91,8 +91,8 @@ function saveProgress(offraidData, sessionID) {
         return;
     }
 
-    let pmcData = profile_f.getPmcProfile(sessionID);
-    let scavData = profile_f.getScavProfile(sessionID);
+    let pmcData = profile_f.profileServer.getPmcProfile(sessionID);
+    let scavData = profile_f.profileServer.getScavProfile(sessionID);
     const isPlayerScav = offraidData.isPlayerScav;
 
     // set pmc data
