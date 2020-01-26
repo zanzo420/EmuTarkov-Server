@@ -5,12 +5,12 @@ require('./libs.js');
 let fileStream = undefined;
 
 function start() {
-    let file = utility.getTime() + "_" + utility.getDate() + ".log";
+    let file = utility.getDate() + "_" + utility.getTime() + ".log";
     let folder = "user/logs/";
     let filepath = path.join(folder, file);
 
     // create log folder
-    if (!fs.existsSync(folder)) {
+    if (!fs.existsSync(folder)) { +
         fs.mkdirSync(folder);
     }
 
