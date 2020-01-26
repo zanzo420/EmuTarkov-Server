@@ -39,7 +39,6 @@ function main(pmcData, body, sessionID) {
         output.data.items.change.push(itemToRepair);
     }
 
-    profile_f.setPmcData(pmcData, sessionID);
     return output;
 }
 

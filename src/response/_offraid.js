@@ -130,8 +130,6 @@ function saveProgress(offraidData, sessionID) {
     if (offraidData.exit !== "survived" && offraidData.exit !== "runner") {
         pmcData = deleteInventory(pmcData, sessionID);
     }
-
-    profile_f.setPmcData(pmcData, sessionID);
 }
 
 function updateHealth(info, sessionID) {

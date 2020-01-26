@@ -15,8 +15,6 @@ function acceptQuest(pmcData, body, sessionID) {
 		"startTime": utility.getTimestamp(), 
 		"status": 2
 	}); 
-	
-    profile_f.setPmcData(pmcData, sessionID);
 
     // Create a dialog message for starting the quest.
     let questDb = json.parse(json.read(filepaths.quests[body.qid.toString()]));
@@ -35,7 +33,6 @@ function completeQuest(pmcData, body, sessionID) {
     for (let quest in pmcData.Quests) {
         if (pmcData.Quests[quest].qid === body.qid) {
             pmcData.Quests[quest].status = 4;
-            profile_f.setPmcData(pmcData, sessionID);
             break;
         }
     }
@@ -64,7 +61,6 @@ function completeQuest(pmcData, body, sessionID) {
                 case "Experience":
                     pmcData = profile_f.profileServer.getPmcProfile(sessionID);
                     pmcData.Info.Experience += parseInt(reward.value);
-                    profile_f.setPmcData(pmcData, sessionID);
                     break;
 
                 case "TraderStanding":
@@ -121,7 +117,6 @@ function handoverQuest(pmcData, body, sessionID) {
         pmcData.BackendCounters[body.conditionId] = {"id": body.conditionId, "qid": body.qid, "value": counter};
     }
 
-    profile_f.setPmcData(pmcData, sessionID);
     return output;
 }
 

@@ -7,7 +7,6 @@ function addNote(pmcData, body, sessionID) {
 		"Time": body.note.Time, 
 		"Text": body.note.Text
 	});
-    profile_f.setPmcData(pmcData, sessionID);
     return "OK";
 }
 
@@ -16,13 +15,11 @@ function editNode(pmcData, body, sessionID) {
 		"Time": body.note.Time, 
 		"Text": body.note.Text
 	};
-    profile_f.setPmcData(pmcData, sessionID);
     return "OK";
 }
 
 function deleteNote(pmcData, body, sessionID) {
     pmcData.Notes.Notes.splice(body.index, 1);
-    profile_f.setPmcData(pmcData, sessionID);
     return "OK";
 }
 

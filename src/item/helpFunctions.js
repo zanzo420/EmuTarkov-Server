@@ -175,7 +175,6 @@ function payMoney(pmcData, body, sessionID) {
     output.data.currentSalesSums[body.tid] = saleSum;
 
     // save changes
-    profile_f.setPmcData(pmcData, sessionID);
     logger.logSuccess("Items taken. Status OK.");
     item.setOutput(output);
     return true;
@@ -277,7 +276,6 @@ function getMoney(pmcData, amount, body, output, sessionID) {
     trader_f.traderServer.lvlUp(body.tid, sessionID);
     output.data.currentSalesSums[body.tid] = saleSum;
 
-    profile_f.setPmcData(pmcData, sessionID);
     return output;
 }
 

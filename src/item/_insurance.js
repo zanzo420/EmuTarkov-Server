@@ -20,8 +20,6 @@ function remove(pmcData, body, sessionID) {
                 }
             }
         }
-
-        profile_f.setPmcData(pmcData, sessionID);
     }
 
     logger.logError("item id is not valid");

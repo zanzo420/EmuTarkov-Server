@@ -6,7 +6,6 @@ function foldItem(pmcData, body, sessionID) {
     for (let item of pmcData.Inventory.items) {
         if (item._id && item._id === body.item) {
             item.upd.Foldable = {"Folded": body.value};
-            profile_f.setPmcData(pmcData, sessionID);
             return "OK";
         }
     }
@@ -18,7 +17,6 @@ function toggleItem(pmcData, body, sessionID) {
     for (let item of pmcData.Inventory.items) {
         if (item._id && item._id === body.item) {
             item.upd.Togglable = {"On": body.value};
-            profile_f.setPmcData(pmcData, sessionID);
             return "OK";
         }
     }
@@ -45,7 +43,6 @@ function tagItem(pmcData, body, sessionID) {
                 Object.assign(item, myobject); // merge myobject into item -- overwrite same properties and add missings
             }
 
-            profile_f.setPmcData(pmcData, sessionID);
             return "OK";
         }
     }
@@ -61,7 +58,6 @@ function bindItem(pmcData, body, sessionID) {
     }
 
     pmcData.Inventory.fastPanel[body.index] = body.item;
-    profile_f.setPmcData(pmcData, sessionID);
     return "OK";
 }
 
@@ -112,7 +108,6 @@ function examineItem(pmcData, body, sessionID) {
 
     pmcData.Info.Experience += data._props.ExamineExperience;
     pmcData.Encyclopedia[returned] = true;
-    profile_f.setPmcData(pmcData, sessionID);
     logger.logSuccess("EXAMINED: " + returned);
     return "OK";
 }

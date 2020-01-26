@@ -15,7 +15,6 @@ function addToWishList(pmcData, body, sessionID) {
     }
     // add the item to the wishlist
     pmcData.WishList.push(body['templateId']);
-    profile_f.setPmcData(pmcData, sessionID);
     return "OK";
 }
 
@@ -29,7 +28,6 @@ function removeFromWishList(pmcData, body, sessionID) {
             pmcData.WishList.splice(item, 1);
         }
     }
-    profile_f.setPmcData(pmcData, sessionID);
     return "OK";
 }
 
@@ -39,7 +37,6 @@ function removeFromWishList(pmcData, body, sessionID) {
 * */
 function resetWishList(pmcData){
     pmcData.WishList = [];
-    profile_f.setPmcData(pmcData, sessionID);
 }
 
 module.exports.addToWishList = addToWishList;
