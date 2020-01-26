@@ -36,7 +36,7 @@ function updateTraders(sessionID) {
 }
 
 function updatePlayerHideout(sessionID) {
-    let pmcData = profile_f.getPmcProfile(sessionID);
+    let pmcData = profile_f.profileServer.getPmcProfile(sessionID);
 
     // update production time
     for (let prod in pmcData.Hideout.Production) { 
@@ -67,8 +67,6 @@ function updatePlayerHideout(sessionID) {
             // hmmm ...? 
         }
     }
-
-    profile_f.setPmcData(pmcData, sessionID); 
 }
 
 module.exports.main = main;

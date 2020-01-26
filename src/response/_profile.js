@@ -35,11 +35,14 @@ class ProfileServer {
 
     /* 
     * Get profile with sessionID of type (profile type in string, i.e. 'pmc').
-    * If we don't have a profile for this sessionID yet, then load it from disk.
+    * If we don't have a profile for this sessionID yet, then load it and other related data
+    * from disk.
     */
     getProfile(sessionID, type) {
         if (!(sessionID in this.profiles)) {
             this.initializeProfile(sessionID);
+            trader_f.traderServer.initializeTraders(sessionID);
+            dialogue_f.dialogueServer.initializeDialogue(sessionID);
         }
 
         return this.profiles[sessionID][type];
@@ -144,14 +147,12 @@ class ProfileServer {
 
 function getPmcPath(sessionID) {
     let pmcPath = filepaths.user.profiles.character;
-    pmcPath.replace("__REPLACEME__", sessionID);
-    return pmcPath;
+    return pmcPath.replace("__REPLACEME__", sessionID);;
 }
 
 function getScavPath(sessionID) {
     let scavPath = filepaths.user.profiles.scav;
-    scavPath.replace("__REPLACEME__", sessionID);
-    return scavPath;
+    return scavPath.replace("__REPLACEME__", sessionID);
 }
 
 function addChildPrice(data, parentID, childPrice) {

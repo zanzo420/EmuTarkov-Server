@@ -2,10 +2,7 @@
 
 require('../libs.js');
 
-/*
-* TraderServer class maintains list of traders for each sessionID in memory. All first-time loads and save operations
-* also write to disk.
-*/
+/* TraderServer class maintains list of traders for each sessionID in memory. */
 class TraderServer {
     constructor() {
         this.traders = {};
@@ -24,13 +21,9 @@ class TraderServer {
         }
     }
 
-    getOpenSessions() {
-        return Object.keys(this.traders);
-    }
-
     saveToDisk(sessionID) {
-        for (let trader of this.traders) {
-            json.write(getPath(trader._id, sessionID), trader);
+        for (let traderId in this.traders[sessionID]) {
+            json.write(getPath(traderId, sessionID), this.traders[sessionID][traderId]);
         }
     }
 
@@ -41,12 +34,14 @@ class TraderServer {
     getAllTraders(sessionID) {
         let traders = [];
 
-        for (let trader of this.traders) {
-            if (trader._id === "ragfair") {
+        for (let traderId in this.traders[sessionID]) {
+            if (traderId === "ragfair") {
                 continue;
             }
-            traders.push(trader);
+            traders.push(this.traders[sessionID][traderId]);
         }
+
+        return {err: 0, errmsg: null, data: traders};
     }
 
     lvlUp(id, sessionID) {
@@ -90,6 +85,11 @@ class TraderServer {
             assort_f.generate(id, sessionID);
         }
     }
+}
+
+function getPath(id, sessionID) {
+    let path = filepaths.user.profiles.traders[id];
+    return path.replace("__REPLACEME__", sessionID);
 }
 
 module.exports.traderServer = new TraderServer();

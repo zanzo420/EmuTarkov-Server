@@ -18,6 +18,7 @@ function generate() {
         let date = utility.getDate();
         let datetime = date + " " + time;
 
+        output.data.weather = {};
         output.data.weather.timestamp = Math.floor(new Date() / 1000);
         output.data.weather.date = date;
         output.data.weather.time = datetime;

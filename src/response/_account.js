@@ -3,7 +3,8 @@
 require('../libs.js');
 
 /**
-* AccountServer class maintains list of accounts in memory. All account information should be loaded during server init.
+* AccountServer class maintains list of accounts in memory. All account information should be 
+* loaded during server init.
 */
 class AccountServer {
     constructor() {
@@ -32,7 +33,8 @@ class AccountServer {
     }
 
     exists(info) {
-        for (let account of this.accounts) {
+        for (let accountId of Object.keys(this.accounts)) {
+            let account = this.accounts[accountId];
             if (info.email === account.email && info.password === account.password) {
                 return account.id;
             }

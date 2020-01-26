@@ -11,10 +11,6 @@ class DialogueServer {
 		this.dialogues[sessionID] = json.parse(json.read(getPath(sessionID)));
 	}
 
-	getOpenSessions() {
-		return Object.keys(this.dialogues);
-	}
-
 	saveToDisk(sessionID) {
 		json.write(getPath(sessionID), this.dialogues[sessionID]);
 	}
@@ -162,6 +158,11 @@ class DialogueServer {
 	getAllAttachments(dialogueId, sessionID) {
 		return {"messages": this.dialogues[sessionID][dialogueId].messages};
 	}
+}
+
+function getPath(sessionID) {
+    let path = filepaths.user.profiles.dialogue;
+    return path.replace("__REPLACEME__", sessionID);
 }
 
 let messageTypes = {
