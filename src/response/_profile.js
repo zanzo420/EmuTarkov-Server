@@ -171,7 +171,7 @@ function addChildPrice(data, parentID, childPrice) {
 }
 
 function getStashType(sessionID) {
-    let temp = profileServer.getPmcProfile(sessionID);
+    let temp = profile_f.profileServer.getPmcProfile(sessionID);
 
     for (let key in temp.Inventory.items) {
         if (temp.Inventory.items.hasOwnProperty(key) && temp.Inventory.items[key]._id === temp.Inventory.stash) {
@@ -186,7 +186,7 @@ function getStashType(sessionID) {
 // added lastTrader so that we can list prices using the correct currency based on the trader
 function getPurchasesData(tmpTraderInfo, sessionID) {
     let multiplier = 0.9;
-    let data = profileServer.getPmcProfile(sessionID);
+    let data = profile_f.profileServer.getPmcProfile(sessionID);
     let equipment = data.Inventory.equipment;
     let stash = data.Inventory.stash;
     let questRaidItems = data.Inventory.questRaidItems;
