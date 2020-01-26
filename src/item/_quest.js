@@ -3,18 +3,18 @@
 require('../libs.js');
 
 // statuses seem as follow
-// 1 - not accepted
-// 2 - accepted
-// 3 - ???
+// 1 - locked
+// 2 - not accepted
+// 3 - accepted
 // 4 - completed
 // 5 - failed
 
 function acceptQuest(pmcData, body, sessionID) {
     pmcData.Quests.push({
-		"qid": body.qid.toString(), 
-		"startTime": utility.getTimestamp(), 
-		"status": 2
-	}); 
+        "qid": body.qid.toString(), 
+        "startTime": utility.getTimestamp(), 
+        "status": 3
+    }); 
 
     // Create a dialog message for starting the quest.
     let questDb = json.parse(json.read(filepaths.quests[body.qid.toString()]));
