@@ -53,13 +53,6 @@ function create(info, sessionID) {
 
         // generate trader
         json.write(folder + "traders/" + fileName + ".json", fileData);
-
-        // generate assort
-        if (fileName === "579dc571d53a0658a154fbec") {
-            continue;
-        }
-
-        assort_f.generate(fileName, account.id);
     }
 
     // don't wipe profile again

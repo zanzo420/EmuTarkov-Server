@@ -2,6 +2,8 @@
 
 require('../libs.js');
 
+let assorts = {};
+
 function getPath(id, sessionID) {
     let assortPath = filepaths.user.profiles.assort[id];
     return assortPath.replace("__REPLACEME__", sessionID);
@@ -40,17 +42,13 @@ function removeItem(assort, id) {
         }
 
         return assort;
-    } else {
-        logger.logError("assort item id is not valid");
-        return "BAD";
     }
+
+    logger.logError("assort item id is not valid");
+    return "BAD";
 }
 
 function generate(id, sessionID) {
-    if (id === "579dc571d53a0658a154fbec") {
-        return;
-    }
-
     let base = json.parse(json.read(filepaths.user.cache["assort_" + id]));
     let keys = Object.keys(base.data.loyal_level_items);
     let level = trader_f.get(id, sessionID).data.loyalty.currentLevel;
@@ -64,7 +62,7 @@ function generate(id, sessionID) {
         }
     }
 
-    json.write(getPath(id, sessionID), base);
+    assorts[sessionID + "_" + id] = base;
 }
 
 function generateFence(sessionID) {
@@ -86,7 +84,7 @@ function generateFence(sessionID) {
         base.data.loyal_level_items[id] = json.parse(json.read(filepaths.assort.ragfair.loyal_level_items[id]));
     }
 
-    return json.write(getPath("579dc571d53a0658a154fbec", sessionID), base);
+    assorts[sessionID + "_579dc571d53a0658a154fbec"] = base;
 }
 
 function get(id, sessionID) {
@@ -94,11 +92,13 @@ function get(id, sessionID) {
     if (id === "579dc571d53a0658a154fbec") {
         logger.logWarning("generating fence");
         generateFence(sessionID);
-    } else {
+    }
+
+    if (typeof assorts[sessionID + "_" + id] === "undefined") {
         generate(id, sessionID);
     }
 
-	return json.parse(json.read(getPath(id, sessionID)));
+	return assorts[sessionID + "_" + id];
 }
 
 module.exports.get = get;

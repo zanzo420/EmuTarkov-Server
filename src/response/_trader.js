@@ -72,7 +72,9 @@ function lvlUp(id, sessionID) {
     set(currentTrader.data, sessionID);
 
     // set assort
-    assort_f.generate(id, sessionID);
+    if (id !== "579dc571d53a0658a154fbec") {
+        assort_f.generate(id, sessionID);
+    }
 }
 
 module.exports.getPath = getPath;
