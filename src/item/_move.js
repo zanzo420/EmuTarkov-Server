@@ -180,33 +180,8 @@ function removeItem(body, output, sessionID, profileIndex = 0) {
     return "BAD";
 }
 
-function removeInsurance(pmcData, body, sessionID) {
-    let toDo = [body];
-    
-    //Find the item and all of it's relates
-    if (toDo[0] !== undefined && toDo[0] !== null && toDo[0] !== "undefined") {
-        let ids_toremove = itm_hf.findAndReturnChildren(pmcData, toDo[0]); //get all ids related to this item, +including this item itself
-
-        for (let i in ids_toremove) { //remove one by one all related items and itself
-            for (let a in pmcData.Inventory.items) {	//find correct item by id and delete it
-                if (pmcData.Inventory.items[a]._id === ids_toremove[i]) {
-                    for (let insurance in pmcData.InsuredItems) {
-                        if (pmcData.InsuredItems[insurance].itemId == ids_toremove[i]) {
-                            pmcData.InsuredItems.splice(insurance, 1);
-                        }
-                    }
-                }
-            }
-        }
-
-        profile_f.setPmcData(pmcData, sessionID);
-    }
-
-    logger.logError("item id is not valid");
-}
-
 function discardItem(pmcData, body, sessionID) {
-    removeInsurance(pmcData, body.item, sessionID);
+    insurance_f.remove(pmcData, body.item, sessionID);
     return removeItem(body.item, item.getOutput(), sessionID);
 }
 
@@ -544,5 +519,4 @@ module.exports.splitItem = splitItem;
 module.exports.mergeItem = mergeItem;
 module.exports.transferItem = transferItem;
 module.exports.swapItem = swapItem;
-module.exports.removeInsurance = removeInsurance;
 module.exports.addItem = addItem;

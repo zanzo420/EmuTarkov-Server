@@ -142,7 +142,7 @@ function loginUser(url, info, sessionID) {
 }
 
 function getInsuranceCost(url, info, sessionID) {
-    return insure_f.cost(info, sessionID);
+    return insurance_f.cost(info, sessionID);
 }
 
 function getItems(url, info, sessionID) {

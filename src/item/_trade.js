@@ -44,8 +44,8 @@ function sellItem(pmcData, body, sessionID) {
                 logger.logInfo("Selling: " + checkID);
 
                 // remove item
+                insurance_f.remove(pmcData, checkID, sessionID);
                 output = move_f.removeItem(checkID, output, sessionID);
-                move_f.removeInsurance(pmcData, checkID);
 
                 // add money to return to the player
                 let price_money = prices.data[item._id][0][0].count;

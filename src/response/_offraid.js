@@ -69,7 +69,7 @@ function deleteInventory(pmcData, sessionID) {
     for (let item of toDelete) {
         for (let insurance of pmcData.InsuredItems) {
             if (item === insurance.itemId && utility.getRandomInt(0, 99) < settings.gameplay.trading.insureReturnChance) {
-                move_f.removeInsurance(pmcData, toDelete[item]);
+                insurance_f.remove(pmcData, toDelete[item], sessionID);
                 item = "insured";
                 break;
             }

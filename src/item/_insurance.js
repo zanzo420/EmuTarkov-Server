@@ -2,6 +2,31 @@
 
 require('../libs.js');
 
+function remove(pmcData, body, sessionID) {
+    let toDo = [body];
+    
+    //Find the item and all of it's relates
+    if (toDo[0] !== undefined && toDo[0] !== null && toDo[0] !== "undefined") {
+        let ids_toremove = itm_hf.findAndReturnChildren(pmcData, toDo[0]); //get all ids related to this item, +including this item itself
+
+        for (let i in ids_toremove) { //remove one by one all related items and itself
+            for (let a in pmcData.Inventory.items) {	//find correct item by id and delete it
+                if (pmcData.Inventory.items[a]._id === ids_toremove[i]) {
+                    for (let insurance in pmcData.InsuredItems) {
+                        if (pmcData.InsuredItems[insurance].itemId == ids_toremove[i]) {
+                            pmcData.InsuredItems.splice(insurance, 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        profile_f.setPmcData(pmcData, sessionID);
+    }
+
+    logger.logError("item id is not valid");
+}
+
 function cost(info, sessionID) {
     let output = {"err": 0, "errmsg": null, "data": {}};
     let pmcData = profile_f.getPmcData(sessionID);
@@ -68,3 +93,4 @@ function insure(pmcData, body, sessionID) {
 
 module.exports.cost = cost;
 module.exports.insure = insure;
+module.exports.remove = remove;

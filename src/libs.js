@@ -89,7 +89,7 @@ module.exports = function(isFirstLaunch = false, time = 0) {
 	global.hideout_f = require('./item/_hideout.js');
 	global.weaponBuilds_f = require('./item/_weaponBuilds.js');
 	global.repair_f = require('./item/_repair.js');
-	global.insure_f = require('./item/_insure.js');
+	global.insurance_f = require('./item/_insurance.js');
 	global.trader_f = require('./response/_trader.js');
 	global.ragfair_f = require('./response/_ragfair.js');
 	global.weather_f = require('./response/_weather.js');
