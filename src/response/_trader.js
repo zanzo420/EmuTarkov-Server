@@ -13,9 +13,6 @@ class TraderServer {
         this.traders[sessionID] = {};
 
         for (let fileId in filepaths.traders) {
-            if (fileId === "ragfair") {
-                continue;
-            }
             let traderData = json.parse(json.read(getPath(fileId, sessionID)));
             this.traders[sessionID][traderData._id] = traderData;
         }
