@@ -494,7 +494,6 @@ function replaceIDs(pmcData, items) {
         if (dupes[item._id] > 1) {
             let newId = utility.generateNewItemId();
             
-            logger.logWarning("id is duplicated ! " + item._id);
             newParents[item.parentId] = newParents[item.parentId] || [];
             newParents[item.parentId].push(item);
             oldToNewIds[item._id] = oldToNewIds[item._id] || [];
