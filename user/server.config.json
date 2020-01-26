@@ -6,7 +6,7 @@
     "autosave": {
         "saveOnExit": true,
         "saveIntervalSec": 300,
-        "saveOnReceive": false
+        "saveOnReceive": true
     },
 	"gameplay": {
 		"features": {
