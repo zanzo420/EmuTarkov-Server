@@ -19,12 +19,6 @@ class AccountServer {
         for (let accountId of Object.keys(this.accounts)) {
             let account = this.accounts[accountId];
 
-            logger.logWarning(account.id === sessionID);
-            logger.logWarning(account.id == sessionID);
-            logger.logWarning(account.id === parseInt(sessionID));
-            logger.logWarning(parseInt(account.id) === sessionID);
-            logger.logWarning(parseInt(account.id) === parseInt(sessionID));
-
             if (account.id === sessionID) {
                 return account;
             }
