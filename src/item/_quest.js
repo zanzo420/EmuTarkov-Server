@@ -2,18 +2,23 @@
 
 require('../libs.js');
 
-// statuses seem as follow
-// 1 - locked
-// 2 - not accepted
-// 3 - accepted
-// 4 - completed
-// 5 - failed
+/*
+* Quest status values
+* 0 - Locked
+* 1 - AvailableForStart
+* 2 - Started
+* 3 - AvailableForFinish
+* 4 - Success
+* 5 - Fail
+* 6 - FailRestartable
+* 7 - MarkedAsFailed
+*/
 
 function acceptQuest(pmcData, body, sessionID) {
     pmcData.Quests.push({
         "qid": body.qid.toString(), 
         "startTime": utility.getTimestamp(), 
-        "status": 3
+        "status": 2
     }); 
 
     // Create a dialog message for starting the quest.
