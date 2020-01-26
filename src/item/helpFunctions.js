@@ -241,7 +241,7 @@ function getMoney(pmcData, amount, body, output, sessionID) {
         let StashFS_2D = recheckInventoryFreeSpace(pmcData, sessionID);
 
         // creating item
-        let stashSize = getPlayerStash();
+        let stashSize = getPlayerStash(sessionID);
 
         addedMoney:
             for (let My = 0; My <= stashSize[1]; My++) {
