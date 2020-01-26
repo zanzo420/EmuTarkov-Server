@@ -45,6 +45,11 @@ function getCookies(req) {
     return found;
 }
 
+function generateCertifcate() {
+    let perms = selfsigned.generate([{ name: 'commonName', value: settings.server.ip + "/" }], { days: 365 });
+    return {cert: perms.cert, key: perms.private};
+}
+
 async function notificationWaitAsync(resp, sessionID) {
     let promise = new Promise(resolve => {
         // Timeout after 15 seconds even if no messages have been received to keep the poll requests going.
@@ -216,17 +221,14 @@ function handleRequest(req, resp) {
     }
 }
 
-function start() {
-    const options = {
-        cert: fs.readFileSync(filepaths.cert.server.cert),
-        key: fs.readFileSync(filepaths.cert.server.key)
-    };
-
+function start() {  
     // set the ip
     if (settings.server.generateIp == true) {
         ip = utility.getLocalIpAddress();
         settings.server.ip = ip;
     }
+
+    const options = generateCertifcate();
 
     // show our watermark
     showWatermark();

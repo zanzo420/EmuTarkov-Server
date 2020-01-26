@@ -30,12 +30,6 @@
             "pmcbot": {}
         }
     },
-    "cert": {
-		"server": {
-			"cert": "",
-			"key": ""
-		}
-    },
     "customization": {
         "offers": {},
         "outfits": {}

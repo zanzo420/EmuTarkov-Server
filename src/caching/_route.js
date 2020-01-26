@@ -299,8 +299,6 @@ function others() {
     filepaths.hideout.settings = "db/hideout/settings.json";
     filepaths.ragfair.offer = "db/ragfair/offer.json";
     filepaths.ragfair.search = "db/ragfair/search.json";
-    filepaths.cert.server.cert = "cert/server.cert";
-    filepaths.cert.server.key = "cert/server.key";
 }
 
 function cache() {

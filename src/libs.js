@@ -5,9 +5,10 @@ module.exports = function(isFirstLaunch = false, time = 0) {
 	global.http = require('http');
 	global.https = require('https');
 	global.zlib = require('zlib');
-	global.adler32 = require('adler32');
 	global.os = require('os');
-
+	global.adler32 = require('adler32');
+	global.selfsigned = require('selfsigned');
+	
 	global.json = require('./json.js');
 	global.utility = require('./utility.js');
 	global.logger = require('./logger.js');
