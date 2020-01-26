@@ -2,83 +2,90 @@
 
 require('../libs.js');
 
-let traders = {};
-
-function getPath(id, sessionID) {
-    let path = filepaths.user.profiles.traders[id];
-    return path.replace("__REPLACEME__", sessionID);
-}
-
-function set(data, sessionID) {
-    traders[data._id] = data;
-    return json.write(getPath(data._id, sessionID), data);
-}
-
-function get(id, sessionID) {
-    if (typeof traders[id] === "undefined") {
-        traders[id] = json.parse(json.read(getPath(id, sessionID)));
+/*
+* TraderServer class maintains list of traders for each sessionID in memory. All first-time loads and save operations
+* also write to disk.
+*/
+class TraderServer {
+    constructor() {
+        this.traders = {};
     }
 
-	return {err: 0, errmsg: "", data: traders[id]};
-}
+    /* Load all the traders for sessionID into memory. */
+    initializeTraders(sessionID) {
+        this.traders[sessionID] = {};
 
-function getAll(sessionID) {
-    let traders = [];
-
-    // load trader files
-    for (let file in filepaths.traders) {
-        if (file !== "ragfair") {
-            traders.push((get(file, sessionID)).data);
+        for (let fileId in filepaths.traders) {
+            if (fileId === "ragfair") {
+                continue;
+            }
+            let traderData = json.parse(json.read(getPath(fileId, sessionID)));
+            this.traders[sessionID][traderData._id] = traderData;
         }
     }
 
-	return {err: 0, errmsg: null, data: traders};
-}
+    saveToDisk(sessionID) {
+        for (let trader of this.traders) {
+            json.write(getPath(trader._id, sessionID), trader);
+        }
+    }
 
-function lvlUp(id, sessionID) {
-    let pmcData = profile_f.getPmcData(sessionID);
-    let currentTrader = get(id, sessionID);
-    let loyaltyLevels = currentTrader.data.loyalty.loyaltyLevels;
+    getTrader(id, sessionID) {
+        return {err: 0, errmsg: "", data: this.traders[sessionID][id]};
+    }
 
-    // level up player
-    let checkedExp = 0;
+    getAllTraders(sessionID) {
+        let traders = [];
 
-    for (let level in globalSettings.data.config.exp.level.exp_table) {
-        if (pmcData.Info.Experience < checkedExp) {
+        for (let trader of this.traders) {
+            if (trader._id === "ragfair") {
+                continue;
+            }
+            traders.push(trader);
+        }
+    }
+
+    lvlUp(id, sessionID) {
+        let pmcProfile = profile_f.profileServer.getPmcProfile(sessionID);
+        let currentTrader = this.traders[sessionID][id];
+        let loyaltyLevels = currentTrader.data.loyalty.loyaltyLevels;
+
+        // level up player
+        let checkedExp = 0;
+
+        for (let level in globalSettings.data.config.exp.level.exp_table) {
+            if (pmcProfile.Info.Experience < checkedExp) {
+                break;
+            }
+
+            pmcProfile.Info.Level = level;
+            checkedExp += globalSettings.data.config.exp.level.exp_table[level].exp;
+        }
+
+        // level up traders
+        let targetLevel = 0;
+        
+        for (let level in loyaltyLevels) {
+            // level reached
+            if ((loyaltyLevels[level].minLevel <= pmcProfile.Info.Level
+            && loyaltyLevels[level].minSalesSum <= currentTrader.data.loyalty.currentSalesSum
+            && loyaltyLevels[level].minStanding <= currentTrader.data.loyalty.currentStanding)
+            && targetLevel < 4) {
+                targetLevel++;
+                continue;
+            }
+
             break;
         }
 
-        pmcData.Info.Level = level;
-        checkedExp += globalSettings.data.config.exp.level.exp_table[level].exp;
-    }
+        currentTrader.data.loyalty.currentLevel = targetLevel;
 
-    // level up traders
-    let targetLevel = 0;
-    
-    for (let level in loyaltyLevels) {
-        // level reached
-        if ((loyaltyLevels[level].minLevel <= pmcData.Info.Level
-        && loyaltyLevels[level].minSalesSum <= currentTrader.data.loyalty.currentSalesSum
-        && loyaltyLevels[level].minStanding <= currentTrader.data.loyalty.currentStanding)
-        && targetLevel < 4) {
-            targetLevel++;
-            continue;
+
+        // set assort
+        if (id !== "579dc571d53a0658a154fbec") {
+            assort_f.generate(id, sessionID);
         }
-
-        break;
-    }
-
-    currentTrader.data.loyalty.currentLevel = targetLevel;
-    set(currentTrader.data, sessionID);
-
-    // set assort
-    if (id !== "579dc571d53a0658a154fbec") {
-        assort_f.generate(id, sessionID);
     }
 }
 
-module.exports.getPath = getPath;
-module.exports.set = set;
-module.exports.get = get;
-module.exports.getAll = getAll;
-module.exports.lvlUp = lvlUp;
+module.exports.traderServer = new TraderServer();

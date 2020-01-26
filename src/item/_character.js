@@ -43,10 +43,9 @@ function eatItem(pmcData, body, sessionID) {
         energy.Current = energy.Maximum;
     }
 
-    profile_f.setPmcData(pmcData, sessionID);
 
     if (maxResource === 1 || todelete === true) {
-        output = move_f.removeItem(body.item, output, sessionID);
+        output = move_f.removeItem(pmcData, body.item, output, sessionID);
     }
 
     return output;
@@ -72,10 +71,8 @@ function healPlayer(pmcData, body, sessionID) {
             }
 
             if (item.upd.MedKit.HpResource === 0) {
-                move_f.removeItem(body.item, item.getOutput(), sessionID);
+                move_f.removeItem(pmcData, body.item, item.getOutput(), sessionID);
             }
-
-            profile_f.setPmcData(pmcData, sessionID);
         }
     }
 

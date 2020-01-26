@@ -45,7 +45,7 @@ function sellItem(pmcData, body, sessionID) {
 
                 // remove item
                 insurance_f.remove(pmcData, checkID, sessionID);
-                output = move_f.removeItem(checkID, output, sessionID);
+                output = move_f.removeItem(pmcData, checkID, output, sessionID);
 
                 // add money to return to the player
                 let price_money = prices.data[item._id][0][0].count;
@@ -87,7 +87,7 @@ function confirmRagfairTrading(pmcData, body, sessionID) {
     let output = item.getOutput()
 
     for (let offer of offers) {
-        pmcData = profile_f.getPmcData(sessionID);
+        pmcData = profile_f.getPmcProfile(sessionID);
         body = {};
         body.Action = "TradingConfirm";
         body.type = "buy_from_trader";

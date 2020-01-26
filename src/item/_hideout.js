@@ -17,7 +17,7 @@ function HideoutUpgrade(pmcData, body, sessionID) {
 			if (pmcData.Inventory.items[inventoryItem]._tpl === "5449016a4bdc2d6f028b456f") {
 				pmcData.Inventory.items[inventoryItem].upd.StackObjectsCount -= itemToPay.count;
 			} else {	
-				move_f.removeItem(pmcData.Inventory.items[inventoryItem]._id, item.getOutput(), sessionID);
+				move_f.removeItem(pmcData, pmcData.Inventory.items[inventoryItem]._id, item.getOutput(), sessionID);
 			}	
 		}
 	}
@@ -41,8 +41,7 @@ function HideoutUpgrade(pmcData, body, sessionID) {
 			}
 		}
 	}
-
-	profile_f.setPmcData(pmcData, sessionID);	
+	
 	item.resetOutput();
 	return item.getOutput();
 }
@@ -60,7 +59,6 @@ function HideoutUpgradeComplete(pmcData, body, sessionID) {
 		pmcData.Hideout.Areas[hideoutArea].constructing = false;
 	}
 
-	profile_f.setPmcData(pmcData, sessionID);
 	item.resetOutput();		
 	return item.getOutput();
 }
@@ -85,12 +83,11 @@ function HideoutPutItemsInAreaSlots(pmcData, body, sessionID) {
 				let slot_to_add = {"item": [{"_id": inventoryItem._id, "_tpl": inventoryItem._tpl, "upd": inventoryItem.upd}]}
 
 				pmcData.Hideout.Areas[area].slots.push(slot_to_add);
-				output = move_f.removeItem(inventoryItem._id, output, sessionID);
+				output = move_f.removeItem(pmcData, inventoryItem._id, output, sessionID);
 			}
 		}
 	}
 
-	profile_f.setPmcData(pmcData, sessionID);
 	return output;
 }
 
@@ -112,9 +109,8 @@ function HideoutTakeItemsFromAreaSlots(pmcData, body, sessionID) {
 		
 		output = move_f.addItem(pmcData, newReq, output, sessionID);
 		
-		pmcData = profile_f.getPmcData(sessionID);
+		pmcData = profile_f.getPmcProfile(sessionID);
 		pmcData.Hideout.Areas[area].slots.splice(0, 1);
-		profile_f.setPmcData(pmcData, sessionID);
 	}
 
 	return output;
@@ -127,7 +123,6 @@ function HideoutToggleArea(pmcData, body, sessionID) {
 		}
 	}
 
-	profile_f.setPmcData(pmcData, sessionID);
 	item.resetOutput();		
 	return item.getOutput();
 }
@@ -139,7 +134,7 @@ function HideoutSingleProductionStart(pmcData, body, sessionID) {
 	let output = item.getOutput();
 
 	for (let itemToDelete of body.items) {
-		output = move_f.removeItem(itemToDelete.id, output, sessionID);
+		output = move_f.removeItem(pmcData, itemToDelete.id, output, sessionID);
 	}
 
 	return output;
@@ -196,7 +191,6 @@ function HideoutScavCaseProductionStart(pmcData, body, sessionID) {
 		}
 	}
 
-	profile_f.setPmcData(pmcData, sessionID);
 	item.resetOutput();
 	return item.getOutput();
 }
@@ -221,7 +215,6 @@ function HideoutTakeProduction(pmcData, body, sessionID) {
 		for (let prod in pmcData.Hideout.Production) {
 			if (pmcData.Hideout.Production[prod].RecipeId === body.recipeId) {
 				delete pmcData.Hideout.Production[prod];
-				profile_f.setPmcData(pmcData, sessionID);
 			}
 		}
 
@@ -248,7 +241,7 @@ function HideoutTakeProduction(pmcData, body, sessionID) {
 			for (let itemProd of pmcData.Hideout.Production[prod].Products) {
 				let newReq = {};
 
-				pmcData = profile_f.getPmcData(sessionID);
+				pmcData = profile_f.getPmcProfile(sessionID);
 				newReq.item_id = itemProd._tpl;
 				newReq.count = 1;
 				newReq.tid = "ragfair";
@@ -257,7 +250,6 @@ function HideoutTakeProduction(pmcData, body, sessionID) {
 			}
 
 			delete pmcData.Hideout.Production[prod];
-			profile_f.setPmcData(pmcData, sessionID);			
 			return output;
 		}
 	}
@@ -277,8 +269,6 @@ function registerProduction(pmcData, body, sessionID) {
 			};
 		}
 	}
-
-	profile_f.setPmcData(pmcData, sessionID);
 }
 
 module.exports.hideoutUpgrade = HideoutUpgrade;

@@ -26,7 +26,6 @@ function wearClothing(pmcData, body, sessionID) {
 		}
 	}
 
-	profile_f.setPmcData(pmcData, sessionID);
     item.resetOutput();
 	return item.getOutput();
 }
@@ -68,7 +67,6 @@ function buyClothing(pmcData, body, sessionID) {
 	}
 
 	json.write(getPath(sessionID), customization_storage);
-	profile_f.setPmcData(pmcData, sessionID);
 	return output;
 }
 

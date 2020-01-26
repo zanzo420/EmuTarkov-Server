@@ -29,7 +29,7 @@ function remove(pmcData, body, sessionID) {
 
 function cost(info, sessionID) {
     let output = {"err": 0, "errmsg": null, "data": {}};
-    let pmcData = profile_f.getPmcData(sessionID);
+    let pmcData = profile_f.getPmcProfile(sessionID);
 
     for (let trader of info.traders) {
         let items = {};
@@ -87,7 +87,6 @@ function insure(pmcData, body, sessionID) {
         }
     }
 
-    profile_f.setPmcData(pmcData, sessionID);
     return item.getOutput();
 }
 

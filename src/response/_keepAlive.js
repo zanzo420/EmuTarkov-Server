@@ -3,7 +3,7 @@
 require('../libs.js');
 
 function main(sessionID) {
-    if (!account_f.isWiped(sessionID)) {
+    if (!account_f.accountServer.isWiped(sessionID)) {
         updateTraders(sessionID);
         updatePlayerHideout(sessionID);
     }
@@ -13,7 +13,7 @@ function updateTraders(sessionID) {
     // update each hour
     let update_per = 3600;
     let timeNow = Math.floor(Date.now() / 1000);
-    let tradersToUpdateList = trader_f.getAll(sessionID);
+    let tradersToUpdateList = trader_f.traderServer.getAllTraders(sessionID);
 
     tradersToUpdateList = tradersToUpdateList.data;
     
@@ -32,12 +32,11 @@ function updateTraders(sessionID) {
         compensateUpdate_per = compensateUpdate_per * update_per;
         newTraderTime = newTraderTime + compensateUpdate_per + update_per;
         tradersToUpdateList[i].supply_next_time = newTraderTime;
-        trader_f.set(tradersToUpdateList[i], sessionID);
     }
 }
 
 function updatePlayerHideout(sessionID) {
-    let pmcData = profile_f.getPmcData(sessionID);
+    let pmcData = profile_f.getPmcProfile(sessionID);
 
     // update production time
     for (let prod in pmcData.Hideout.Production) { 

@@ -2,127 +2,152 @@
 
 require("../libs.js");
 
-let pmcs = {};
-let scavs = {};
+/*
+* ProfileServer class maintains list of active profiles for each sessionID in memory. All first-time loads and save
+* operations also write to disk.*
+*/
+class ProfileServer {
+    constructor() {
+        this.profiles = {};
+    }
+
+    initializeProfile(sessionID) {
+        this.profiles[sessionID] = {};
+        this.loadProfilesFromDisk(sessionID);
+    }
+
+    loadProfilesFromDisk(sessionID) {
+        this.profiles[sessionID]['pmc'] = json.parse(json.read(getPmcPath(sessionID)));
+        this.profiles[sessionID]['scav'] = json.parse(json.read(getScavPath(sessionID)));
+    }
+
+    /* 
+    * Get profile with sessionID of type (profile type in string, i.e. 'pmc').
+    * If we don't have a profile for this sessionID yet, then load it from disk.
+    */
+    getProfile(sessionID, type) {
+        if (!(sessionID in this.profiles)) {
+            this.initializeProfile(sessionID);
+        }
+
+        return this.profiles[sessionID][type];
+    }
+
+    getPmcProfile(sessionID) {
+        let pmcProfile = this.getProfile(sessionID, 'pmc');
+
+        if (pmcProfile.Stats.TotalSessionExperience > 0) {
+            const sessionExp = pmcProfile.Stats.TotalSessionExperience;
+            pmcProfile.Info.Experience += sessionExp;
+            pmcProfile.Stats.TotalSessionExperience = 0;
+        }
+
+        return pmcProfile;
+    }
+
+    getScavProfile(sessionID) {
+        return this.getProfile(sessionID, 'scav');
+    }
+
+    createProfile(sessionID) {
+        let account = account_f.accountServer.find(sessionID);
+        let folder = account_f.getPath(account.id);
+        let pmcData = json.parse(json.read(filepaths.profile.character[account.edition + "_" + info.side.toLowerCase()]));
+        let storage = json.parse(json.read(filepaths.profile.storage));
+        let userbuilds = json.parse(json.read(filepaths.profile.userbuilds));
+
+        // pmc info
+        pmcData._id = "pmc" + account.id;
+        pmcData.aid = account.id;
+        pmcData.savage = "scav" + account.id;
+        pmcData.Info.Nickname = info.nickname;
+        pmcData.Info.LowerNickname = info.nickname.toLowerCase();
+        pmcData.Info.RegistrationDate = Math.floor(new Date() / 1000);
+
+        // storage info
+        storage.data._id = "pmc" + account.id;
+        storage.data.suites = (info.side === "Usec") ? ["5cde9ec17d6c8b04723cf479", "5cde9e957d6c8b0474535da7"] : ["5cd946231388ce000d572fe3", "5cd945d71388ce000a659dfb"];
+
+        // create profile
+        json.write(folder + "character.json", pmcData);
+        json.write(folder + "storage.json", storage);
+        json.write(folder + "userbuilds.json", userbuilds);
+        json.write(folder + "scav.json", generateScav(sessionID));
+        json.write(folder + "dialogue.json", {});
+
+        // create traders
+        let inputFiles = filepaths.traders;
+        let inputNames = Object.keys(inputFiles);
+        let i = 0;
+
+        for (let file in inputFiles) {
+            let filePath = inputFiles[file];
+            let fileData = json.parse(json.read(filePath));
+            let fileName = inputNames[i++];
+
+            // generate trader
+            json.write(folder + "traders/" + fileName + ".json", fileData);
+
+            // generate assort
+            if (fileName === "579dc571d53a0658a154fbec") {
+                continue;
+            }
+
+            assort_f.generate(fileName, account.id);
+        }
+
+        // Also load to memory.
+        this.initializeProfile(sessionID);
+
+        // don't wipe profile again
+        account_f.accountServer.setWipe(account.id, false);
+    }
+
+    savePmcData(sessionID) {
+        json.write(getPmcPath(sessionID), this.profiles[sessionID]['pmc']);
+    }
+
+    saveScavData(sessionID) {
+        json.write(getScavPath(sessionID), this.profiles[sessionID]['scav']);
+    }
+
+    generateScav(sessionID) {
+        let scavData = this.profiles[sessionID]['scav'];
+        scavData = bots.generatePlayerScav();
+        scavData._id = pmcData.savage;
+        scavData.aid = sessionID;
+    }
+
+    changeNickname(info, sessionID) {
+        let pmcData = this.getPmcProfile(sessionID);
+
+        // check if the nickname exists
+        if (account_f.nicknameTaken(info)) {
+            return '{"err":225, "errmsg":"this nickname is already in use", "data":null}';
+        }
+
+        // change nickname
+        pmcData.Info.Nickname = info.nickname;
+        pmcData.Info.LowerNickname = info.nickname.toLowerCase();
+        return ('{"err":0, "errmsg":null, "data":{"status":0, "nicknamechangedate":' + Math.floor(new Date() / 1000) + "}}");
+    }
+
+    changeVoice(info, sessionID) {
+        let pmcData = this.getPmcProfile(sessionID);
+        pmcData.Info.Voice = info.voice;
+    }
+}
 
 function getPmcPath(sessionID) {
-    let path = filepaths.user.profiles.character;
-    return path.replace("__REPLACEME__", sessionID);
+    let pmcPath = filepaths.user.profiles.character;
+    pmcPath.replace("__REPLACEME__", sessionID);
+    return pmcPath;
 }
 
 function getScavPath(sessionID) {
-    let path = filepaths.user.profiles.scav;
-    return path.replace("__REPLACEME__", sessionID);
-}
-
-function create(info, sessionID) {
-    let account = account_f.find(sessionID);
-    let folder = account_f.getPath(account.id);
-    let pmcData = json.parse(json.read(filepaths.profile.character[account.edition + "_" + info.side.toLowerCase()]));
-    let storage = json.parse(json.read(filepaths.profile.storage));
-    let userbuilds = json.parse(json.read(filepaths.profile.userbuilds));
-
-    // pmc info
-    pmcData._id = "pmc" + account.id;
-    pmcData.aid = account.id;
-    pmcData.savage = "scav" + account.id;
-    pmcData.Info.Nickname = info.nickname;
-    pmcData.Info.LowerNickname = info.nickname.toLowerCase();
-    pmcData.Info.RegistrationDate = Math.floor(new Date() / 1000);
-
-    // storage info
-    storage.data._id = "pmc" + account.id;
-    storage.data.suites = (info.side === "Usec") ? ["5cde9ec17d6c8b04723cf479", "5cde9e957d6c8b0474535da7"] : ["5cd946231388ce000d572fe3", "5cd945d71388ce000a659dfb"];
-
-    // create profile
-    json.write(folder + "character.json", pmcData);
-    json.write(folder + "storage.json", storage);
-    json.write(folder + "userbuilds.json", userbuilds);
-    json.write(folder + "scav.json", generateScav(sessionID));
-    json.write(folder + "dialogue.json", {});
-
-    // create traders
-    let inputFiles = filepaths.traders;
-    let inputNames = Object.keys(inputFiles);
-    let i = 0;
-
-    for (let file in inputFiles) {
-        let filePath = inputFiles[file];
-        let fileData = json.parse(json.read(filePath));
-        let fileName = inputNames[i++];
-
-        // generate trader
-        json.write(folder + "traders/" + fileName + ".json", fileData);
-    }
-
-    // don't wipe profile again
-    account_f.setWipe(account.id, false);
-}
-
-function setPmcData(pmcData, sessionID) {
-    pmcs[sessionID] = pmcData;
-    json.write(getPmcPath(sessionID), pmcData);
-}
-
-function setScavData(scavData, sessionID) {
-    scavs[sessionID] = scavData;
-    json.write(getScavPath(sessionID), scavData);   
-}
-
-function generateScav(sessionID) {
-    let pmcData = getPmcData(sessionID);
-    let scavData = bots.generatePlayerScav();
-
-    scavData._id = pmcData.savage;
-    scavData.aid = sessionID;
-    setScavData(scavData, sessionID);
-
-    pmcs[sessionID] = pmcData;
-    scavs[sessionID] = scavData;
-
-    return scavData;
-}
-
-function getPmcData(sessionID) {
-    if (typeof pmcs[sessionID] === "undefined") {
-        pmcs[sessionID] = json.parse(json.read(getPmcPath(sessionID)));
-    }
-
-    let pmcData = pmcs[sessionID];
-
-    if (pmcData.Stats.TotalSessionExperience > 0) {
-        const sessionExp = pmcData.Stats.TotalSessionExperience;
-
-        pmcData.Info.Experience += sessionExp;
-        pmcData.Stats.TotalSessionExperience = 0;
-        setPmcData(pmcData, sessionID);
-    }
-    
-    return pmcData;
-}
-
-function getScavData(sessionID) {
-    if (!fs.existsSync(getScavPath(sessionID))) {
-        generateScav(sessionID);
-    }
-
-    if (typeof scavs[sessionID] === "undefined") {
-        scavs[sessionID] = json.parse(json.read(getScavPath(sessionID)));
-    }
-
-    return scavs[sessionID];
-}
-
-function get(sessionID) {
-    let output = {err: 0, errmsg: null, data: []};
-
-    if (account_f.isWiped(sessionID)) {
-        return output;
-    }
-
-    output.data.push(getPmcData(sessionID));
-    output.data.push(getScavData(sessionID));
-    return output;
+    let scavPath = filepaths.user.profiles.scav;
+    scavPath.replace("__REPLACEME__", sessionID);
+    return scavPath;
 }
 
 function addChildPrice(data, parentID, childPrice) {
@@ -141,7 +166,7 @@ function addChildPrice(data, parentID, childPrice) {
 }
 
 function getStashType(sessionID) {
-    let temp = getPmcData(sessionID);
+    let temp = profileServer.getPmcProfile(sessionID);
 
     for (let key in temp.Inventory.items) {
         if (temp.Inventory.items.hasOwnProperty(key) && temp.Inventory.items[key]._id === temp.Inventory.stash) {
@@ -156,7 +181,7 @@ function getStashType(sessionID) {
 // added lastTrader so that we can list prices using the correct currency based on the trader
 function getPurchasesData(tmpTraderInfo, sessionID) {
     let multiplier = 0.9;
-    let data = getPmcData(sessionID);
+    let data = profileServer.getPmcProfile(sessionID);
     let equipment = data.Inventory.equipment;
     let stash = data.Inventory.stash;
     let questRaidItems = data.Inventory.questRaidItems;
@@ -201,7 +226,7 @@ function getPurchasesData(tmpTraderInfo, sessionID) {
             let preparePrice = basePrice * multiplier * itemCount;
 
             // convert the price using the lastTrader's currency
-            preparePrice = itm_hf.fromRUB(preparePrice, itm_hf.getCurrency(trader_f.get(tmpTraderInfo, sessionID).data.currency));
+            preparePrice = itm_hf.fromRUB(preparePrice, itm_hf.getCurrency(trader_f.traderServer.getTrader(tmpTraderInfo, sessionID).data.currency));
 
             // uses profile information to get the level of the dogtag and multiplies
             // the prepare price after conversion with this factor
@@ -218,36 +243,6 @@ function getPurchasesData(tmpTraderInfo, sessionID) {
     return purchaseOutput;
 }
 
-function changeNickname(info, sessionID) {
-    let pmcData = getPmcData(sessionID);
-
-    // check if the nickname exists
-    if (account_f.nicknameTaken(info)) {
-        return '{"err":225, "errmsg":"this nickname is already in use", "data":null}';
-    }
-
-    // change nickname
-    pmcData.Info.Nickname = info.nickname;
-    pmcData.Info.LowerNickname = info.nickname.toLowerCase();
-    setPmcData(pmcData, sessionID);
-    return ('{"err":0, "errmsg":null, "data":{"status":0, "nicknamechangedate":' + Math.floor(new Date() / 1000) + "}}");
-}
-
-function changeVoice(info, sessionID) {
-    let pmcData = getPmcData(sessionID);
-
-    pmcData.Info.Voice = info.voice;
-    setPmcData(pmcData, sessionID);
-}
-
-module.exports.create = create;
-module.exports.get = get;
-module.exports.setPmcData = setPmcData;
-module.exports.setScavData = setScavData;
-module.exports.getPmcData = getPmcData;
-module.exports.getScavData = getScavData;
-module.exports.generateScav = generateScav;
+module.exports.profileServer = new ProfileServer();
 module.exports.getStashType = getStashType;
 module.exports.getPurchasesData = getPurchasesData;
-module.exports.changeNickname = changeNickname;
-module.exports.changeVoice = changeVoice;

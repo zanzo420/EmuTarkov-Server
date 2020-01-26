@@ -3,9 +3,9 @@
 require('../libs.js');
 
 // statuses seem as follow
-// 1 - locked
-// 2 - not accepted
-// 3 - accepted
+// 1 - not accepted
+// 2 - accepted
+// 3 - ???
 // 4 - completed
 // 5 - failed
 
@@ -13,7 +13,7 @@ function acceptQuest(pmcData, body, sessionID) {
     pmcData.Quests.push({
 		"qid": body.qid.toString(), 
 		"startTime": utility.getTimestamp(), 
-		"status": 3
+		"status": 2
 	}); 
 	
     profile_f.setPmcData(pmcData, sessionID);
@@ -22,7 +22,7 @@ function acceptQuest(pmcData, body, sessionID) {
     let questDb = json.parse(json.read(filepaths.quests[body.qid.toString()]));
     let questLocale = json.parse(json.read(filepaths.locales["en"].quest[body.qid.toString()]));
     // Note that for starting quests, the correct locale field is "description", not "startedMessageText".
-    dialogue_f.addDialogueMessage(questDb.traderId,
+    dialogue_f.dialogueServer.addDialogueMessage(questDb.traderId,
                                   questLocale.description,
                                   dialogue_f.getMessageTypeValue('questStart'),
                                   sessionID);
@@ -62,21 +62,21 @@ function completeQuest(pmcData, body, sessionID) {
                     break;
 
                 case "Experience":
-                    pmcData = profile_f.getPmcData(sessionID);
+                    pmcData = profile_f.getPmcProfile(sessionID);
                     pmcData.Info.Experience += parseInt(reward.value);
                     profile_f.setPmcData(pmcData, sessionID);
                     break;
 
                 case "TraderStanding":
                     // improve trader standing
-                    let tmpTraderInfo = trader_f.get(quest.traderId, sessionID);
+                    let tmpTraderInfo = trader.get(quest.traderId, sessionID);
 
                     tmpTraderInfo.data.loyalty.currentStanding
                     tmpTraderInfo.data.loyalty.currentStanding = tmpTraderInfo.data.loyalty.currentStanding + parseFloat(reward.value);
-                    trader_f.set(tmpTraderInfo.data, sessionID);
+                    trader.setTrader(tmpTraderInfo.data, sessionID);
 
                     // level up trader
-                    trader_f.lvlUp(quest.traderId, sessionID);
+                    trader_f.traderServer.lvlUp(quest.traderId, sessionID);
                     break;
             }
         }
@@ -85,7 +85,7 @@ function completeQuest(pmcData, body, sessionID) {
     // Create a dialog message for completing the quest.
     let questDb = json.parse(json.read(filepaths.quests[body.qid.toString()]));
     let questLocale = json.parse(json.read(filepaths.locales["en"].quest[body.qid.toString()]));
-    dialogue_f.addDialogueMessage(questDb.traderId,
+    dialogue_f.dialogueServer.addDialogueMessage(questDb.traderId,
                                   questLocale.successMessageText,
                                   dialogue_f.getMessageTypeValue('questSuccess'),
                                   sessionID,
@@ -107,7 +107,7 @@ function handoverQuest(pmcData, body, sessionID) {
     
     for (let itemHandover of body.items) {
         counter += itemHandover.count;
-        output = move_f.removeItem(itemHandover.id, output, sessionID);
+        output = move_f.removeItem(pmcData, itemHandover.id, output, sessionID);
     }
 
     for (let backendCounter in pmcData.BackendCounters) {

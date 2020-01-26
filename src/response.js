@@ -98,7 +98,7 @@ function showIndex(url, info, sessionID) {
 
 function showInventoryChecker(url, info, sessionID) {
     let output = "";
-    let inv = itm_hf.recheckInventoryFreeSpace(profile_f.get(sessionID));
+    let inv = itm_hf.recheckInventoryFreeSpace(profile_f.profileServer.getPmcProfile(sessionID));
 
     output += "<style>td{border:1px solid #aaa;}</style>Inventory Stash Usage:<br><table><tr><td>-</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9<br>";
 
@@ -138,7 +138,7 @@ function getLocale(url, info, sessionID) {
 }
 
 function loginUser(url, info, sessionID) {
-    return account_f.findID(info);
+    return account_f.accountServer.findID(info);
 }
 
 function getInsuranceCost(url, info, sessionID) {
@@ -158,7 +158,7 @@ function getProfileData(url, info, sessionID) {
 }
 
 function regenerateScav(url, info, sessionID) {
-    return JSON.stringify({err: 0, errmsg: null, data: [profile_f.generateScav(sessionID)]});
+    return JSON.stringify({err: 0, errmsg: null, data: [profile_f.profileServer.generateScav(sessionID)]});
 }
 
 function selectProfile(url, info, sessionID) {
@@ -194,7 +194,7 @@ function getBots(url, info, sessionID) {
 }
 
 function getTraderList(url, info, sessionID) {
-    return JSON.stringify(trader_f.getAll(sessionID));
+    return JSON.stringify(trader_f.traderServer.getAllTraders(sessionID));
 }
 
 function getServer(url, info, sessionID) {
@@ -210,11 +210,11 @@ function getChatServerList(url, info, sessionID) {
 }
 
 function changeNickname(url, info, sessionID) {
-    return profile_f.changeNickname(info);
+    return profile_f.profileServer.changeNickname(info, sessionID);
 }
 
 function changeVoice(url, info, sessionID) {
-    profile_f.changeVoice(info);
+    profile_f.profileServer.changeVoice(info, sessionID);
     return nullResponse(url, info, sessionID);
 }
 
@@ -286,7 +286,7 @@ function createNotifierChannel(url, info, sessionID) {
 }
 
 function getReservedNickname(url, info, sessionID) {
-    return '{"err":0,"errmsg":null,"data":"' + account_f.getReservedNickname(sessionID) + '"}';
+    return '{"err":0,"errmsg":null,"data":"' + account_f.accountServer.getReservedNickname(sessionID) + '"}';
 }
 
 function validateNickname(url, info, sessionID) {
@@ -295,42 +295,40 @@ function validateNickname(url, info, sessionID) {
 }
 
 function createProfile(url, info, sessionID) {
-    profile_f.create(info, sessionID);
+    profile_f.profileServer.createProfile(sessionID);
     return '{"err":0,"errmsg":null,"data":{"uid":"pmc' + sessionID + '"}}';
 }
 
 function getMailDialogList(url, info, sessionID) {
-    return dialogue_f.generateDialogueList(sessionID);
+    return dialogue_f.dialogueServer.generateDialogueList(sessionID);
 }
 
 function getMailDialogView(url, info, sessionID) {
-    return dialogue_f.generateDialogueView(info.dialogId, sessionID);
+    return dialogue_f.dialogueServer.generateDialogueView(info.dialogId, sessionID);
 }
 
 function getMailDialogInfo(url, info, sessionID) {
-    let dialogueFile = dialogue_f.get(sessionID);
-
-    let data = dialogue_f.getDialogueInfo(dialogueFile, info.dialogId, sessionID);
+    let data = dialogue_f.dialogueServer.getDialogueInfo(info.dialogId, sessionID);
     return '{"err":0,"errmsg":null,"data":' + json.stringify(data) + '}';
 }
 
 function removeDialog(url, info, sessionID) {
-    dialogue_f.removeDialogue(info.dialogId, sessionID);
+    dialogue_f.dialogueServer.removeDialogue(info.dialogId, sessionID);
     return nullArrayResponse;
 }
 
 function pinDialog(url, info, sessionID) {
-    dialogue_f.setDialoguePin(info.dialogId, true, sessionID);
+    dialogue_f.dialogueServer.setDialoguePin(info.dialogId, true, sessionID);
     return nullArrayResponse;
 }
 
 function unpinDialog(url, info, sessionID) {
-    dialogue_f.setDialoguePin(info.dialogId, false, sessionID);
+    dialogue_f.dialogueServer.setDialoguePin(info.dialogId, false, sessionID);
     return nullArrayResponse;
 }
 
 function setRead(url, info, sessionID) {
-    dialogue_f.setRead(info.dialogs, sessionID);
+    dialogue_f.dialogueServer.setRead(info.dialogs, sessionID);
     return nullArrayResponse;
 }
 
@@ -346,7 +344,7 @@ function updateHealth(url, info, sessionID) {
 }
 
 function getAllAttachments(url, info, sessionID) {
-    let data = dialogue_f.getAllAttachments(info.dialogId, sessionID);
+    let data = dialogue_f.dialogueServer.getAllAttachments(info.dialogId, sessionID);
     return '{"err":0,"errmsg":null,"data":' + json.stringify(data) + '}';
 }
 
@@ -368,7 +366,7 @@ function getProfilePurchases(url, info, sessionID) {
 }
 
 function getTrader(url, info, sessionID) {
-    return JSON.stringify(trader_f.get(url.replace("/client/trading/api/getTrader/", ''), sessionID));
+    return JSON.stringify(trader_f.traderServer.getTrader(url.replace("/client/trading/api/getTrader/", ''), sessionID));
 }
 
 function getAssort(url, info, sessionID) {

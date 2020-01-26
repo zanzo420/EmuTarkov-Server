@@ -2,87 +2,62 @@
 
 require('../libs.js');
 
-let accounts = [];
-
-function init() {
-    accounts = json.parse(json.read(filepaths.user.profiles.list));
-}
-
-function save() {
-    json.write(filepaths.user.profiles.list, accounts);
-}
-
-function find(sessionID) {
-    for (let account of accounts) {
-        if (account.id === sessionID) {
-            return account;
-        }
+/**
+* AccountServer class maintains list of accounts in memory. All account information should be loaded during server init.
+*/
+class AccountServer {
+    constructor() {
+        this.accounts = json.parse(json.read(filepaths.user.profiles.list));
     }
 
-    return undefined;
-}
-
-function isWiped(sessionID) {
-    let account = find(sessionID);
-    return account.wipe;
-}
-
-function setWipe(sessionID, state) {
-    for (let account of accounts) {
-        if (account.id === sessionID) {
-            account.wipe = state;
-        }
+    saveToDisk() {
+        json.write(filepaths.user.profiles.list, this.accounts);
     }
 
-    save();
-}
-
-function exists(info) {
-    for (let account of accounts) {
-        if (info.email === account.email && info.password === account.password) {
-            return account.id;
+    find(sessionID) {
+        for (let account of this.accounts) {
+            if (account.id === sessionID) {
+                return account;
+            }
         }
+        return undefined;
     }
 
-    return 0;
-}
-
-function getReservedNickname(sessionID) {
-    let account = find(sessionID);
-    return account.nickname;
-}
-
-function isNicknameTaken(info) {
-    for (let account of accounts) {
-        let profile = profile_f.getPmcData(account.id);
-
-        if (account.nickname === info.nickname || profile.Info.Nickname === info.nickname) {
-            return true;
-        }
+    isWiped(sessionID) {
+        return this.accounts[sessionID].wipe;
     }
 
-    return false;
-}
+    setWipe(sessionID, state) {
+        this.accounts[sessionID].wipe = state;
+    }
 
-function findID(data) {
-    let buff = Buffer.from(data.token, 'base64');
-    let text = buff.toString('ascii');
-    let info = json.parse(text);
-    let sessionID = exists(info);
+    exists(info) {
+        for (let account of this.accounts) {
+            if (info.email === account.email && info.password === account.password) {
+                return account.id;
+            }
+        }
 
-    return json.stringify({profileId: sessionID});
+        return 0;
+    }
+
+    getReservedNickname(sessionID) {
+        return this.accounts[sessionID].nickname;
+    }
+
+    findID(data) {
+        let buff = Buffer.from(data.token, 'base64');
+        let text = buff.toString('ascii');
+        let info = json.parse(text);
+        let sessionID = this.exists(info);
+
+        return json.stringify({profileId: sessionID});
+    }
 }
 
 function getPath(sessionID) {
     return "user/profiles/" + sessionID + "/";
 }
 
-module.exports.init = init;
-module.exports.find = find;
-module.exports.exists = exists;
-module.exports.isWiped = isWiped;
-module.exports.setWipe = setWipe;
-module.exports.getReservedNickname = getReservedNickname;
-module.exports.isNicknameTaken = isNicknameTaken;
-module.exports.findID = findID;
+module.exports.accountServer = new AccountServer();
 module.exports.getPath = getPath;

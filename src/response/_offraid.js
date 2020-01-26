@@ -91,8 +91,8 @@ function saveProgress(offraidData, sessionID) {
         return;
     }
 
-    let pmcData = profile_f.getPmcData(sessionID);
-    let scavData = profile_f.getScavData(sessionID);
+    let pmcData = profile_f.getPmcProfile(sessionID);
+    let scavData = profile_f.getScavProfile(sessionID);
     const isPlayerScav = offraidData.isPlayerScav;
 
     // set pmc data
@@ -123,7 +123,6 @@ function saveProgress(offraidData, sessionID) {
 
     // terminate early for player scavs because we don't care about whether they died.
     if (isPlayerScav) {
-        profile_f.setScavData(scavData, sessionID);
         return;
     }
 

@@ -11,34 +11,29 @@ function moveItem(pmcData, body, sessionID) {
     item.resetOutput();
 
     let output = item.getOutput();
-    let scavData = profile_f.getScavData(sessionID);
+    let scavData = profile_f.getScavProfile(sessionID);
 
     if (typeof body.fromOwner !== 'undefined' && body.fromOwner.id === scavData._id) {
         // Handle changes to items from scav inventory should update the item
         if (typeof body.to.container === "undefined" || (body.to.container !== "main" && body.to.container !== "hideout")) {
             moveItemInternal(scavData, body);
-            profile_f.setScavData(pmcData);
             return output;
         }
 
         moveItemToProfile(scavData, pmcData, body);
-        profile_f.setPmcData(pmcData, sessionID);
-        profile_f.setScavData(pmcData);
         return output;
     }
     
     if (typeof body.toOwner !== 'undefined' && body.toOwner.id === scavData._id) {
         // Handle transfers from stash to scav.
         moveItemToProfile(pmcData, scavData, body);
-        profile_f.setPmcData(pmcData, sessionID);
-        profile_f.setScavData(pmcData);
         return output;
     }
     
     if (typeof body.fromOwner !== 'undefined' && body.fromOwner.type === 'Mail') {
         // If the item is coming from the mail, we need to get the item contents from the corresponding
         // message (denoted by fromOwner) and push them to player stash.
-        let messageItems = dialogue_f.getMessageItemContents(body.fromOwner.id, sessionID);
+        let messageItems = dialogue_f.dialogueServer.getMessageItemContents(body.fromOwner.id, sessionID);
         let idsToMove = dialogue_f.findAndReturnChildren(messageItems, body.item);
         
         for (let itemId of idsToMove) {
@@ -50,12 +45,10 @@ function moveItem(pmcData, body, sessionID) {
         }
 
         moveItemInternal(pmcData, body);
-        profile_f.setPmcData(pmcData, sessionID);
         return output;
     }
 
     moveItemInternal(pmcData, body);
-    profile_f.setPmcData(pmcData, sessionID);
     return output;
 }
 
@@ -155,23 +148,16 @@ function removeItemFromProfile(profileData, itemId, output = null) {
     }
 }
 
-/* Remove Item
+/*
+* Remove Item
 * Deep tree item deletion / Delets main item and all sub items with sub items ... and so on.
-* Profile index: 0 = main profile, 1 = scav profile
-* */
-function removeItem(body, output, sessionID, profileIndex = 0) {
-    let profile = profile_f.get(sessionID);
+*/
+function removeItem(profileData, body, output, sessionID) {
     let toDo = [body];
 
     //Find the item and all of it's relates
     if (toDo[0] !== undefined && toDo[0] !== null && toDo[0] !== "undefined") {
-        removeItemFromProfile(profile.data[profileIndex], toDo[0], output);
-
-        if (profileIndex === 1) {
-            profile_f.setScavData(profile.data[1]); // save scav profile
-        } else {
-            profile_f.setPmcData(profile.data[0], sessionID); //save pmcData to profile
-        }
+        removeItemFromProfile(profileData, toDo[0], output);
 
         return output;
     }
@@ -230,7 +216,6 @@ function splitItem(pmcData, body, sessionID) { // -> Spliting item / Create new 
                 "upd": {"StackObjectsCount": body.count}
             });
 
-            profile_f.setPmcData(pmcData, sessionID);
             return output;
         }
     }
@@ -268,7 +253,6 @@ function mergeItem(pmcData, body, sessionID) {
                     pmcData.Inventory.items[key].upd.StackObjectsCount = stackItem0 + stackItem1;
                     output.data.items.del.push({"_id": pmcData.Inventory.items[key2]._id});
                     pmcData.Inventory.items.splice(key2, 1);
-                    profile_f.setPmcData(pmcData, sessionID);
                     return output;
                 }
             }
@@ -323,7 +307,6 @@ function transferItem(pmcData, body, sessionID) {
         }
     }
 
-    profile_f.setPmcData(pmcData, sessionID);
     return output;
 }
 
@@ -349,7 +332,6 @@ function swapItem(pmcData, body, sessionID) {
         }
     }
     
-    profile_f.setPmcData(pmcData, sessionID);
     return output;
 }
 
@@ -392,7 +374,7 @@ function addItem(pmcData, body, output, sessionID, foundInRaid = false) {
 
             for (let stacks = 0; stacks < MaxStacks; stacks++) {
                 //update profile on each stack so stash recalculate will have new items
-                pmcData = profile_f.getPmcData(sessionID);
+                pmcData = profile_f.getPmcProfile(sessionID);
 
                 let StashFS_2D = itm_hf.recheckInventoryFreeSpace(pmcData, sessionID);
                 let ItemSize = itm_hf.getSize(item._tpl, item._id, tmpTraderAssort.data.items);
@@ -499,9 +481,6 @@ function addItem(pmcData, body, output, sessionID, foundInRaid = false) {
                             break addedProperly;
                         }
                     }
-
-                // save after each added item
-                profile_f.setPmcData(pmcData, sessionID);
             }
 
             return output;
