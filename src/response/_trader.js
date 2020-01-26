@@ -47,7 +47,7 @@ class TraderServer {
     lvlUp(id, sessionID) {
         let pmcProfile = profile_f.profileServer.getPmcProfile(sessionID);
         let currentTrader = this.traders[sessionID][id];
-        let loyaltyLevels = currentTrader.data.loyalty.loyaltyLevels;
+        let loyaltyLevels = currentTrader.loyalty.loyaltyLevels;
 
         // level up player
         let checkedExp = 0;
@@ -67,8 +67,8 @@ class TraderServer {
         for (let level in loyaltyLevels) {
             // level reached
             if ((loyaltyLevels[level].minLevel <= pmcProfile.Info.Level
-            && loyaltyLevels[level].minSalesSum <= currentTrader.data.loyalty.currentSalesSum
-            && loyaltyLevels[level].minStanding <= currentTrader.data.loyalty.currentStanding)
+            && loyaltyLevels[level].minSalesSum <= currentTrader.loyalty.currentSalesSum
+            && loyaltyLevels[level].minStanding <= currentTrader.loyalty.currentStanding)
             && targetLevel < 4) {
                 targetLevel++;
                 continue;
@@ -77,7 +77,7 @@ class TraderServer {
             break;
         }
 
-        currentTrader.data.loyalty.currentLevel = targetLevel;
+        currentTrader.loyalty.currentLevel = targetLevel;
 
 
         // set assort

@@ -18,7 +18,12 @@ class ProfileServer {
 
     loadProfilesFromDisk(sessionID) {
         this.profiles[sessionID]['pmc'] = json.parse(json.read(getPmcPath(sessionID)));
-        this.profiles[sessionID]['scav'] = json.parse(json.read(getScavPath(sessionID)));
+
+        if (!fs.existsSync(getScavPath(sessionID))) {
+            this.profiles[sessionID]['scav'] = this.generateScav(sessionID);
+        } else {
+            this.profiles[sessionID]['scav'] = json.parse(json.read(getScavPath(sessionID)));
+        }
     }
 
     getOpenSessions() {
@@ -87,7 +92,7 @@ class ProfileServer {
         json.write(folder + "character.json", pmcData);
         json.write(folder + "storage.json", storage);
         json.write(folder + "userbuilds.json", userbuilds);
-        json.write(folder + "scav.json", generateScav(sessionID));
+        json.write(folder + "scav.json", this.generateScav(sessionID));
         json.write(folder + "dialogue.json", {});
 
         // create traders
@@ -119,10 +124,11 @@ class ProfileServer {
     }
 
     generateScav(sessionID) {
-        let scavData = this.profiles[sessionID]['scav'];
-        scavData = bots.generatePlayerScav();
+        let pmcData = this.getPmcProfile(sessionID);
+        let scavData = bots.generatePlayerScav();
         scavData._id = pmcData.savage;
         scavData.aid = sessionID;
+        return scavData;
     }
 
     changeNickname(info, sessionID) {
