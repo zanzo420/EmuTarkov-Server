@@ -88,13 +88,6 @@ class ProfileServer {
         storage.data._id = "pmc" + account.id;
         storage.data.suites = (info.side === "Usec") ? ["5cde9ec17d6c8b04723cf479", "5cde9e957d6c8b0474535da7"] : ["5cd946231388ce000d572fe3", "5cd945d71388ce000a659dfb"];
 
-        // create profile
-        json.write(folder + "character.json", pmcData);
-        json.write(folder + "storage.json", storage);
-        json.write(folder + "userbuilds.json", {});
-        json.write(folder + "scav.json", this.generateScav(sessionID));
-        json.write(folder + "dialogue.json", {});
-
         // create traders
         let inputFiles = filepaths.traders;
         let inputNames = Object.keys(inputFiles);
@@ -115,6 +108,13 @@ class ProfileServer {
 
             assort_f.generate(fileName, account.id);
         }
+
+        // create profile
+        json.write(folder + "character.json", pmcData);
+        json.write(folder + "storage.json", storage);
+        json.write(folder + "userbuilds.json", {});
+        json.write(folder + "dialogue.json", {});
+        json.write(folder + "scav.json", this.generateScav(sessionID));
 
         // Also load to memory.
         this.initializeProfile(sessionID);
