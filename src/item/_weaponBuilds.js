@@ -7,6 +7,18 @@ function getPath(sessionID) {
 	return path.replace("__REPLACEME__", sessionID);
 }
 
+function getUserBuilds(sessionID) {
+	let userBuildsMap = json.parse(json.read(getPath(sessionID)));
+
+	let userBuilds = [];
+
+	for (let buildName in userBuildsMap) {
+		userBuilds.push(userBuildsMap[buildName]);
+	}
+
+	return userBuilds;
+}
+
 function SaveBuild(pmcData, body, sessionID) {
 	item.resetOutput();
 	delete body.Action;
@@ -20,7 +32,7 @@ function SaveBuild(pmcData, body, sessionID) {
 	body.items = itm_hf.replaceIDs(pmcData, body.items, false);
 	body.root = body.items[0]._id;
 
-	savedBuilds.data.push(body);
+	savedBuilds[body.name] = body;
 	json.write(getPath(sessionID), savedBuilds);
 	output.data.builds.push(body);
     return output;
@@ -28,16 +40,8 @@ function SaveBuild(pmcData, body, sessionID) {
 
 function RemoveBuild(pmcData, body, sessionID) {
 	let savedBuilds = json.parse(json.read(getPath(sessionID)));
-	
-	for (let wBuild of savedBuilds.data) {
-		if (wBuild.id == body.id) {
-			for (let i = 0; i < savedBuilds.data.length; i++) { 
-		   		if (savedBuilds.data[i] === wBuild) {
-			    	savedBuilds.data.splice(i--, 1);
-			  	}
-			}
-		}
-	}
+
+	delete savedBuilds[body.name];
 
 	json.write(getPath(sessionID), savedBuilds);
 	item.resetOutput();
@@ -45,5 +49,6 @@ function RemoveBuild(pmcData, body, sessionID) {
 }
 
 module.exports.getPath = getPath;
+module.exports.getUserBuilds = getUserBuilds;
 module.exports.saveBuild = SaveBuild;
 module.exports.removeBuild = RemoveBuild;

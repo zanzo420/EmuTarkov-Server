@@ -283,7 +283,7 @@ function getScavDatacaseRecipes(url, info, sessionID) {
 }
 
 function getHandbookUserlist(url, info, sessionID) {
-    return json.read(weaponBuilds_f.getPath(sessionID));
+    return '{"err":0,"errmsg":null,"data":' + json.stringify(weaponBuilds_f.getUserBuilds(sessionID)) + '}';
 }
 
 function createNotifierChannel(url, info, sessionID) {
