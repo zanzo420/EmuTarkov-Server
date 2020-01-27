@@ -8,7 +8,6 @@ function saveOpenSessions() {
 	for (let sessionId of profile_f.profileServer.getOpenSessions()) {
 		profile_f.profileServer.savePmcData(sessionId);
 		profile_f.profileServer.saveScavData(sessionId);
-		trader_f.traderServer.saveToDisk(sessionId);
 		dialogue_f.dialogueServer.saveToDisk(sessionId);
 	}
 }

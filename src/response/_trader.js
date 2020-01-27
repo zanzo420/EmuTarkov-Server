@@ -23,12 +23,6 @@ class TraderServer {
         this.traders = {[traderData._id]: traderData};
     }
 
-    saveToDisk(sessionID) {
-        for (let traderId in this.traders) {
-            json.write(filepaths.traders[traderId], this.traders[traderId]);
-        }
-    }
-
     getTrader(id, sessionID) {
         return {err: 0, errmsg: "", data: this.traders[id]};
     }
