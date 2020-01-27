@@ -54,15 +54,15 @@ class ProfileServer {
     }
 
     getPmcProfile(sessionID) {
-        let pmcProfile = this.getProfile(sessionID, 'pmc');
+        let pmcData = this.getProfile(sessionID, 'pmc');
 
-        if (pmcProfile.Stats.TotalSessionExperience > 0) {
-            const sessionExp = pmcProfile.Stats.TotalSessionExperience;
-            pmcProfile.Info.Experience += sessionExp;
-            pmcProfile.Stats.TotalSessionExperience = 0;
+        if (pmcData.Stats.TotalSessionExperience > 0) {
+            const sessionExp = pmcData.Stats.TotalSessionExperience;
+            pmcData.Info.Experience += sessionExp;
+            pmcData.Stats.TotalSessionExperience = 0;
         }
 
-        return pmcProfile;
+        return pmcData;
     }
 
     getScavProfile(sessionID) {
@@ -74,7 +74,6 @@ class ProfileServer {
         let folder = account_f.getPath(account.id);
         let pmcData = json.parse(json.read(filepaths.profile.character[account.edition + "_" + info.side.toLowerCase()]));
         let storage = json.parse(json.read(filepaths.profile.storage));
-        let userbuilds = json.parse(json.read(filepaths.profile.userbuilds));
 
         // pmc info
         pmcData._id = "pmc" + account.id;
@@ -89,23 +88,13 @@ class ProfileServer {
         storage.data.suites = (info.side === "Usec") ? ["5cde9ec17d6c8b04723cf479", "5cde9e957d6c8b0474535da7"] : ["5cd946231388ce000d572fe3", "5cd945d71388ce000a659dfb"];
 
         // create traders
-        let inputFiles = filepaths.traders;
-        let inputNames = Object.keys(inputFiles);
-        let i = 0;
+        let inputNames = Object.keys(filepaths.traders);
 
-        for (let file in inputFiles) {
-            let filePath = inputFiles[file];
-            let fileData = json.parse(json.read(filePath));
-            let fileName = inputNames[i++];
+        for (let file in inputNames) {
+            let fileName = inputNames[file];
+            let fileData = json.parse(json.read(filepaths.traders[fileName]));
 
-            // generate trader
-            json.write(folder + "traders/" + fileName + ".json", fileData);
-
-            // generate assort
-            if (fileName === "579dc571d53a0658a154fbec") {
-                continue;
-            }
-
+            pmcData.TraderStandings[fileName] = {"currentLevel": 1, "currentSalesSum": 0, "currentStanding": 0};
             trader_f.traderServer.initializeTrader(fileData, sessionID);
             assort_f.generate(fileName, account.id);
         }

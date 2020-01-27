@@ -168,9 +168,9 @@ function payMoney(pmcData, body, sessionID) {
 
     // set current sale sum
     // convert barterPrice itemTpl into RUB then convert RUB into trader currency
-    let saleSum = tmpTraderInfo.data.loyalty.currentSalesSum + fromRUB(inRUB(barterPrice, currencyTpl), getCurrency(tmpTraderInfo.data.currency));
+    let saleSum = pmcData.TraderStandings[body.tid].currentStanding += amount;
 
-    tmpTraderInfo.data.loyalty.currentSalesSum = saleSum;
+    pmcData.TraderStandings[body.tid].currentStanding = saleSum;
     trader_f.traderServer.lvlUp(body.tid, sessionID);
     output.data.currentSalesSums[body.tid] = saleSum;
 
@@ -270,9 +270,9 @@ function getMoney(pmcData, amount, body, output, sessionID) {
     }
 
     // set current sale sum
-    let saleSum = tmpTraderInfo.data.loyalty.currentSalesSum += amount;
+    let saleSum = pmcData.TraderStandings[body.tid].currentStanding += amount;
 
-    tmpTraderInfo.data.loyalty.currentSalesSum = saleSum;
+    pmcData.TraderStandings[body.tid].currentStanding = saleSum;
     trader_f.traderServer.lvlUp(body.tid, sessionID);
     output.data.currentSalesSums[body.tid] = saleSum;
 

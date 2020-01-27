@@ -55,14 +55,19 @@ function completeQuest(pmcData, body, sessionID) {
                     for (let rewardItem of reward.items) {
                         // Quest rewards bundle up items whose max stack size is 1. Break them up.
                         let itemTmplData = json.parse(json.read(filepaths.items[rewardItem._tpl]));
+
                         if (typeof rewardItem.upd !== "undefined" && itemTmplData._props.StackMaxSize === 1) {
                             let count = rewardItem.upd.StackObjectsCount;
+                            
                             rewardItem.upd.StackObjectsCount = 1;
+                            
                             [...Array(count)].forEach(() => {
                                 questRewards.push(rewardItem);
                             });
+
                             continue;
                         }
+
                         questRewards.push(rewardItem);
                     }
                     break;
@@ -73,13 +78,8 @@ function completeQuest(pmcData, body, sessionID) {
                     break;
 
                 case "TraderStanding":
-                    // improve trader standing
-                    let tmpTraderInfo = trader_f.traderServer.getTrader(quest.traderId, sessionID);
-
-                    tmpTraderInfo.data.loyalty.currentStanding
-                    tmpTraderInfo.data.loyalty.currentStanding = tmpTraderInfo.data.loyalty.currentStanding + parseFloat(reward.value);
-
-                    // level up trader
+                    pmcData = profile_f.profileServer.getPmcProfile(sessionID);
+                    pmcData.TraderStandings[quest.traderId].currentStanding += parseFloat(reward.value);
                     trader_f.traderServer.lvlUp(quest.traderId, sessionID);
                     break;
             }
