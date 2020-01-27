@@ -168,7 +168,7 @@ function payMoney(pmcData, body, sessionID) {
 
     // set current sale sum
     // convert barterPrice itemTpl into RUB then convert RUB into trader currency
-    let saleSum = pmcData.TraderStandings[body.tid].currentStanding += amount;
+    let saleSum = pmcData.TraderStandings[body.tid].currentStanding += fromRUB(inRUB(barterPrice, currencyTpl), getCurrency(tmpTraderInfo.data.currency));
 
     pmcData.TraderStandings[body.tid].currentStanding = saleSum;
     trader_f.traderServer.lvlUp(body.tid, sessionID);
