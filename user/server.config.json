@@ -9,9 +9,10 @@
         "saveOnReceive": true
     },
 	"gameplay": {
-		"features": {
+		"inraid": {
 			"saveLootEnabled": true,
-			"saveHealthEnabled": true
+			"saveHealthEnabled": true,
+			"saveHealthMultiplier": 0.1
 		},
 		"bots": {
 			"pmcEnabled": true,

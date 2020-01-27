@@ -86,8 +86,28 @@ function deleteInventory(pmcData, sessionID) {
     return pmcData;
 }
 
+function removeHealth() {
+    if (!settings.gameplay.inraid.saveHealthEnabled) {
+        return;
+    }
+
+    let body = pmcData.BodyParts;
+    let multiplier = settings.gameplay.inraid.saveHealthMultiplier;
+
+    body.Head.Health.Current = (body.Head.Health.Maximum * multiplier);
+    body.Chest.Health.Current = (body.Chest.Health.Maximum * multiplier);
+    body.Stomach.Health.Current = (body.Stomach.Health.Maximum * multiplier);
+    body.LeftArm.Health.Current = (body.LeftArm.Health.Maximum * multiplier);
+    body.RightArm.Health.Current = (body.RightArm.Health.Maximum * multiplier);
+    body.LeftLeg.Health.Current = (body.LeftLeg.Health.Maximum * multiplier);
+    body.RightLeg.Health.Current = (body.RightLeg.Health.Maximum * multiplier);
+
+    pmcData.BodyParts = body;
+    return pmcDdata;
+}
+
 function saveProgress(offraidData, sessionID) {
-    if (!settings.gameplay.features.saveLootEnabled) {
+    if (!settings.gameplay.inraid.saveLootEnabled) {
         return;
     }
 
@@ -129,17 +149,8 @@ function saveProgress(offraidData, sessionID) {
     // remove inventory if player died
     if (offraidData.exit !== "survived" && offraidData.exit !== "runner") {
         pmcData = deleteInventory(pmcData, sessionID);
+        pmcData = removeHealth(pmcData);
     }
-}
-
-function updateHealth(info, sessionID) {
-    if (!settings.gameplay.features.saveHealthEnabled) {
-        return;
-    }
-
-    logger.logError("Health data");
-    logger.logData(info);
 }
 
 module.exports.saveProgress = saveProgress;
-module.exports.updateHealth = updateHealth;
