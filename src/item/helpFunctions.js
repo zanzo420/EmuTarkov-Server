@@ -192,6 +192,7 @@ function findMoney(by, pmcData, barter_itemID) { // find required items to take 
         let mapResult = pmcData.Inventory.items.filter(item => {
             return by === "tpl" ? (item._tpl === barterID) : (item._id === barterID);
         });
+        
         itemsArray = Object.assign(itemsArray, mapResult);
     }
 

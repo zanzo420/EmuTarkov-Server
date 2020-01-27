@@ -48,7 +48,6 @@ class TraderServer {
             trader.loyalty.currentLevel = pmcData.TraderStandings[traderId].currentLevel;
             trader.loyalty.currentStanding = pmcData.TraderStandings[traderId].currentStanding;
             trader.loyalty.currentSalesSum = pmcData.TraderStandings[traderId].currentSalesSum;
-            logger.logData(trader);
             traders.push(trader);
         }
 
