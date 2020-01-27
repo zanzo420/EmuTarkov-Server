@@ -413,11 +413,15 @@ function getSize(itemtpl, itemID, InventoryItem) { // -> Prepares item Width and
 * returns all child items ids in array, includes itself and children
 * */
 function findAndReturnChildren(pmcData, itemid) {
+    return findAndReturnChildrenByItems(pmcData.Inventory.items, itemid);
+}
+
+function findAndReturnChildrenByItems(items, itemid) {
     let list = [];
 
-    for (let childitem of pmcData.Inventory.items) {
+    for (let childitem of items) {
         if (childitem.parentId === itemid) {
-            list.push.apply(list, findAndReturnChildren(pmcData, childitem._id));
+            list.push.apply(list, findAndReturnChildrenByItems(items, childitem._id));
         }
     }
 
@@ -537,5 +541,6 @@ module.exports.getPlayerStash = getPlayerStash;
 module.exports.getItem = getItem;
 module.exports.getSize = getSize;
 module.exports.findAndReturnChildren = findAndReturnChildren;
+module.exports.findAndReturnChildrenByItems = findAndReturnChildrenByItems;
 module.exports.isDogtag = isDogtag;
 module.exports.replaceIDs = replaceIDs;

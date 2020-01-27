@@ -2,6 +2,47 @@
 
 require('../libs.js');
 
+/* Based on the item action, determine whose inventories we should be looking at for from and to. */
+function getOwnerInventoryItems(body, sessionID) {
+    let isSameInventory = false;
+
+    let pmcItems = profile_f.profileServer.getPmcProfile(sessionID).Inventory.items;
+    let scavData = profile_f.profileServer.getScavProfile(sessionID);
+
+
+    let fromInventoryItems = pmcItems;
+    let fromType = "pmc";
+    if (typeof body.fromOwner !== "undefined") {
+        if (body.fromOwner.id === scavData._id) {
+            fromInventoryItems = scavData.Inventory.items;
+            fromType = "scav";
+        } else if (body.fromOwner.type === "Mail") {
+            fromInventoryItems = dialogue_f.dialogueServer.getMessageItemContents(body.fromOwner.id, sessionID);
+            fromType = "mail";
+        }
+    }
+
+    let toInventoryItems = pmcItems;
+    let toType = "pmc";
+    // Don't need to worry about mail for destination because client doesn't allow
+    // users to move items back into the mail stash.
+    if (typeof body.toOwner !== "undefined" && body.toOwner.id === scavData._id) {
+        toInventoryItems = scavData.Inventory.items;
+        toType = "scav";
+    }
+
+    if (fromType === toType) {
+        isSameInventory = true;
+    }
+
+    return {
+        from: fromInventoryItems,
+        to: toInventoryItems,
+        sameInventory: isSameInventory,
+        isMail: fromType === "mail"
+    };
+}
+
 /* Move Item
 * change location of item with parentId and slotId
 * transfers items from one profile to another if fromOwner/toOwner is set in the body.
@@ -11,44 +52,24 @@ function moveItem(pmcData, body, sessionID) {
     item.resetOutput();
 
     let output = item.getOutput();
-    let scavData = profile_f.profileServer.getScavProfile(sessionID);
 
-    if (typeof body.fromOwner !== 'undefined' && body.fromOwner.id === scavData._id) {
-        // Handle changes to items from scav inventory should update the item
-        if (typeof body.to.container === "undefined" || (body.to.container !== "main" && body.to.container !== "hideout")) {
-            moveItemInternal(scavData, body);
-            return output;
-        }
-
-        moveItemToProfile(scavData, pmcData, body);
-        return output;
-    }
-    
-    if (typeof body.toOwner !== 'undefined' && body.toOwner.id === scavData._id) {
-        // Handle transfers from stash to scav.
-        moveItemToProfile(pmcData, scavData, body);
-        return output;
-    }
-    
-    if (typeof body.fromOwner !== 'undefined' && body.fromOwner.type === 'Mail') {
-        // If the item is coming from the mail, we need to get the item contents from the corresponding
-        // message (denoted by fromOwner) and push them to player stash.
-        let messageItems = dialogue_f.dialogueServer.getMessageItemContents(body.fromOwner.id, sessionID);
-        let idsToMove = dialogue_f.findAndReturnChildren(messageItems, body.item);
-        
+    let items = getOwnerInventoryItems(body, sessionID);
+    if (items.isMail) {
+        let idsToMove = dialogue_f.findAndReturnChildren(items.from, body.item);
         for (let itemId of idsToMove) {
-            for (let messageItem of messageItems) {
+            for (let messageItem of items.from) {
                 if (messageItem._id === itemId) {
-                    pmcData.Inventory.items.push(messageItem);
+                    items.to.push(messageItem);
                 }
             }
         }
-
-        moveItemInternal(pmcData, body);
-        return output;
+        moveItemInternal(items.to, body);
+    } else if (items.sameInventory) {
+        moveItemInternal(items.from, body);
+    } else {
+        moveItemToProfile(items.from, items.to, body);
     }
 
-    moveItemInternal(pmcData, body);
     return output;
 }
 
@@ -57,12 +78,10 @@ function moveItem(pmcData, body, sessionID) {
 * toProfileData: Profile of the destination.
 * body: Move request
 */
-function moveItemToProfile(fromProfileData, toProfileData, body) {
-    handleCartridges(fromProfileData, body);
+function moveItemToProfile(fromItems, toItems, body) {
+    handleCartridges(fromItems, body);
 
-    let fromItems = fromProfileData.Inventory.items;
-    let toItems = toProfileData.Inventory.items;
-    let idsToMove = itm_hf.findAndReturnChildren(fromProfileData, body.item);
+    let idsToMove = itm_hf.findAndReturnChildrenByItems(fromItems, body.item);
 
     for (let itemId of idsToMove) {
         for (let itemIndex in fromItems) {
@@ -88,13 +107,13 @@ function moveItemToProfile(fromProfileData, toProfileData, body) {
 }
 
 /* Internal helper function to move item within the same profile_f.
-* profileData: Profile
+* items: Items
 * body: Move request
 */
-function moveItemInternal(profileData, body) {
-    handleCartridges(profileData, body);
+function moveItemInternal(items, body) {
+    handleCartridges(items, body);
 
-    for (let item of profileData.Inventory.items) {
+    for (let item of items) {
         if (item._id && item._id === body.item) {
             item.parentId = body.to.id;
             item.slotId = body.to.container;
@@ -113,16 +132,16 @@ function moveItemInternal(profileData, body) {
 }
 
 /* Internal helper function to handle cartridges in inventory if any of them exist.
-* profileData: Profile
+* items: Items
 * body: Move request
 */
-function handleCartridges(profileData, body) {
+function handleCartridges(items, body) {
     // -> Move item to diffrent place - counts with equiping filling magazine etc
     if (body.to.container === 'cartridges') {
         let tmp_counter = 0;
 
-        for (let item_ammo in profileData.Inventory.items) {
-            if (body.to.id === profileData.Inventory.items[item_ammo].parentId) {
+        for (let item_ammo in items) {
+            if (body.to.id === items[item_ammo].parentId) {
                 tmp_counter++;
             }
         }
@@ -179,20 +198,24 @@ function splitItem(pmcData, body, sessionID) { // -> Spliting item / Create new 
 
     let output = item.getOutput();
     let location = body.container.location;
+
+    let items = getOwnerInventoryItems(body, sessionID);
     
     if (typeof body.container.location === "undefined" && body.container.container === "cartridges") {
         let tmp_counter = 0;
     
-        for (let item_ammo in pmcData.Inventory.items) {
-            if (pmcData.Inventory.items[item_ammo].parentId === body.container.id) {
+        for (let item_ammo in items.to) {
+            if (items.to[item_ammo].parentId === body.container.id) {
                 tmp_counter++;
             }
         }
     
         location = tmp_counter;//wrong location for first cartrige
     }
-    
-    for (let item of pmcData.Inventory.items) {
+
+
+    // The item being merged is possible from three different sources: pmc, scav, or mail.
+    for (let item of items.from) {
         if (item._id && item._id === body.item) {
             item.upd.StackObjectsCount -= body.count;
 
@@ -207,7 +230,7 @@ function splitItem(pmcData, body, sessionID) { // -> Spliting item / Create new 
                 "upd": {"StackObjectsCount": body.count}
             });
 
-            pmcData.Inventory.items.push({
+            items.to.push({
                 "_id": newItem,
                 "_tpl": item._tpl,
                 "parentId": body.container.id,
@@ -231,40 +254,30 @@ function mergeItem(pmcData, body, sessionID) {
 
     let output = item.getOutput();
 
-    for (let key in pmcData.Inventory.items) {
-        if (pmcData.Inventory.items[key]._id && pmcData.Inventory.items[key]._id === body.with) {
-            // The item being merged is possible from three different sources: pmc, scav, or mail.
-            let inventoryItems = pmcData.Inventory.items;
+    let items = getOwnerInventoryItems(body, sessionID);
 
-            let scavData = profile_f.profileServer.getScavProfile(sessionID);
-            if (typeof body.fromOwner !== "undefined") {
-                if (body.fromOwner.id === scavData._id) {
-                    inventoryItems = scavData.Inventory.items;
-                } else if (body.fromOwner.type === "Mail") {
-                    inventoryItems = dialogue_f.dialogueServer.getMessageItemContents(body.fromOwner.id, sessionID);
-                }
-            }
-            
-            for (let key2 in inventoryItems) {
-                if (inventoryItems[key2]._id && inventoryItems[key2]._id === body.item) {
+    for (let key in items.to) {
+        if (items.to[key]._id && items.to[key]._id === body.with) {
+            for (let key2 in items.from) {
+                if (items.from[key2]._id && items.from[key2]._id === body.item) {
                     let stackItem0 = 1;
                     let stackItem1 = 1;
 
-                    if (typeof inventoryItems[key].upd !== "undefined") {
-                        stackItem0 = inventoryItems[key].upd.StackObjectsCount;
+                    if (typeof items.from[key].upd !== "undefined") {
+                        stackItem0 = items.from[key].upd.StackObjectsCount;
                     }
 
-                    if (typeof inventoryItems[key2].upd !== "undefined") {
-                        stackItem1 = inventoryItems[key2].upd.StackObjectsCount;
+                    if (typeof items.from[key2].upd !== "undefined") {
+                        stackItem1 = items.from[key2].upd.StackObjectsCount;
                     }
 
                     if (stackItem0 === 1) {
-                        Object.assign(inventoryItems[key], {"upd": {"StackObjectsCount": 1}});
+                        Object.assign(items.from[key], {"upd": {"StackObjectsCount": 1}});
                     }
 
-                    inventoryItems[key].upd.StackObjectsCount = stackItem0 + stackItem1;
-                    output.data.items.del.push({"_id": inventoryItems[key2]._id});
-                    inventoryItems.splice(key2, 1);
+                    items.from[key].upd.StackObjectsCount = stackItem0 + stackItem1;
+                    output.data.items.del.push({"_id": items.from[key2]._id});
+                    items.from.splice(key2, 1);
                     return output;
                 }
             }
