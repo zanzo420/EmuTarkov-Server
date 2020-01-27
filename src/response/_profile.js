@@ -106,6 +106,7 @@ class ProfileServer {
                 continue;
             }
 
+            trader_f.traderServer.initializeTrader(fileData, sessionID);
             assort_f.generate(fileName, account.id);
         }
 

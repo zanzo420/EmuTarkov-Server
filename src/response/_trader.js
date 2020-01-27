@@ -18,6 +18,13 @@ class TraderServer {
         }
     }
 
+    /* Load a single trader into memory. Used during profile generation. */
+    initializeTrader(traderData, sessionID) {
+        this.traders[sessionID] = {
+            [traderData._id]: traderData
+        };
+    }
+
     saveToDisk(sessionID) {
         for (let traderId in this.traders[sessionID]) {
             json.write(getPath(traderId, sessionID), this.traders[sessionID][traderId]);
