@@ -36,7 +36,6 @@ class TraderServer {
     getAllTraders(sessionID) {
         let traders = [];
         let pmcData = profile_f.profileServer.getPmcProfile(sessionID);
-        logger.logData(pmcData);
 
         for (let traderId in this.traders) {
             let trader = this.traders[traderId];
