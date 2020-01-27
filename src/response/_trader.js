@@ -10,39 +10,38 @@ class TraderServer {
 
     /* Load all the traders for sessionID into memory. */
     initializeTraders(sessionID) {
-        this.traders[sessionID] = {};
+        this.traders = {};
 
         for (let fileId in filepaths.traders) {
-            let traderData = json.parse(json.read(getPath(fileId, sessionID)));
-            this.traders[sessionID][traderData._id] = traderData;
+            let traderData = json.parse(json.read(filepaths.traders[fileId]));
+            this.traders[traderData._id] = traderData;
         }
     }
 
     /* Load a single trader into memory. Used during profile generation. */
     initializeTrader(traderData, sessionID) {
-        this.traders[sessionID] = {
-            [traderData._id]: traderData
-        };
+        this.traders = {[traderData._id]: traderData};
     }
 
     saveToDisk(sessionID) {
-        for (let traderId in this.traders[sessionID]) {
-            json.write(getPath(traderId, sessionID), this.traders[sessionID][traderId]);
+        for (let traderId in this.traders) {
+            json.write(filepaths.traders[traderId], this.traders[traderId]);
         }
     }
 
     getTrader(id, sessionID) {
-        return {err: 0, errmsg: "", data: this.traders[sessionID][id]};
+        return {err: 0, errmsg: "", data: this.traders[id]};
     }
 
     getAllTraders(sessionID) {
         let traders = [];
 
-        for (let traderId in this.traders[sessionID]) {
+        for (let traderId in this.traders) {
             if (traderId === "ragfair") {
                 continue;
             }
-            traders.push(this.traders[sessionID][traderId]);
+            
+            traders.push(this.traders[traderId]);
         }
 
         return {err: 0, errmsg: null, data: traders};
@@ -50,7 +49,7 @@ class TraderServer {
 
     lvlUp(id, sessionID) {
         let pmcData = profile_f.profileServer.getPmcProfile(sessionID);
-        let loyaltyLevels = this.traders[sessionID][id].loyalty.loyaltyLevels;
+        let loyaltyLevels = this.traders[id].loyalty.loyaltyLevels;
 
         // level up player
         let checkedExp = 0;
@@ -82,15 +81,8 @@ class TraderServer {
         }
 
         // set assort
-        if (id !== "579dc571d53a0658a154fbec") {
-            assort_f.generate(id, sessionID);
-        }
+        assort_f.generate(id, sessionID);
     }
-}
-
-function getPath(id, sessionID) {
-    let path = filepaths.user.profiles.traders[id];
-    return path.replace("__REPLACEME__", sessionID);
 }
 
 module.exports.traderServer = new TraderServer();
