@@ -233,26 +233,38 @@ function mergeItem(pmcData, body, sessionID) {
 
     for (let key in pmcData.Inventory.items) {
         if (pmcData.Inventory.items[key]._id && pmcData.Inventory.items[key]._id === body.with) {
-            for (let key2 in pmcData.Inventory.items) {
-                if (pmcData.Inventory.items[key2]._id && pmcData.Inventory.items[key2]._id === body.item) {
+            // The item being merged is possible from three different sources: pmc, scav, or mail.
+            let inventoryItems = pmcData.Inventory.items;
+
+            let scavData = profile_f.profileServer.getScavProfile(sessionID);
+            if (typeof body.fromOwner !== "undefined") {
+                if (body.fromOwner.id === scavData._id) {
+                    inventoryItems = scavData.Inventory.items;
+                } else if (body.fromOwner.type === "Mail") {
+                    inventoryItems = dialogue_f.dialogueServer.getMessageItemContents(body.fromOwner.id, sessionID);
+                }
+            }
+            
+            for (let key2 in inventoryItems) {
+                if (inventoryItems[key2]._id && inventoryItems[key2]._id === body.item) {
                     let stackItem0 = 1;
                     let stackItem1 = 1;
 
-                    if (typeof pmcData.Inventory.items[key].upd !== "undefined") {
-                        stackItem0 = pmcData.Inventory.items[key].upd.StackObjectsCount;
+                    if (typeof inventoryItems[key].upd !== "undefined") {
+                        stackItem0 = inventoryItems[key].upd.StackObjectsCount;
                     }
 
-                    if (typeof pmcData.Inventory.items[key2].upd !== "undefined") {
-                        stackItem1 = pmcData.Inventory.items[key2].upd.StackObjectsCount;
+                    if (typeof inventoryItems[key2].upd !== "undefined") {
+                        stackItem1 = inventoryItems[key2].upd.StackObjectsCount;
                     }
 
                     if (stackItem0 === 1) {
-                        Object.assign(pmcData.Inventory.items[key], {"upd": {"StackObjectsCount": 1}});
+                        Object.assign(inventoryItems[key], {"upd": {"StackObjectsCount": 1}});
                     }
 
-                    pmcData.Inventory.items[key].upd.StackObjectsCount = stackItem0 + stackItem1;
-                    output.data.items.del.push({"_id": pmcData.Inventory.items[key2]._id});
-                    pmcData.Inventory.items.splice(key2, 1);
+                    inventoryItems[key].upd.StackObjectsCount = stackItem0 + stackItem1;
+                    output.data.items.del.push({"_id": inventoryItems[key2]._id});
+                    inventoryItems.splice(key2, 1);
                     return output;
                 }
             }
