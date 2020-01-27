@@ -91,7 +91,7 @@ class ProfileServer {
         // create profile
         json.write(folder + "character.json", pmcData);
         json.write(folder + "storage.json", storage);
-        json.write(folder + "userbuilds.json", userbuilds);
+        json.write(folder + "userbuilds.json", {});
         json.write(folder + "scav.json", this.generateScav(sessionID));
         json.write(folder + "dialogue.json", {});
 
