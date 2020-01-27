@@ -18,12 +18,7 @@ class ProfileServer {
 
     loadProfilesFromDisk(sessionID) {
         this.profiles[sessionID]['pmc'] = json.parse(json.read(getPmcPath(sessionID)));
-
-        if (!fs.existsSync(getScavPath(sessionID))) {
-            this.generateScav(sessionID);
-        } else {
-            this.profiles[sessionID]['scav'] = json.parse(json.read(getScavPath(sessionID)));
-        }
+        this.generateScav(sessionID);
     }
 
     getOpenSessions() {
@@ -32,10 +27,6 @@ class ProfileServer {
 
     savePmcData(sessionID) {
         json.write(getPmcPath(sessionID), this.profiles[sessionID]['pmc']);
-    }
-
-    saveScavData(sessionID) {
-        json.write(getScavPath(sessionID), this.profiles[sessionID]['scav']);
     }
 
     /* 
@@ -99,7 +90,6 @@ class ProfileServer {
         json.write(folder + "storage.json", storage);
         json.write(folder + "userbuilds.json", {});
         json.write(folder + "dialogue.json", {});
-        json.write(folder + "scav.json", this.generateScav(sessionID));
 
         // Also load to memory.
         this.initializeProfile(sessionID);
@@ -111,8 +101,10 @@ class ProfileServer {
     generateScav(sessionID) {
         let pmcData = this.getPmcProfile(sessionID);
         let scavData = bots.generatePlayerScav();
+
         scavData._id = pmcData.savage;
         scavData.aid = sessionID;
+        
         this.profiles[sessionID]['scav'] = scavData;
         return scavData;
     }
@@ -140,11 +132,6 @@ class ProfileServer {
 function getPmcPath(sessionID) {
     let pmcPath = filepaths.user.profiles.character;
     return pmcPath.replace("__REPLACEME__", sessionID);;
-}
-
-function getScavPath(sessionID) {
-    let scavPath = filepaths.user.profiles.scav;
-    return scavPath.replace("__REPLACEME__", sessionID);
 }
 
 function addChildPrice(data, parentID, childPrice) {
