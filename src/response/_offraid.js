@@ -153,4 +153,10 @@ function saveProgress(offraidData, sessionID) {
     }
 }
 
+function updateHealth(info, sessionID) {
+    logger.logWarning("player condition update event");
+    logger.logData(info);
+}
+
 module.exports.saveProgress = saveProgress;
+module.exports.updateHealth = updateHealth;

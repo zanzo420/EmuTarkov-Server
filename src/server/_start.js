@@ -180,7 +180,6 @@ function handleRequest(req, resp) {
     if (req.method === "GET") {
         logger.logRequest("[" + sessionID + "][" + IP + "] " + req.url);
         sendResponse(req, resp, null, sessionID);
-        return;
     }
 
     // request with data
@@ -193,7 +192,11 @@ function handleRequest(req, resp) {
                 sendResponse(req, resp, jsonData, sessionID);
             });
         });
-    } else if (req.method === "PUT") { // offline profile saving
+    }
+    
+    if (req.method === "PUT") { // offline profile saving
+        logger.logWarning("Put!");
+
         req.on('data', function (data) {
             // receive data
             if (req.headers.hasOwnProperty("expect")) {

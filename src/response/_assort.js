@@ -50,6 +50,8 @@ function removeItem(assort, id) {
 
 function generate(id, sessionID) {
     if (id === "579dc571d53a0658a154fbec") {
+        logger.logWarning("generating fence");
+        generateFence(sessionID);
         return;
     }
 
@@ -92,12 +94,6 @@ function generateFence(sessionID) {
 }
 
 function get(id, sessionID) {
-    // find the assort
-    if (id === "579dc571d53a0658a154fbec") {
-        logger.logWarning("generating fence");
-        generateFence(sessionID);
-    }
-
     if (typeof assorts[sessionID + "_" + id] === "undefined") {
         generate(id, sessionID);
     }
