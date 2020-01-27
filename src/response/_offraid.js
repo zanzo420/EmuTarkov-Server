@@ -86,7 +86,7 @@ function deleteInventory(pmcData, sessionID) {
     return pmcData;
 }
 
-function removeHealth() {
+function removeHealth(pmcData) {
     if (!settings.gameplay.inraid.saveHealthEnabled) {
         return;
     }
