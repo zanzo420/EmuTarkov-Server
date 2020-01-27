@@ -31,7 +31,6 @@ function genericFilepathCacher(type, basepath) {
             case "hideoutProd": filepaths.hideout.production[fileName] = filePath; break;
             case "hideoutScav": filepaths.hideout.scavcase[fileName] = filePath; break;
             case "weather": filepaths.weather[fileName] = filePath; break;
-            case "maps": filepaths.maps[fileName] = filePath; break;
             case "userCache": filepaths.user.cache[fileName] = filePath; break;
             case "profileTraders": filepaths.user.profiles.traders[fileName] = "user/profiles/__REPLACEME__/traders/" + fileName + ".json"; break;
             case "profileEditions": filepaths.profile.character[fileName] = filePath; break;
@@ -143,7 +142,23 @@ function weather() {
 }
 
 function maps() {
-    genericFilepathCacher("maps", "db/maps");
+    let inputDir = utility.getDirList("db/maps/");
+
+    for (let mapName of inputDir) {
+        let inputFiles = fs.readdirSync(inputDir[path]);
+        let baseNode = {};
+
+        logger.logInfo("Routing: db/maps/" + mapName + "/");
+
+        for (let file in inputFiles) {
+            let filePath = inputDir[path] + inputFiles[file];
+            let fileName = inputFiles[file].replace(".json", "");
+
+            baseNode[fileName] = filePath;
+        }
+
+        filepaths.maps[mapName] = baseNode;
+    }
 }
 
 function bots() {

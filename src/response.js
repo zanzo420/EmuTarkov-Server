@@ -356,7 +356,7 @@ function getAllAttachments(url, info, sessionID) {
 }
 
 function getMapLocation(url, info, sessionID) {
-    return "MAPCONFIG";
+    return "MAP";
 }
 
 function getImage(url, info, sessionID) {

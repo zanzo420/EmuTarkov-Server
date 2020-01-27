@@ -136,17 +136,11 @@ function sendResponse(req, resp, body, sessionID) {
         // get image
         let keys = Object.keys(baseNode);
 
-        for (let i = 0; i < keys.length; i++) {
-            let key = keys[i];
-
-            if (key == file) {
+        for (let key of keys) {
+            if (key === file) {
                 filepath = baseNode[key];
                 break;
             }
-        }
-
-        if (filepath === "") {
-            // throw an error here
         }
 
         // send image
@@ -154,12 +148,9 @@ function sendResponse(req, resp, body, sessionID) {
         return;
     }
 
-    if (output === "MAPCONFIG") {
-        let mapname = req.url.replace("/api/location/", "");
-        let RandomPreset = utility.getRandomInt(1, 6);
-        let map = json.read(filepaths.maps[mapname.toLowerCase() + RandomPreset]);
-
-        logger.logInfo("[MAP.config]: " + mapname);
+    if (output === "MAP") {
+        let mapName = req.url.replace("/api/location/", "");
+        let map = map_f.get(mapName);
         header_f.sendTextJson(resp, map);
         return;
     }
