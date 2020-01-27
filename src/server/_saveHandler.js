@@ -7,7 +7,6 @@ function saveOpenSessions() {
 
 	for (let sessionId of profile_f.profileServer.getOpenSessions()) {
 		profile_f.profileServer.savePmcData(sessionId);
-		profile_f.profileServer.saveScavData(sessionId);
 		dialogue_f.dialogueServer.saveToDisk(sessionId);
 	}
 }
