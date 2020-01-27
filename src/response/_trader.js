@@ -35,13 +35,21 @@ class TraderServer {
 
     getAllTraders(sessionID) {
         let traders = [];
+        let pmcData = profile_f.profileServer.getPmcProfile(sessionID);
+        logger.logData(pmcData);
 
         for (let traderId in this.traders) {
+            let trader = this.traders[traderId];
+
             if (traderId === "ragfair") {
                 continue;
             }
-            
-            traders.push(this.traders[traderId]);
+
+            trader.loyalty.currentLevel = pmcData.TraderStandings[traderId].currentLevel;
+            trader.loyalty.currentStanding = pmcData.TraderStandings[traderId].currentStanding;
+            trader.loyalty.currentSalesSum = pmcData.TraderStandings[traderId].currentSalesSum;
+            logger.logData(trader);
+            traders.push(trader);
         }
 
         return {err: 0, errmsg: null, data: traders};
