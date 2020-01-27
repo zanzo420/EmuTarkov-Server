@@ -929,7 +929,53 @@
 			"status": 4
 		}
 	],
-	"TraderStandings": {},
+	"TraderStandings": {
+		"54cb50c76803fa8b248b4571": {
+			"currentLevel": 4,
+			"currentSalesSum": 2300000,
+			"currentStanding": 0.5
+		},
+		"54cb57776803fa99248b456e": {
+			"currentLevel": 4,
+			"currentSalesSum": 900000,
+			"currentStanding": 0.6
+		},
+		"579dc571d53a0658a154fbec": {
+			"currentLevel": 1,
+			"currentSalesSum": 0,
+			"currentStanding": 0
+		},
+		"58330581ace78e27b8b10cee": {
+			"currentLevel": 4,
+			"currentSalesSum": 2600000,
+			"currentStanding": 0.75
+		},
+		"5935c25fb3acc3127c3d8cd9": {
+			"currentLevel": 4,
+			"currentSalesSum": 32000,
+			"currentStanding": 0.6
+		},
+		"5a7c2eca46aef81a7ca2145d": {
+			"currentLevel": 4,
+			"currentSalesSum": 2500000,
+			"currentStanding": 0.5
+		},
+		"5ac3b934156ae10c4430e83c": {
+			"currentLevel": 4,
+			"currentSalesSum": 2500000,
+			"currentStanding": 0.6
+		},
+		"5c0647fdd443bc2504c2d371": {
+			"currentLevel": 1,
+			"currentSalesSum": 2300000,
+			"currentStanding": 0.5
+		},
+		"ragfair": {
+			"currentLevel": 1,
+			"currentSalesSum": 0,
+			"currentStanding": 0
+		}
+	},
 	"RagfairInfo": {
 		"rating": 0.2,
 		"isRatingGrowing": true,
