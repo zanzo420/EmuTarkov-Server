@@ -19,8 +19,8 @@ class TraderServer {
     }
 
     /* Load a single trader into memory. Used during profile generation. */
-    initializeTrader(traderData, sessionID) {
-        this.traders = {[traderData._id]: traderData};
+    initializeTrader(id, sessionID) {
+        this.traders = {[id]: json.parse(json.read(filepaths.traders[id]))};
     }
 
     getTrader(id, sessionID) {
@@ -28,8 +28,8 @@ class TraderServer {
     }
 
     getAllTraders(sessionID) {
-        let traders = [];
         let pmcData = profile_f.profileServer.getPmcProfile(sessionID);
+        let traders = [];
 
         for (let traderId in this.traders) {
             let trader = this.traders[traderId];
@@ -77,6 +77,7 @@ class TraderServer {
             }
 
             pmcData.TraderStandings[id].currentLevel = targetLevel;
+            pmcData.TraderStandings[id].nextLoyalty = loyaltyLevels[level];
             break;
         }
 

@@ -80,8 +80,8 @@ class ProfileServer {
 
         // create traders        
         for (let trader of Object.keys(filepaths.traders)) {
-            pmcData.TraderStandings[trader] = {"currentLevel": 1, "currentSalesSum": 0, "currentStanding": 0, "NextLoyalty": null};
-            trader_f.traderServer.initializeTrader(json.parse(json.read(filepaths.traders[trader])), sessionID);
+            trader_f.traderServer.initializeTrader(trader, account.id);
+            pmcData.TraderStandings[trader] = getTraderStanding(trader, account.id);
             assort_f.generate(trader, account.id);
         }
 
@@ -92,7 +92,7 @@ class ProfileServer {
         json.write(folder + "dialogue.json", {});
 
         // Also load to memory.
-        this.initializeProfile(sessionID);
+        this.initializeProfile(account.id);
 
         // don't wipe profile again
         account_f.accountServer.setWipe(account.id, false);
@@ -132,6 +132,16 @@ class ProfileServer {
 function getPmcPath(sessionID) {
     let pmcPath = filepaths.user.profiles.character;
     return pmcPath.replace("__REPLACEME__", sessionID);;
+}
+
+function getTraderStanding(tid, sessionID) {
+    return {
+        "currentLevel": 1,
+        "currentSalesSum": 0,
+        "currentStanding": 0,
+        "NextLoyalty": (trader_f.traderServer.getTrader(tid, sessionID)).data.loyalty.loyaltyLevels[1],
+        "loyaltyLevels": (trader_f.traderServer.getTrader(tid, sessionID)).data.loyalty.loyaltyLevels
+    };
 }
 
 function addChildPrice(data, parentID, childPrice) {
