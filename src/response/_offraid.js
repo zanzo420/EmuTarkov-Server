@@ -91,7 +91,7 @@ function removeHealth(pmcData) {
         return;
     }
 
-    let body = pmcData.BodyParts;
+    let body = pmcData.Health.BodyParts;
     let multiplier = settings.gameplay.inraid.saveHealthMultiplier;
 
     body.Head.Health.Current = (body.Head.Health.Maximum * multiplier);
@@ -102,7 +102,7 @@ function removeHealth(pmcData) {
     body.LeftLeg.Health.Current = (body.LeftLeg.Health.Maximum * multiplier);
     body.RightLeg.Health.Current = (body.RightLeg.Health.Maximum * multiplier);
 
-    pmcData.BodyParts = body;
+    pmcData.Health.BodyParts = body;
     return pmcDdata;
 }
 
