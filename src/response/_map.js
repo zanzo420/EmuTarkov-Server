@@ -14,7 +14,7 @@ function get(mapName) {
     }    
 
     let data = json.read(mapNode[map]);
-    logger.logInfo("[MAP." + mapName + "]: " + map);
+    logger.logWarning("[MAP." + mapName + "]: " + map);
     return data;
 }
 
