@@ -77,7 +77,7 @@ class TraderServer {
             }
 
             pmcData.TraderStandings[id].currentLevel = targetLevel;
-            pmcData.TraderStandings[id].nextLoyalty = loyaltyLevels[level];
+            pmcData.TraderStandings[id].NextLoyalty = loyaltyLevels[level];
             break;
         }
 
