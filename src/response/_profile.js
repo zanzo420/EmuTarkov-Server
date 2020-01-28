@@ -136,7 +136,7 @@ function getPmcPath(sessionID) {
 
 function getTraderStanding(tid, sessionID) {
     const loyaltyLevels = (trader_f.traderServer.getTrader(tid, sessionID)).data.loyalty.loyaltyLevels;
-    return {"currentLevel": 1, "currentSalesSum": 0, "currentStanding": 0, "NextLoyalty": loyaltyLevels[1], "loyaltyLevels": loyaltyLevels};
+    return {"currentLevel": 1, "currentSalesSum": 0, "currentStanding": 0, "NextLoyalty": null, "loyaltyLevels": loyaltyLevels};
 }
 
 function addChildPrice(data, parentID, childPrice) {
