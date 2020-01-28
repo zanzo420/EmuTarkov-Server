@@ -103,7 +103,7 @@ function removeHealth(pmcData) {
     body.RightLeg.Health.Current = (body.RightLeg.Health.Maximum * multiplier);
 
     pmcData.Health.BodyParts = body;
-    return pmcDdata;
+    return pmcData;
 }
 
 function saveProgress(offraidData, sessionID) {
