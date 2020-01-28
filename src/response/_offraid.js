@@ -65,22 +65,9 @@ function deleteInventory(pmcData, sessionID) {
         }
     }
 
-    // check for insurance
-    for (let item of toDelete) {
-        for (let insurance of pmcData.InsuredItems) {
-            if (item === insurance.itemId && utility.getRandomInt(0, 99) < settings.gameplay.trading.insureReturnChance) {
-                insurance_f.remove(pmcData, toDelete[item], sessionID);
-                item = "insured";
-                break;
-            }
-        }
-    }
-
     // finally delete them
     for (let item of toDelete) {
-        if (item !== "insured") {
-            move_f.removeItemFromProfile(pmcData, item);
-        }
+        move_f.removeItemFromProfile(pmcData, item);
     }
 
     return pmcData;
@@ -114,6 +101,7 @@ function saveProgress(offraidData, sessionID) {
     let pmcData = profile_f.profileServer.getPmcProfile(sessionID);
     let scavData = profile_f.profileServer.getScavProfile(sessionID);
     const isPlayerScav = offraidData.isPlayerScav;
+    const isDead = offraidData.exit !== "survived" && offraidData.exit !== "runner";
 
     // set pmc data
     if (!isPlayerScav) {
@@ -134,22 +122,72 @@ function saveProgress(offraidData, sessionID) {
     offraidData.profile = markFoundItems(pmcData, offraidData.profile, isPlayerScav);
     offraidData.profile.Inventory.items = itm_hf.replaceIDs(offraidData.profile, offraidData.profile.Inventory.items);
 
+    let traderToInsuredItems = {};
+
     // set profile equipment to the raid equipment
     if (isPlayerScav) {
         scavData = setInventory(scavData, offraidData.profile);
     } else {
+        // Find insured items and filter out items still in inventory (if alive).
+        // Potential gotcha: itm_hf.replaceIDs don't replace insured item ids. Consider
+        // rearranging this block of code if this changes.
+        let insuredItems = pmcData.InsuredItems;
+        let retainedInsuranceItemIds = {};
+
+        // If character died, then want all the insured items on inventory.
+        // Otherwise, only get insured items not in offraidProfile's inventory.
+        if (!isDead) {
+            for (let insuredIndex in insuredItems) {
+                for (let item of offraidData.profile.Inventory.items) {
+                    if (item._id === insuredItems[insuredIndex].itemId) {
+                        retainedInsuranceItemIds[item._id] = 1;
+                    }
+                }
+            }
+        }
+
+        for (let insuredIndex in insuredItems) {
+            for (let item of pmcData.Inventory.items) {
+                if (item._id === insuredItems[insuredIndex].itemId && !(item._id in retainedInsuranceItemIds)) {
+                    const traderId = insuredItems[insuredIndex].tid;
+                    traderToInsuredItems[traderId] = traderToInsuredItems[traderId] || [];
+                    traderToInsuredItems[traderId].push(item);
+                }
+            }
+        }
+
         pmcData = setInventory(pmcData, offraidData.profile);
     }
 
     // terminate early for player scavs because we don't care about whether they died.
     if (isPlayerScav) {
         return;
-    }
+    }    
 
     // remove inventory if player died
-    if (offraidData.exit !== "survived" && offraidData.exit !== "runner") {
+    if (isDead) {
         pmcData = deleteInventory(pmcData, sessionID);
         pmcData = removeHealth(pmcData);
+    }
+
+    // Send insurance message to player.
+    // TODO(camo1018): Make message not whatever it is below.
+    // TODO(camo1018): Insurance using real return time.
+    for (let traderId in traderToInsuredItems) {
+        let messageContent = {
+            text: "My boys are out there to grab your junk ;)",
+            type: dialogue_f.getMessageTypeValue("npcTrader")
+        }
+        dialogue_f.dialogueServer.addDialogueMessage(traderId, messageContent, sessionID);
+    
+        messageContent = {
+            text: "My boys got your junk ;)",
+            type: dialogue_f.getMessageTypeValue("insuranceReturn"),
+            maxStorageTime: 120, // 72 hours in seconds.
+        }
+        dialogue_f.dialogueServer.addDialogueMessage(traderId, messageContent, sessionID,
+            traderToInsuredItems[traderId]);
+        
     }
 }
 

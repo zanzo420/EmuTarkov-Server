@@ -63,8 +63,7 @@ function healPlayer(pmcData, body, sessionID) {
     for (let item of pmcData.Inventory.items) {
         if (item._id === body.item) {
             if (typeof item.upd.MedKit === "undefined") {
-                let maxhp = itm_hf.getItem(item._tpl)[0]._props.MaxHpResource;
-
+                let maxhp = itm_hf.getItem(item._tpl)[1]._props.MaxHpResource;
                 item.upd.MedKit = {"HpResource": maxhp - body.count};
             } else {
                 item.upd.MedKit.HpResource -= body.count;

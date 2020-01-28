@@ -95,6 +95,8 @@ class ProfileServer {
 
         // Also load to memory.
         this.initializeProfile(account.id);
+        trader_f.traderServer.initializeTraders(account.id);
+        dialogue_f.dialogueServer.initializeDialogue(account.id);
 
         // don't wipe profile again
         account_f.accountServer.setWipe(account.id, false);

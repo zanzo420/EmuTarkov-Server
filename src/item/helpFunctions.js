@@ -297,13 +297,12 @@ function getPlayerStash(sessionID) { //this sets automaticly a stash size from i
 * */
 function getItem(template) { // -> Gets item from <input: _tpl>
     for (let itm in items.data) {
-        if (items.data.hasOwnProperty(itm)) {
-            if (items.data[itm]._id && items.data[itm]._id === template) {
-                let item = items.data[itm];
-                return [true, item];
-            }
+        if (items.data[itm]._id && items.data[itm]._id === template) {
+            let item = items.data[itm];
+            return [true, item];
         }
     }
+    
     return [false, {}];
 }
 
