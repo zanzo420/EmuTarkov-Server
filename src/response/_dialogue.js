@@ -12,6 +12,9 @@ class DialogueServer {
 	}
 
 	saveToDisk(sessionID) {
+		if (typeof this.dialogues[sessionID] === "undefined") {
+			return;
+		}
 		json.write(getPath(sessionID), this.dialogues[sessionID]);
 	}
 
