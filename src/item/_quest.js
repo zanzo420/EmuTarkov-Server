@@ -25,10 +25,11 @@ function acceptQuest(pmcData, body, sessionID) {
     let questDb = json.parse(json.read(filepaths.quests[body.qid.toString()]));
     let questLocale = json.parse(json.read(filepaths.locales["en"].quest[body.qid.toString()]));
     // Note that for starting quests, the correct locale field is "description", not "startedMessageText".
-    dialogue_f.dialogueServer.addDialogueMessage(questDb.traderId,
-                                  questLocale.description,
-                                  dialogue_f.getMessageTypeValue('questStart'),
-                                  sessionID);
+    let messageContent = {
+        templateId: questLocale.description,
+        type: dialogue_f.getMessageTypeValue('questStart')
+    };
+    dialogue_f.dialogueServer.addDialogueMessage(questDb.traderId, messageContent, sessionID);
 
     item.resetOutput();
     return item.getOutput();
@@ -94,11 +95,11 @@ function completeQuest(pmcData, body, sessionID) {
     // Create a dialog message for completing the quest.
     let questDb = json.parse(json.read(filepaths.quests[body.qid.toString()]));
     let questLocale = json.parse(json.read(filepaths.locales["en"].quest[body.qid.toString()]));
-    dialogue_f.dialogueServer.addDialogueMessage(questDb.traderId,
-                                  questLocale.successMessageText,
-                                  dialogue_f.getMessageTypeValue('questSuccess'),
-                                  sessionID,
-                                  questRewards);
+    let messageContent = {
+        templateId: questLocale.successMessageText,
+        type: dialogue_f.getMessageTypeValue('questSuccess')
+    };
+    dialogue_f.dialogueServer.addDialogueMessage(questDb.traderId, messageContent, sessionID, questRewards);
 
     item.resetOutput();
     let output = item.getOutput();

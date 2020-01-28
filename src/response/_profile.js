@@ -25,7 +25,10 @@ class ProfileServer {
         return Object.keys(this.profiles);
     }
 
-    savePmcData(sessionID) {
+    saveToDisk(sessionID) {
+        if (typeof this.profiles[sessionID]['pmc'] === "undefined") {
+            return;
+        }
         json.write(getPmcPath(sessionID), this.profiles[sessionID]['pmc']);
     }
 
@@ -82,7 +85,6 @@ class ProfileServer {
         for (let trader of Object.keys(filepaths.traders)) {
             trader_f.traderServer.initializeTrader(trader, account.id);
             pmcData.TraderStandings[trader] = getTraderStanding(trader, account.id);
-            assort_f.generate(trader, account.id);
         }
 
         // create profile
@@ -93,6 +95,8 @@ class ProfileServer {
 
         // Also load to memory.
         this.initializeProfile(account.id);
+        trader_f.traderServer.initializeTraders(account.id);
+        dialogue_f.dialogueServer.initializeDialogue(account.id);
 
         // don't wipe profile again
         account_f.accountServer.setWipe(account.id, false);

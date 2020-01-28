@@ -12,6 +12,9 @@ class DialogueServer {
 	}
 
 	saveToDisk(sessionID) {
+		if (typeof this.dialogues[sessionID] === "undefined") {
+			return;
+		}
 		json.write(getPath(sessionID), this.dialogues[sessionID]);
 	}
 
@@ -51,7 +54,7 @@ class DialogueServer {
 	/*
 	* Add a templated message to the dialogue.
 	*/
-	addDialogueMessage(dialogueID, messageTemplateId, messageType, sessionID, rewards = []) {
+	addDialogueMessage(dialogueID, messageContent, sessionID, rewards = []) {
 		let dialogueData = this.dialogues[sessionID];
 		let isNewDialogue = !(dialogueID in dialogueData);
 		let dialogue = dialogueData[dialogueID];
@@ -91,11 +94,13 @@ class DialogueServer {
 		let message = {
 			"_id": utility.generateNewDialogueId(),
 			"uid": dialogueID,
-			"type": messageType,
+			"type": messageContent.type,
 			"dt": Date.now() / 1000,
-			"templateId": messageTemplateId,
+			"templateId": messageContent.templateId,
+			"text": messageContent.text,
 			"hasRewards": rewards.length > 0,
-			"items": items
+			"items": items,
+			"maxStorageTime": messageContent.maxStorageTime
 		};
 
 		dialogue.messages.push(message);
@@ -167,6 +172,7 @@ function getPath(sessionID) {
 
 let messageTypes = {
 	"npcTrader": 2,
+	"insuranceReturn": 8,
 	"questStart": 10,
 	"questFail": 11,
 	"questSuccess": 12
