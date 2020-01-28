@@ -80,7 +80,7 @@ class ProfileServer {
 
         // create traders        
         for (let trader of Object.keys(filepaths.traders)) {
-            pmcData.TraderStandings[trader] = {"currentLevel": 1, "currentSalesSum": 0, "currentStanding": 0};
+            pmcData.TraderStandings[trader] = {"currentLevel": 1, "currentSalesSum": 0, "currentStanding": 0, "NextLoyalty": null};
             trader_f.traderServer.initializeTrader(json.parse(json.read(filepaths.traders[trader])), sessionID);
             assort_f.generate(trader, account.id);
         }

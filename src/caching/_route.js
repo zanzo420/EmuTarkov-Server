@@ -151,7 +151,7 @@ function maps() {
         logger.logInfo("Routing: db/maps/" + mapName + "/");
 
         for (let file in inputFiles) {
-            let filePath = "db/maps/" + inputFiles[file];
+            let filePath = "db/maps/" + mapname + "/" + inputFiles[file];
             let fileName = inputFiles[file].replace(".json", "");
 
             baseNode[fileName] = filePath;
