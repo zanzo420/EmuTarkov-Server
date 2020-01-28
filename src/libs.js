@@ -66,7 +66,6 @@ module.exports = function(isFirstLaunch = false, time = 0) {
 	// Other
 	global.locale = require('./response/_locale.js');
 	global.index_f = require('./response/_homeCredits.js');
-	global.assort_f = require('./response/_assort.js');
 	global.keepAlive_f = require('./response/_keepAlive.js');
 	global.offraid_f = require('./response/_offraid.js');
 	global.server = require('./server/_start.js');

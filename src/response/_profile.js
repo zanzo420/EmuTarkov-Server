@@ -82,7 +82,6 @@ class ProfileServer {
         for (let trader of Object.keys(filepaths.traders)) {
             trader_f.traderServer.initializeTrader(trader, account.id);
             pmcData.TraderStandings[trader] = getTraderStanding(trader, account.id);
-            assort_f.generate(trader, account.id);
         }
 
         // create profile

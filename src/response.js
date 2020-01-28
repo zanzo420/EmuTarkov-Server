@@ -377,7 +377,7 @@ function getTrader(url, info, sessionID) {
 }
 
 function getAssort(url, info, sessionID) {
-    return JSON.stringify(assort_f.get(url.replace("/client/trading/api/getTraderAssort/", ''), sessionID));
+    return JSON.stringify(trader_f.traderServer.getAssort(url.replace("/client/trading/api/getTraderAssort/", '')));
 }
 
 function getMenuLocale(url, info, sessionID) {
