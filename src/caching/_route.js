@@ -145,7 +145,7 @@ function maps() {
     let inputDir = utility.getDirList("db/maps/");
 
     for (let mapName of inputDir) {
-        let inputFiles = fs.readdirSync(inputDir[path]);
+        let inputFiles = fs.readdirSync("db/maps/" + mapName);
         let baseNode = {};
 
         logger.logInfo("Routing: db/maps/" + mapName + "/");
