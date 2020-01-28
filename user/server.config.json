@@ -29,7 +29,9 @@
 		"location": {
 			"realTimeEnabled": true,
 			"forceWeatherEnabled": false,
-			"forceWeatherId": 0
+			"forceWeatherId": 0,
+			"forceMapEnabled": false,
+			"forceMapId": 0
 		}
 	},
 	"mods": {

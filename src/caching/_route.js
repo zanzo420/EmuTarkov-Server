@@ -145,13 +145,14 @@ function maps() {
     let inputDir = utility.getDirList("db/maps/");
 
     for (let mapName of inputDir) {
-        let inputFiles = fs.readdirSync("db/maps/" + mapName);
+        let dirName = "db/maps/" + mapName + "/";
+        let inputFiles = fs.readdirSync(dirName);
         let baseNode = {};
 
-        logger.logInfo("Routing: db/maps/" + mapName + "/");
+        logger.logInfo("Routing: " + dirName);
 
         for (let file in inputFiles) {
-            let filePath = "db/maps/" + mapname + "/" + inputFiles[file];
+            let filePath = dirName + inputFiles[file];
             let fileName = inputFiles[file].replace(".json", "");
 
             baseNode[fileName] = filePath;
