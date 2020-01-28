@@ -15,9 +15,9 @@ function get(mapName) {
 
     logger.logWarning("[MAP." + mapName + "]: " + map);
         
-    let data = json.read(mapNode[map]);
+    let data = json.parse(json.read(mapNode[map]));
     data.BackendUrl = "https://' + ip +'/";
-    return data;
+    return json.stringify(data);
 }
 
 module.exports.get = get;
