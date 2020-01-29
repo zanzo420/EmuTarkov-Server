@@ -1,0 +1,25 @@
+{
+	"Id": "loot_food (60)3062052",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": true,
+	"Position": {
+		"x": -225.789,
+		"y": 0.759,
+		"z": -375.363
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d19042a81007cb24f638",
+	"Items": [
+		{
+			"_id": "5db5d19042a81007cb24f638",
+			"_tpl": "5d40407c86f774318526545a"
+		}
+	]
+}

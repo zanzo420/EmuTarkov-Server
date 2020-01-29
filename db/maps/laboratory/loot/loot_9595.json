@@ -1,0 +1,76 @@
+{
+	"Id": "gun_MP5 (11)3056976",
+	"IsStatic": false,
+	"useGravity": false,
+	"randomRotation": false,
+	"Position": {
+		"x": -250.294,
+		"y": 4.9,
+		"z": -325.194
+	},
+	"Rotation": {
+		"x": 287.802277,
+		"y": 91.04355,
+		"z": 0.0000111701793
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d1888bcb9e33ce402180",
+	"Items": [
+		{
+			"_id": "5db5d1888bcb9e33ce402180",
+			"_tpl": "5926bb2186f7744b1c6c6e60"
+		},
+		{
+			"_id": "5db5d1888bcb9e33ce402181",
+			"_tpl": "5926c3b286f774640d189b6b",
+			"parentId": "5db5d1888bcb9e33ce402180",
+			"slotId": "mod_magazine"
+		},
+		{
+			"_id": "5db5d1888bcb9e33ce402182",
+			"_tpl": "58864a4f2459770fcc257101",
+			"parentId": "5db5d1888bcb9e33ce402181",
+			"slotId": "cartridges",
+			"upd": {
+				"StackObjectsCount": 30
+			}
+		},
+		{
+			"_id": "5db5d1888bcb9e33ce402183",
+			"_tpl": "5926c0df86f77462f647f764",
+			"parentId": "5db5d1888bcb9e33ce402180",
+			"slotId": "mod_reciever"
+		},
+		{
+			"_id": "5db5d1888bcb9e33ce402184",
+			"_tpl": "5926c36d86f77467a92a8629",
+			"parentId": "5db5d1888bcb9e33ce402183",
+			"slotId": "mod_handguard"
+		},
+		{
+			"_id": "5db5d1888bcb9e33ce402185",
+			"_tpl": "5926d2be86f774134d668e4e",
+			"parentId": "5db5d1888bcb9e33ce402183",
+			"slotId": "mod_sight_rear"
+		},
+		{
+			"_id": "5db5d1888bcb9e33ce402186",
+			"_tpl": "5926d3c686f77410de68ebc8",
+			"parentId": "5db5d1888bcb9e33ce402183",
+			"slotId": "mod_stock"
+		},
+		{
+			"_id": "5db5d1888bcb9e33ce402187",
+			"_tpl": "5926e16e86f7742f5a0f7ecb",
+			"parentId": "5db5d1888bcb9e33ce402183",
+			"slotId": "mod_muzzle"
+		},
+		{
+			"_id": "5db5d1888bcb9e33ce402188",
+			"_tpl": "5926c32286f774616e42de99",
+			"parentId": "5db5d1888bcb9e33ce402180",
+			"slotId": "mod_charge"
+		}
+	]
+}
