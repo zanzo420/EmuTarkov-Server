@@ -188,7 +188,12 @@ function saveProgress(offraidData, sessionID) {
             templateId: dialogueTemplates.insuranceFound[utility.getRandomInt(0, 
                                                         dialogueTemplates.insuranceFound.length - 1)],
             type: dialogue_f.getMessageTypeValue("insuranceReturn"),
-            maxStorageTime: trader.data.insurance.max_storage_time * 3600
+            maxStorageTime: trader.data.insurance.max_storage_time * 3600,
+            systemData: {
+                date: utility.getDate(),
+                time: utility.getTime(),
+                location: "wastelands"  // Don't think there's a way of getting locations right now, so a placeholder it is.
+            }
         };
         events_f.scheduledEventHandler.addToSchedule({
             type: "insuranceReturn",
