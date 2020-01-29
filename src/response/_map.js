@@ -10,8 +10,6 @@ function get(mapName) {
     // set backend url
     data.BackendUrl = "https://' + ip +'/";
 
-    console.log(filepaths.maps[mapName].loot);
-
     // generate loot
     if (mapName !== "hideout") {
         for (let i = 0; i < lootCount; i++) {
@@ -33,8 +31,6 @@ function get(mapName) {
         }
     }
 
-    // TODO: code here
-    console.log(data.Loot);
     return json.stringify(data);
 }
 
