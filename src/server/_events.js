@@ -17,7 +17,6 @@ class ScheduledEventHandler {
 
 		setInterval(() => {
 			this.processSchedule();
-			console.log("processSchedule");
 		}, scheduleIntervalMillis);
 	}
 
