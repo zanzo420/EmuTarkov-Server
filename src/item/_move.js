@@ -187,7 +187,7 @@ function removeItem(profileData, body, output, sessionID) {
 
 function discardItem(pmcData, body, sessionID) {
     insurance_f.remove(pmcData, body.item, sessionID);
-    return removeItem(body.item, item.getOutput(), sessionID);
+    return removeItem(pmcData, body.item, item.getOutput(), sessionID);
 }
 
 /* Split Item

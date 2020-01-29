@@ -1,0 +1,25 @@
+{
+	"Id": "Loottools_buildings[2] (99)4379642",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": 36.0290527,
+		"y": -45.533,
+		"z": 126.247986
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d0798bcb9e33ce400ded",
+	"Items": [
+		{
+			"_id": "5db5d0798bcb9e33ce400ded",
+			"_tpl": "59e35cbb86f7741778269d83"
+		}
+	]
+}

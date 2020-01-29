@@ -1,0 +1,34 @@
+{
+	"Id": "Loot_mod_ammo_mods (20)4333334",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": true,
+	"Position": {
+		"x": 653.656,
+		"y": 1.641,
+		"z": -16.319
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5d31e3d7645bb766be660a85",
+	"Items": [
+		{
+			"_id": "5d31e3d7645bb766be660a85",
+			"_tpl": "5b1fd4e35acfc40018633c39"
+		},
+		{
+			"_id": "5d31e3d7645bb766be660a86",
+			"_tpl": "59e4d3d286f774176a36250a",
+			"parentId": "5d31e3d7645bb766be660a85",
+			"slotId": "cartridges",
+			"upd": {
+				"StackObjectsCount": 1
+			}
+		}
+	]
+}

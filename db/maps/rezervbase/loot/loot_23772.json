@@ -1,0 +1,36 @@
+{
+	"Id": "Lootable_00377",
+	"IsStatic": true,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5dd2961a86f774793f5f9c8c",
+	"Items": [
+		{
+			"_id": "5dd2961a86f774793f5f9c8c",
+			"_tpl": "5909d5ef86f77467974efbd8"
+		},
+		{
+			"_id": "5dd2961a86f774793f5f9c8d",
+			"_tpl": "5d6fc78386f77449d825f9dc",
+			"parentId": "5dd2961a86f774793f5f9c8c",
+			"slotId": "main",
+			"location": {
+				"x": 0,
+				"y": 0,
+				"r": 0
+			}
+		}
+	]
+}

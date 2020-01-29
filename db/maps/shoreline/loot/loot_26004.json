@@ -1,0 +1,34 @@
+{
+	"Id": "Priora_Police_Closed[0] 2(Clone)4382470",
+	"IsStatic": false,
+	"useGravity": false,
+	"randomRotation": false,
+	"Position": {
+		"x": 63.9208031,
+		"y": -59.16296,
+		"z": 347.505463
+	},
+	"Rotation": {
+		"x": 273.255524,
+		"y": 135.06218,
+		"z": 190.791367
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5e0675ad9a5d683c327eccc6",
+	"Items": [
+		{
+			"_id": "5e0675ad9a5d683c327eccc6",
+			"_tpl": "57372e4a24597768553071c2"
+		},
+		{
+			"_id": "5e0675ad9a5d683c327eccc7",
+			"_tpl": "56dff338d2720bbd668b4569",
+			"parentId": "5e0675ad9a5d683c327eccc6",
+			"slotId": "cartridges",
+			"upd": {
+				"StackObjectsCount": 30
+			}
+		}
+	]
+}

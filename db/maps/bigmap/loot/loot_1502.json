@@ -1,0 +1,25 @@
+{
+	"Id": "loot_flash_TG4336426",
+	"IsStatic": false,
+	"useGravity": false,
+	"randomRotation": false,
+	"Position": {
+		"x": 194.2243,
+		"y": 3.7256,
+		"z": 171.0656
+	},
+	"Rotation": {
+		"x": 90,
+		"y": 37.30105,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5d31e3d7645bb766be660a77",
+	"Items": [
+		{
+			"_id": "5d31e3d7645bb766be660a77",
+			"_tpl": "590c62a386f77412b0130255"
+		}
+	]
+}

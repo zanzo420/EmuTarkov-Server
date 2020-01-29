@@ -1,0 +1,25 @@
+{
+	"Id": "loot_ammo_regular (17)2174624",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": true,
+	"Position": {
+		"x": -217.092834,
+		"y": -4.01357651,
+		"z": -68.3837
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5d7227985549dd5e3f46fb78",
+	"Items": [
+		{
+			"_id": "5d7227985549dd5e3f46fb78",
+			"_tpl": "588226e62459776e3e094af7"
+		}
+	]
+}

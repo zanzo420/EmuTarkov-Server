@@ -2,21 +2,39 @@
 
 require("../libs.js");
 
-function get(mapName) {
-    let mapNode = filepaths.maps[mapName];
-    let presetNames = Object.keys(mapNode);
-    let map = "";
+function get(mapName) {        
+    let data = json.parse(json.read(filepaths.maps[mapName].base));
+    let lootCount = settings.gameplay.maploot[mapName];
+    let keys = Object.keys(filepaths.maps[mapName].loot);
 
-    if (!settings.gameplay.location.forceMapEnabled) {
-        map = presetNames[utility.getRandomInt(0, presetNames.length - 1)];
-    } else {
-        map = presetNames[settings.gameplay.location.forceMapId];
+    // set backend url
+    data.BackendUrl = "https://' + ip +'/";
+
+    console.log(filepaths.maps[mapName].loot);
+
+    // generate loot
+    if (mapName !== "hideout") {
+        for (let i = 0; i < lootCount; i++) {
+            let item = json.parse(json.read(filepaths.maps[mapName].loot[keys[utility.getRandomInt(0, keys.length - 1)]]));
+            let found = false;
+
+            for (let loot of data.Loot) {
+                if (item.Id == loot.Id) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                continue;
+            }
+
+            data.Loot.push(item);
+        }
     }
 
-    logger.logWarning("[MAP." + mapName + "]: " + map);
-        
-    let data = json.parse(json.read(mapNode[map]));
-    data.BackendUrl = "https://' + ip +'/";
+    // TODO: code here
+    console.log(data.Loot);
     return json.stringify(data);
 }
 

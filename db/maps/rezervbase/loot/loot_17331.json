@@ -1,0 +1,25 @@
+{
+	"Id": "loot_med (38)5986864",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": true,
+	"Position": {
+		"x": -73.423584,
+		"y": -2.70899963,
+		"z": -26.9642029
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5e06760d9a5d683c327edad6",
+	"Items": [
+		{
+			"_id": "5e06760d9a5d683c327edad6",
+			"_tpl": "59e361e886f774176c10a2a5"
+		}
+	]
+}

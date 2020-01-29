@@ -1,0 +1,25 @@
+{
+	"Id": "lootpoint (92)1685620",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": -19.966,
+		"y": 2.663,
+		"z": 51.281
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d0521c20ab7c9a5a0a65",
+	"Items": [
+		{
+			"_id": "5db5d0521c20ab7c9a5a0a65",
+			"_tpl": "590a358486f77429692b2790"
+		}
+	]
+}

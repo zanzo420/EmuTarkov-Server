@@ -4,6 +4,7 @@ require('../libs.js');
 
 function saveOpenSessions() {
 	account_f.accountServer.saveToDisk();
+	events_f.scheduledEventHandler.saveToDisk();
 
 	for (let sessionId of profile_f.profileServer.getOpenSessions()) {
 		profile_f.profileServer.saveToDisk(sessionId);

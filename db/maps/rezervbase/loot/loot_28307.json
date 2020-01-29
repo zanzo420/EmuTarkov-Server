@@ -1,0 +1,25 @@
+{
+	"Id": "loot_households (11)598050",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": true,
+	"Position": {
+		"x": -120.172974,
+		"y": -4.77082348,
+		"z": -33.842865
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d05c42a81007cb24e18a",
+	"Items": [
+		{
+			"_id": "5db5d05c42a81007cb24e18a",
+			"_tpl": "59e3556c86f7741776641ac2"
+		}
+	]
+}

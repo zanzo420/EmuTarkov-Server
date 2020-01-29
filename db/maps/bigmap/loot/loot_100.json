@@ -1,0 +1,53 @@
+{
+	"Id": "quest_case2034335774",
+	"IsStatic": false,
+	"useGravity": false,
+	"randomRotation": false,
+	"Position": {
+		"x": 178.07,
+		"y": 2.877,
+		"z": 148.702
+	},
+	"Rotation": {
+		"x": 0.00000170754754,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5d31e40e645bb73eed3d9db8",
+	"Items": [
+		{
+			"_id": "5d31e40e645bb73eed3d9db8",
+			"_tpl": "590dde5786f77405e71908b2"
+		},
+		{
+			"_id": "5d31e40e645bb73eed3d9db9",
+			"_tpl": "5449016a4bdc2d6f028b456f",
+			"parentId": "5d31e40e645bb73eed3d9db8",
+			"slotId": "main",
+			"location": {
+				"x": 0,
+				"y": 0,
+				"r": 0
+			},
+			"upd": {
+				"StackObjectsCount": 638
+			}
+		},
+		{
+			"_id": "5d31e40e645bb73eed3d9dba",
+			"_tpl": "5449016a4bdc2d6f028b456f",
+			"parentId": "5d31e40e645bb73eed3d9db8",
+			"slotId": "main",
+			"location": {
+				"x": 1,
+				"y": 0,
+				"r": 0
+			},
+			"upd": {
+				"StackObjectsCount": 850
+			}
+		}
+	]
+}

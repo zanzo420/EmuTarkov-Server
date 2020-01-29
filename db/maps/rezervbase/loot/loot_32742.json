@@ -1,0 +1,25 @@
+{
+	"Id": "loot_el_mill_acum (4)668930",
+	"IsStatic": false,
+	"useGravity": false,
+	"randomRotation": false,
+	"Position": {
+		"x": 108.307007,
+		"y": -6.204,
+		"z": 49.8200073
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 106.821213,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5dd2961d86f77414f52bc06c",
+	"Items": [
+		{
+			"_id": "5dd2961d86f77414f52bc06c",
+			"_tpl": "5d03794386f77420415576f5"
+		}
+	]
+}

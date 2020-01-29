@@ -1,0 +1,25 @@
+{
+	"Id": "Loottools[1] (38)4382500",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": -294.828,
+		"y": 3.596,
+		"z": -97.42999
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d0798bcb9e33ce400d86",
+	"Items": [
+		{
+			"_id": "5db5d0798bcb9e33ce400d86",
+			"_tpl": "5c13cd2486f774072c757944"
+		}
+	]
+}

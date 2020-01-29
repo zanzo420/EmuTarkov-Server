@@ -1,0 +1,34 @@
+{
+	"Id": "Loot 138 (2)4336206",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": 190.375,
+		"y": 3.085,
+		"z": 169.532
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 83.1445541,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5d31e40c645bb73eed3d9d4f",
+	"Items": [
+		{
+			"_id": "5d31e40c645bb73eed3d9d4f",
+			"_tpl": "576a5ed62459771e9c2096cb"
+		},
+		{
+			"_id": "5d31e40c645bb73eed3d9d50",
+			"_tpl": "5a3c16fe86f77452b62de32a",
+			"parentId": "5d31e40c645bb73eed3d9d4f",
+			"slotId": "cartridges",
+			"upd": {
+				"StackObjectsCount": 15
+			}
+		}
+	]
+}

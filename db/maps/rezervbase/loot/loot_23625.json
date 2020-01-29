@@ -1,0 +1,25 @@
+{
+	"Id": "loot_tools_metalscissors704368",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": true,
+	"Position": {
+		"x": -983.873,
+		"y": 1.262,
+		"z": -829.454
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5dd2961886f774793f5f9aae",
+	"Items": [
+		{
+			"_id": "5dd2961886f774793f5f9aae",
+			"_tpl": "5d1b2f3f86f774252167a52c"
+		}
+	]
+}

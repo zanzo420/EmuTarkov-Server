@@ -24,6 +24,7 @@ function genericFilepathCacher(type, basepath) {
             case "items": filepaths.items[fileName] = filePath; break;
             case "quests": filepaths.quests[fileName] = filePath; break;
             case "traders": filepaths.traders[fileName] = filePath; break;
+            case "dialogues": filepaths.dialogues[fileName] = filePath; break;
             case "locations": filepaths.locations[fileName] = filePath; break;
             case "customOutfits": filepaths.customization.outfits[fileName] = filePath; break;
             case "customOffers": filepaths.customization.offers[fileName] = filePath; break;
@@ -49,6 +50,10 @@ function quests() {
 function traders() {
     genericFilepathCacher("traders", "db/traders");
     genericFilepathCacher("profileTraders", "db/traders");
+}
+
+function dialogues() {
+    genericFilepathCacher("dialogues", "db/dialogues");
 }
 
 function locations() {
@@ -146,16 +151,16 @@ function maps() {
 
     for (let mapName of inputDir) {
         let dirName = "db/maps/" + mapName + "/";
-        let inputFiles = fs.readdirSync(dirName);
-        let baseNode = {};
+        let inputFiles = (mapName !== "hideout") ? fs.readdirSync(dirName + "loot/") : [];
+        let baseNode = {"base": dirName + "base.json", "loot": {}};
 
         logger.logInfo("Routing: " + dirName);
 
         for (let file in inputFiles) {
-            let filePath = dirName + inputFiles[file];
+            let filePath = dirName + "loot/" + inputFiles[file];
             let fileName = inputFiles[file].replace(".json", "");
 
-            baseNode[fileName] = filePath;
+            baseNode.loot[fileName] = filePath;
         }
 
         filepaths.maps[mapName] = baseNode;
@@ -311,6 +316,7 @@ function others() {
     filepaths.user.profiles.userbuilds = "user/profiles/__REPLACEME__/userbuilds.json";
     filepaths.user.profiles.assort["579dc571d53a0658a154fbec"] = "user/profiles/__REPLACEME__/assort/579dc571d53a0658a154fbec.json";
     filepaths.user.config = "user/server.config.json";
+    filepaths.user.events_schedule = "user/events/schedule.json";
     filepaths.globals = "db/globals.json";
     filepaths.hideout.settings = "db/hideout/settings.json";
     filepaths.ragfair.offer = "db/ragfair/offer.json";
@@ -344,6 +350,7 @@ function routeDatabase() {
     items();
     quests();
     traders();
+    dialogues();
     locations();
     customizationOutfits();
     customizationOffers();

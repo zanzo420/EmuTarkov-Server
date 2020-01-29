@@ -1,0 +1,25 @@
+{
+	"Id": "loot_el_common (15)681182",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": true,
+	"Position": {
+		"x": -58.87787,
+		"y": -5.67457676,
+		"z": 22.2692871
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 135.458725,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5dd2961d86f77414f52bc057",
+	"Items": [
+		{
+			"_id": "5dd2961d86f77414f52bc057",
+			"_tpl": "59e36c6f86f774176c10a2a7"
+		}
+	]
+}
