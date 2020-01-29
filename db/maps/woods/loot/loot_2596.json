@@ -1,0 +1,25 @@
+{
+	"Id": "LootCamping (11)2301606",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": -220.27298,
+		"y": 24.6340027,
+		"z": -116.970009
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5e0674de9a5d683c327ec9f8",
+	"Items": [
+		{
+			"_id": "5e0674de9a5d683c327ec9f8",
+			"_tpl": "544fb45d4bdc2dee738b4568"
+		}
+	]
+}
