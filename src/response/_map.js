@@ -16,6 +16,7 @@ function get(mapName) {
             let item = json.parse(json.read(filepaths.maps[mapName].loot[keys[utility.getRandomInt(0, keys.length - 1)]]));
             let found = false;
 
+            // check for duplicate
             for (let loot of data.Loot) {
                 if (item.Id == loot.Id) {
                     found = true;
@@ -27,6 +28,7 @@ function get(mapName) {
                 continue;
             }
 
+            // unique spawn
             data.Loot.push(item);
         }
     }

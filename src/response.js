@@ -26,7 +26,6 @@ const staticRoutes = {
     "/client/chatServer/list": getChatServerList,
     "/client/game/profile/nickname/change": changeNickname,
     "/client/game/profile/voice/change": changeVoice,
-    "/client/match/group/status": getGroupStatus,
     "/client/repair/exec": handleRepair,
     "/client/game/keepalive": handleKeepAlive,
     "/client/game/version/validate": validateGameVersion,
@@ -195,6 +194,7 @@ function getQuests(url, info, sessionID) {
 }
 
 function getMetrics(url, info, sessionID) {
+    logger.logWarning("METRICS");
     return json.read(`{"err":0,"errmsg":null,"data":{"Keys":[0,8,10,13,16,20,26,30,33,45,53,66,100,500,750,1000],"NetProcessingBins":[0,1,2,3,4,5,6,7,8,10,13,16,20,26,30,33,45,53,66,100,500,750,1000],"RenderBins":[0,4,8,10,13,16,20,26,30,33,45,53,66,100,500,750,1000],"GameUpdateBins":[0,4,8,10,13,16,20,26,30,33,45,53,66,100,500,750,1000],"MemoryMeasureInterval":180}}`);
 }
 
@@ -225,10 +225,6 @@ function changeNickname(url, info, sessionID) {
 function changeVoice(url, info, sessionID) {
     profile_f.profileServer.changeVoice(info, sessionID);
     return nullResponse(url, info, sessionID);
-}
-
-function getGroupStatus(url, info, sessionID) {
-    return '{ "err": 0, "errmsg": null, "data": { "players": [], "invite": [], "group": [] } }';
 }
 
 function handleRepair(url, info, sessionID) {
@@ -346,7 +342,6 @@ function saveProgress(url, info, sessionID) {
     return nullResponse;
 }
 
-
 function updateHealth(url, info, sessionID) {
     offraid_f.updateHealth(info, sessionID);
     return nullResponse;
@@ -393,7 +388,7 @@ function getGlobalLocale(url, info, sessionID) {
 function getResponse(req, body, sessionID) {
     let output = "";
     let url = req.url;
-    let info = json.parse("{}");
+    let info = {};
 
     // parse body
     if (body !== "") {
