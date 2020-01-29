@@ -1,0 +1,34 @@
+{
+	"Id": "lootpoint (73)6645020",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": 27.952,
+		"y": 8.439,
+		"z": 38.367
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5d31e3c0645bb73bbc082552",
+	"Items": [
+		{
+			"_id": "5d31e3c0645bb73bbc082552",
+			"_tpl": "573722e82459776104581c21"
+		},
+		{
+			"_id": "5d31e3c0645bb73bbc082553",
+			"_tpl": "573718ba2459775a75491131",
+			"parentId": "5d31e3c0645bb73bbc082552",
+			"slotId": "cartridges",
+			"upd": {
+				"StackObjectsCount": 16
+			}
+		}
+	]
+}
