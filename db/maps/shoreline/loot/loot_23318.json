@@ -1,0 +1,25 @@
+{
+	"Id": "LootMoney [0] (2)4377786",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": -316.182983,
+		"y": 2.873,
+		"z": -88.257
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d067f113b904523ad77e",
+	"Items": [
+		{
+			"_id": "5db5d067f113b904523ad77e",
+			"_tpl": "5cff9e84d7ad1a049e54ed55"
+		}
+	]
+}

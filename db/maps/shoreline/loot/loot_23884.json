@@ -1,0 +1,25 @@
+{
+	"Id": "Loot_meds[0] (103)4372080",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": -225.081055,
+		"y": 2.99,
+		"z": -100.380005
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 3.33714581,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5e0675ad9a5d683c327ecc03",
+	"Items": [
+		{
+			"_id": "5e0675ad9a5d683c327ecc03",
+			"_tpl": "57347cd0245977445a2d6ff1"
+		}
+	]
+}

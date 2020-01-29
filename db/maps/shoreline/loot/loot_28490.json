@@ -1,0 +1,58 @@
+{
+	"Id": "GunsafeSpawn 5(Clone)4375528",
+	"IsStatic": false,
+	"useGravity": false,
+	"randomRotation": false,
+	"Position": {
+		"x": -156.689041,
+		"y": 2.37068033,
+		"z": -78.74001
+	},
+	"Rotation": {
+		"x": 270,
+		"y": 270.000061,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d0778bcb9e33ce400cb1",
+	"Items": [
+		{
+			"_id": "5db5d0778bcb9e33ce400cb1",
+			"_tpl": "54491c4f4bdc2db1078b4568"
+		},
+		{
+			"_id": "5db5d0778bcb9e33ce400cb2",
+			"_tpl": "55d4491a4bdc2d882f8b456e",
+			"parentId": "5db5d0778bcb9e33ce400cb1",
+			"slotId": "mod_barrel"
+		},
+		{
+			"_id": "5db5d0778bcb9e33ce400cb3",
+			"_tpl": "55d45d3f4bdc2d972f8b456c",
+			"parentId": "5db5d0778bcb9e33ce400cb1",
+			"slotId": "mod_handguard"
+		},
+		{
+			"_id": "5db5d0778bcb9e33ce400cb4",
+			"_tpl": "55d484b44bdc2d1d4e8b456d",
+			"parentId": "5db5d0778bcb9e33ce400cb1",
+			"slotId": "mod_magazine"
+		},
+		{
+			"_id": "5db5d0778bcb9e33ce400cb6",
+			"_tpl": "560d5e524bdc2d25448b4571",
+			"parentId": "5db5d0778bcb9e33ce400cb4",
+			"slotId": "cartridges",
+			"upd": {
+				"StackObjectsCount": 2
+			}
+		},
+		{
+			"_id": "5db5d0778bcb9e33ce400cb5",
+			"_tpl": "56083cba4bdc2de22e8b456f",
+			"parentId": "5db5d0778bcb9e33ce400cb1",
+			"slotId": "mod_stock"
+		}
+	]
+}

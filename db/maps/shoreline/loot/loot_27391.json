@@ -1,0 +1,25 @@
+{
+	"Id": "VAZ_2106_Closed [0] 1(Clone)4373906",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": -85.15905,
+		"y": -21.1269989,
+		"z": 4.806756
+	},
+	"Rotation": {
+		"x": -0.00013980543,
+		"y": 325.627747,
+		"z": 183.296112
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d0798bcb9e33ce400df2",
+	"Items": [
+		{
+			"_id": "5db5d0798bcb9e33ce400df2",
+			"_tpl": "57347c5b245977448d35f6e1"
+		}
+	]
+}
