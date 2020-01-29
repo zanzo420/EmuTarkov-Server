@@ -150,7 +150,7 @@ function getItems(url, info, sessionID) {
 }
 
 function getGlobals(url, info, sessionID) {
-    let globals = json.parse(json.read(filepaths.user.cache.globals));
+    let globals = globalSettings;
     globals.data.time = Date.now() / 1000;
     return JSON.stringify(globals);
 }
