@@ -1,0 +1,25 @@
+{
+	"Id": "jora_tool (82)641194",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": true,
+	"Position": {
+		"x": 39.5139771,
+		"y": -3.955,
+		"z": -125.228973
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d046cd1e3d3a94507b2b",
+	"Items": [
+		{
+			"_id": "5db5d046cd1e3d3a94507b2b",
+			"_tpl": "5d1b31ce86f7742523398394"
+		}
+	]
+}

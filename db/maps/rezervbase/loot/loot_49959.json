@@ -1,0 +1,25 @@
+{
+	"Id": "Loot_jigul_garbage(Clone)5984924",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": -102.072021,
+		"y": -6.384679,
+		"z": -124.178253
+	},
+	"Rotation": {
+		"x": -0.00013980543,
+		"y": 310.473083,
+		"z": 183.296112
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5e06761396074431445d4acc",
+	"Items": [
+		{
+			"_id": "5e06761396074431445d4acc",
+			"_tpl": "5448ff904bdc2d6f028b456e"
+		}
+	]
+}

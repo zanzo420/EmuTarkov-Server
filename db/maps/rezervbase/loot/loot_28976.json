@@ -1,0 +1,25 @@
+{
+	"Id": "loot_toospaste_stuff (107)646244",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": true,
+	"Position": {
+		"x": 166.531982,
+		"y": -6.199005,
+		"z": -242.04
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d06042a81007cb24e57e",
+	"Items": [
+		{
+			"_id": "5db5d06042a81007cb24e57e",
+			"_tpl": "5c13cd2486f774072c757944"
+		}
+	]
+}

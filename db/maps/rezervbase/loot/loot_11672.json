@@ -1,0 +1,92 @@
+{
+	"Id": "ak-74u_med (16)594342",
+	"IsStatic": false,
+	"useGravity": false,
+	"randomRotation": false,
+	"Position": {
+		"x": -15.1400146,
+		"y": 25.9004,
+		"z": 179.021057
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 273.405,
+		"z": 90
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d045cd1e3d3a94507abb",
+	"Items": [
+		{
+			"_id": "5db5d045cd1e3d3a94507abb",
+			"_tpl": "57dc2fa62459775949412633",
+			"upd": {
+				"Foldable": {
+					"Folded": false
+				}
+			}
+		},
+		{
+			"_id": "5db5d045cd1e3d3a94507abc",
+			"_tpl": "5649ad3f4bdc2df8348b4585",
+			"parentId": "5db5d045cd1e3d3a94507abb",
+			"slotId": "mod_pistol_grip"
+		},
+		{
+			"_id": "5db5d045cd1e3d3a94507abd",
+			"_tpl": "57dc347d245977596754e7a1",
+			"parentId": "5db5d045cd1e3d3a94507abb",
+			"slotId": "mod_stock",
+			"upd": {
+				"Foldable": {
+					"Folded": false
+				}
+			}
+		},
+		{
+			"_id": "5db5d045cd1e3d3a94507abe",
+			"_tpl": "55d480c04bdc2d1d4e8b456a",
+			"parentId": "5db5d045cd1e3d3a94507abb",
+			"slotId": "mod_magazine"
+		},
+		{
+			"_id": "5db5d045cd1e3d3a94507abf",
+			"_tpl": "56dff4a2d2720bbd668b456a",
+			"parentId": "5db5d045cd1e3d3a94507abe",
+			"slotId": "cartridges",
+			"upd": {
+				"StackObjectsCount": 30
+			}
+		},
+		{
+			"_id": "5db5d045cd1e3d3a94507ac0",
+			"_tpl": "57dc324a24597759501edc20",
+			"parentId": "5db5d045cd1e3d3a94507abb",
+			"slotId": "mod_muzzle"
+		},
+		{
+			"_id": "5db5d045cd1e3d3a94507ac1",
+			"_tpl": "5839a7742459773cf9693481",
+			"parentId": "5db5d045cd1e3d3a94507abb",
+			"slotId": "mod_reciever"
+		},
+		{
+			"_id": "5db5d045cd1e3d3a94507ac2",
+			"_tpl": "59d36a0086f7747e673f3946",
+			"parentId": "5db5d045cd1e3d3a94507abb",
+			"slotId": "mod_gas_block"
+		},
+		{
+			"_id": "5db5d045cd1e3d3a94507ac3",
+			"_tpl": "57ffa9f4245977728561e844",
+			"parentId": "5db5d045cd1e3d3a94507ac2",
+			"slotId": "mod_handguard"
+		},
+		{
+			"_id": "5db5d045cd1e3d3a94507ac4",
+			"_tpl": "5a5f1ce64f39f90b401987bc",
+			"parentId": "5db5d045cd1e3d3a94507ac3",
+			"slotId": "mod_tactical_001"
+		}
+	]
+}

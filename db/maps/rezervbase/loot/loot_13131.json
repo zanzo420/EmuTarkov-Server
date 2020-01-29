@@ -1,0 +1,76 @@
+{
+	"Id": "GunrackSpawn 6(Clone)721010",
+	"IsStatic": false,
+	"useGravity": false,
+	"randomRotation": false,
+	"Position": {
+		"x": 89.3493652,
+		"y": -3.081009,
+		"z": -43.15274
+	},
+	"Rotation": {
+		"x": 275.387726,
+		"y": 196.067383,
+		"z": 89.98821
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5dd2961886f774793e1eda2a",
+	"Items": [
+		{
+			"_id": "5dd2961886f774793e1eda2a",
+			"_tpl": "5839a40f24597726f856b511"
+		},
+		{
+			"_id": "5dd2961886f774793e1eda2b",
+			"_tpl": "5649ad3f4bdc2df8348b4585",
+			"parentId": "5dd2961886f774793e1eda2a",
+			"slotId": "mod_pistol_grip"
+		},
+		{
+			"_id": "5dd2961886f774793e1eda2c",
+			"_tpl": "57dc347d245977596754e7a1",
+			"parentId": "5dd2961886f774793e1eda2a",
+			"slotId": "mod_stock"
+		},
+		{
+			"_id": "5dd2961886f774793e1eda2d",
+			"_tpl": "564ca99c4bdc2d16268b4589",
+			"parentId": "5dd2961886f774793e1eda2a",
+			"slotId": "mod_magazine"
+		},
+		{
+			"_id": "5dd2961886f774793e1eda2e",
+			"_tpl": "56dfef82d2720bbd668b4567",
+			"parentId": "5dd2961886f774793e1eda2d",
+			"slotId": "cartridges",
+			"upd": {
+				"StackObjectsCount": 30
+			}
+		},
+		{
+			"_id": "5dd2961886f774793e1eda2f",
+			"_tpl": "57ffb0e42459777d047111c5",
+			"parentId": "5dd2961886f774793e1eda2a",
+			"slotId": "mod_muzzle"
+		},
+		{
+			"_id": "5dd2961886f774793e1eda30",
+			"_tpl": "5839a7742459773cf9693481",
+			"parentId": "5dd2961886f774793e1eda2a",
+			"slotId": "mod_reciever"
+		},
+		{
+			"_id": "5dd2961886f774793e1eda31",
+			"_tpl": "59d36a0086f7747e673f3946",
+			"parentId": "5dd2961886f774793e1eda2a",
+			"slotId": "mod_gas_block"
+		},
+		{
+			"_id": "5dd2961886f774793e1eda32",
+			"_tpl": "57dc32dc245977596d4ef3d3",
+			"parentId": "5dd2961886f774793e1eda31",
+			"slotId": "mod_handguard"
+		}
+	]
+}
