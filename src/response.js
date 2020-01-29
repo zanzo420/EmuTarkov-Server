@@ -146,7 +146,7 @@ function getInsuranceCost(url, info, sessionID) {
 }
 
 function getItems(url, info, sessionID) {
-    return JSON.stringify(json.parse(json.read(filepaths.user.cache.items)));
+    return json.stringify(items);
 }
 
 function getGlobals(url, info, sessionID) {
