@@ -150,7 +150,9 @@ function getItems(url, info, sessionID) {
 }
 
 function getGlobals(url, info, sessionID) {
-    return json.read(filepaths.user.cache.globals);
+    let globals = json.parse(json.read(filepaths.user.cache.globals));
+    globals.data.time = Date.now() / 1000;
+    return JSON.stringify(globals);
 }
 
 function getProfileData(url, info, sessionID) {
