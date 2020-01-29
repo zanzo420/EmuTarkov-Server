@@ -1,0 +1,25 @@
+{
+	"Id": "Loot 1374335994",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": 179.961,
+		"y": 0.536,
+		"z": 171.008
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 299.197418,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5d31e3e5645bb70ef347c6e8",
+	"Items": [
+		{
+			"_id": "5d31e3e5645bb70ef347c6e8",
+			"_tpl": "59e35ef086f7741777737012"
+		}
+	]
+}

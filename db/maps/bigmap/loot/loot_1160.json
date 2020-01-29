@@ -1,0 +1,25 @@
+{
+	"Id": "Loot 084336218",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": 201.3,
+		"y": 1.338,
+		"z": 10.264
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 202.193558,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5d31e3d0645bb73572793a51",
+	"Items": [
+		{
+			"_id": "5d31e3d0645bb73572793a51",
+			"_tpl": "573476d324597737da2adc13"
+		}
+	]
+}
