@@ -152,7 +152,7 @@ function getItems(url, info, sessionID) {
 function getGlobals(url, info, sessionID) {
     let globals = globalSettings;
     globals.data.time = Date.now() / 1000;
-    return JSON.stringify(globals);
+    return json.stringify(globals);
 }
 
 function getProfileData(url, info, sessionID) {
@@ -163,11 +163,11 @@ function getProfileData(url, info, sessionID) {
         output.data.push(profile_f.profileServer.getScavProfile(sessionID));
     }
 
-    return JSON.stringify(output);
+    return json.stringify(output);
 }
 
 function regenerateScav(url, info, sessionID) {
-    return JSON.stringify({err: 0, errmsg: null, data: [profile_f.profileServer.generateScav(sessionID)]});
+    return json.stringify({err: 0, errmsg: null, data: [profile_f.profileServer.generateScav(sessionID)]});
 }
 
 function selectProfile(url, info, sessionID) {
@@ -183,7 +183,7 @@ function getWeather(url, info, sessionID) {
 }
 
 function getLocations(url, info, sessionID) {
-    return JSON.stringify(locations, null, "\t").replace(/[\r\n\t]/g, '').replace(/\s\s+/g, '').replace(/[\\]/g, "");
+    return json.stringify(locations);
 }
 
 function getTemplates(url, info, sessionID) {
@@ -191,7 +191,7 @@ function getTemplates(url, info, sessionID) {
 }
 
 function getQuests(url, info, sessionID) {
-    return JSON.stringify(quests, null, "\t").replace(/[\r\n\t]/g, '').replace(/\s\s+/g, '').replace(/[\\]/g, "");
+    return json.stringify(quests);
 }
 
 function getMetrics(url, info, sessionID) {
@@ -199,11 +199,11 @@ function getMetrics(url, info, sessionID) {
 }
 
 function getBots(url, info, sessionID) {
-    return JSON.stringify(bots.generate(info));
+    return json.stringify(bots.generate(info));
 }
 
 function getTraderList(url, info, sessionID) {
-    return JSON.stringify(trader_f.traderServer.getAllTraders(sessionID));
+    return json.stringify(trader_f.traderServer.getAllTraders(sessionID));
 }
 
 function getServer(url, info, sessionID) {
@@ -261,7 +261,7 @@ function getCustomizationOffers(url, info, sessionID) {
     }
 
     offers.data = tmpOffers;
-    return JSON.stringify(offers);
+    return json.stringify(offers);
 }
 
 function getCustomizationStorage(url, info, sessionID) {
@@ -375,11 +375,11 @@ function getProfilePurchases(url, info, sessionID) {
 }
 
 function getTrader(url, info, sessionID) {
-    return JSON.stringify(trader_f.traderServer.getTrader(url.replace("/client/trading/api/getTrader/", ''), sessionID));
+    return json.stringify(trader_f.traderServer.getTrader(url.replace("/client/trading/api/getTrader/", ''), sessionID));
 }
 
 function getAssort(url, info, sessionID) {
-    return JSON.stringify(trader_f.traderServer.getAssort(url.replace("/client/trading/api/getTraderAssort/", '')));
+    return json.stringify(trader_f.traderServer.getAssort(url.replace("/client/trading/api/getTraderAssort/", '')));
 }
 
 function getMenuLocale(url, info, sessionID) {
