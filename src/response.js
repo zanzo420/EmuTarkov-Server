@@ -425,18 +425,16 @@ function getResponse(req, body, sessionID) {
     }
 
     // load from cache when server is in release mode
-    if (typeof info.crc != "undefined") {
+    if (typeof info.crc !== "undefined") {
         let crctest = json.parse(output);
 
-        if (typeof crctest.crc != "undefined") {
+        if (typeof crctest.crc !== "undefined") {
             if (info.crc.toString() === crctest.crc.toString()) {
-                logger.logInfo("[Loading from game cache files]");
+                logger.logWarning("[Loading from game cache files]");
                 output = nullResponse(url, info, sessionID);
             } else {
-                output = json.stringify(crctest).replace(/\s\s+/g, '');
+                output = json.stringify(crctest);
             }
-
-            return output;
         }
     }
 
