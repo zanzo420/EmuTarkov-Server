@@ -15,9 +15,21 @@ function get(mapName) {
     // generate loot
     if (mapName !== "hideout") {
         for (let i = 0; i < lootCount; i++) {
-            let item = filepaths.maps[mapName].loot[keys[utility.getRandomInt(0, keys.length - 1)]];
-            console.log(item);
-            data.Loot.push(json.parse(json.read(item)));
+            let item = json.parse(json.read(filepaths.maps[mapName].loot[keys[utility.getRandomInt(0, keys.length - 1)]]));
+            let found = false;
+
+            for (let loot of data.Loot) {
+                if (item.Id == loot.Id) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                continue;
+            }
+
+            data.Loot.push(item);
         }
     }
 
