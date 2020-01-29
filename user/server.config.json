@@ -29,9 +29,18 @@
 		"location": {
 			"realTimeEnabled": true,
 			"forceWeatherEnabled": false,
-			"forceWeatherId": 0,
-			"forceMapEnabled": false,
-			"forceMapId": 0
+			"forceWeatherId": 0
+		},
+		"maploot": {
+			"bigmap": 320,
+			"develop": 20,
+			"factory4_day": 70,
+			"factory4_night": 70,
+			"interchange": 1000,
+			"laboratory": 550,
+			"rezervbase": 1500,
+			"shoreline": 700,
+			"woods": 140
 		}
 	},
 	"mods": {
