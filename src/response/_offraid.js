@@ -172,6 +172,7 @@ function saveProgress(offraidData, sessionID) {
 
     // Send insurance message to player.
     // TODO(camo1018): Send insuranceExpired/Complete messages.
+    // TODO(camo1018): Pretty sure items are messed up. Investigate and fix.
     for (let traderId in traderToInsuredItems) {
         let trader = trader_f.traderServer.getTrader(traderId);
         let dialogueTemplates = json.parse(json.read(filepaths.dialogues[traderId]));
