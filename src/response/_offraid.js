@@ -171,23 +171,35 @@ function saveProgress(offraidData, sessionID) {
     }
 
     // Send insurance message to player.
-    // TODO(camo1018): Make message not whatever it is below.
-    // TODO(camo1018): Insurance using real return time.
+    // TODO(camo1018): Send insuranceExpired/Complete messages.
     for (let traderId in traderToInsuredItems) {
+        let trader = trader_f.traderServer.getTrader(traderId);
+        let dialogueTemplates = json.parse(json.read(filepaths.dialogues[traderId]));
+
         let messageContent = {
-            text: "My boys are out there to grab your junk ;)",
+            templateId: dialogueTemplates.insuranceStart[utility.getRandomInt(0, 
+                                                        dialogueTemplates.insuranceStart.length - 1)],
             type: dialogue_f.getMessageTypeValue("npcTrader")
-        }
+        };
         dialogue_f.dialogueServer.addDialogueMessage(traderId, messageContent, sessionID);
     
         messageContent = {
-            text: "My boys got your junk ;)",
+            templateId: dialogueTemplates.insuranceFound[utility.getRandomInt(0, 
+                                                        dialogueTemplates.insuranceFound.length - 1)],
             type: dialogue_f.getMessageTypeValue("insuranceReturn"),
-            maxStorageTime: 120, // 72 hours in seconds.
-        }
-        dialogue_f.dialogueServer.addDialogueMessage(traderId, messageContent, sessionID,
-            traderToInsuredItems[traderId]);
-        
+            maxStorageTime: trader.data.insurance.max_storage_time * 3600
+        };
+        events_f.scheduledEventHandler.addToSchedule({
+            type: "insuranceReturn",
+            sessionID: sessionID,
+            scheduledTime: Date.now() + utility.getRandomInt(trader.data.insurance.min_return_hour * 3600,
+                                                             trader.data.insurance.max_return_hour * 3600) * 1000,
+            data: {
+                traderId: traderId,
+                messageContent: messageContent,
+                items: traderToInsuredItems[traderId]
+            }
+        });        
     }
 }
 
