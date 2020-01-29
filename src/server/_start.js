@@ -149,7 +149,7 @@ function sendResponse(req, resp, body, sessionID) {
     }
 
     if (output === "MAP") {
-        let mapName = req.url.replace("/api/location/", "");
+        let mapName = req.url.replace("/api/location/", "").toLowerCase();
         let map = map_f.get(mapName);
         header_f.sendTextJson(resp, map);
         return;
@@ -184,7 +184,7 @@ function handleRequest(req, resp) {
             });
         });
     }
-    
+
     if (req.method === "PUT") { // offline profile saving
         logger.logWarning("Put!");
 
@@ -205,7 +205,7 @@ function handleRequest(req, resp) {
             // unpack data
             zlib.inflate(data, function (err, body) {
                 let jsonData = json.parse((body !== undefined) ? body.toString() : "{}");
-            
+
                 logger.logRequest("[" + sessionID + "][" + IP + "] " + req.url + " -> " + jsonData);
                 sendResponse(req, resp, jsonData, sessionID);
             });
@@ -217,7 +217,7 @@ function handleRequest(req, resp) {
     }
 }
 
-function start() {  
+function start() {
     // set the ip
     if (settings.server.generateIp == true) {
         ip = utility.getLocalIpAddress();
