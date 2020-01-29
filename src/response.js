@@ -401,7 +401,7 @@ function getResponse(req, body, sessionID) {
     }
 
     // remove ?retry=X from URL
-    if (url.indexOf("?retry=") != -1) {
+    if (url.indexOf("?retry=") !== -1) {
         url = url.split("?retry=")[0];
     }
 
@@ -412,7 +412,7 @@ function getResponse(req, body, sessionID) {
 
     // handle dynamic requests
     for (let key in dynamicRoutes) {
-        if (url.indexOf(key) != -1) {
+        if (url.indexOf(key) !== -1) {
             return dynamicRoutes[key](url, info, sessionID);
         }
     }
