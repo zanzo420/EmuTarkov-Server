@@ -100,7 +100,8 @@ class DialogueServer {
 			"text": messageContent.text,
 			"hasRewards": rewards.length > 0,
 			"items": items,
-			"maxStorageTime": messageContent.maxStorageTime
+			"maxStorageTime": messageContent.maxStorageTime,
+			"systemData": messageContent.systemData
 		};
 
 		dialogue.messages.push(message);
