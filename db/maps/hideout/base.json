@@ -23,9 +23,7 @@
     "IconX": 156,
     "IconY": 551,
     "filter_ex": [],
-    "waves": [
-        
-    ],
+    "waves": [],
     "limits": [],
     "AveragePlayTime": 1000000,
     "AveragePlayerLevel": 10,
@@ -44,9 +42,7 @@
     },
     "Id": "hideout",
     "_Id": "599319c986f7740dca3070a6",
-    "Loot": [
-
-    ],
+    "Loot": [],
     "SpawnAreas": [
         {
             "Id": "Heaven 2",

@@ -43,6 +43,16 @@ function traders(mod) {
     }
 }
 
+function dialogues(mod) {
+    if (!mod.files.hasOwnProperty("dialogues")) {
+        return;
+    }
+
+    for (let item in mod.files.dialogues) {
+        filepaths.dialogues[item] = mod.files.dialogues[item];
+    }
+}
+
 function locations(mod) {
     if (!mod.files.hasOwnProperty("locations")) {
         return;
@@ -330,6 +340,7 @@ function load() {
         items(mod);
         quests(mod);
         traders(mod);
+        dialogues(mod);
         locations(mod);
         weather(mod);
         customizationOffers(mod);
