@@ -37,7 +37,43 @@ function generate(mapName) {
     return data;
 }
 
-function get(map) {
+// todo: use cache system
+function get(mapName) {
+    let map = json.parse(json.read(filepaths.maps[mapName].base));
+    let mapPath = "db/maps/" + mapName + "/";
+
+    // set exit locations
+    if (fs.existsSync(mapPath + "exits/")) {
+        for (let exit in map.Exits) {
+            map.Exits[exit].push(json.parse(json.read(mapPath + "exits/exfill_" + exit + ".json")));
+        }
+    }
+
+    // set bot spawns
+    if (fs.existsSync(mapPath + "waves/")) {
+        for (let wave in map.waves) {
+            map.waves[wave].push(json.parse(json.read(mapPath + "waves/wave_" + wave + ".json")));
+        }
+    }
+
+    // set infill locations
+    if (fs.existsSync(mapPath + "entries/")) {
+        for (let spawn in map.SpawnAreas) {
+            map.SpawnAreas[spawn].push(json.parse(json.read(mapPath + "entries/infill_" + spawn + ".json")));
+        }
+    }
+
+    // set boss locations
+    if (fs.existsSync(mapPath + "bosses/") && map.BossLocationSpawn !== false) {
+        for (let spawn in map.BossLocationSpawn) {
+            map.BossLocationSpawn[spawn].push(json.parse(json.read(mapPath + "bosses/boss_" + spawn + ".json")));
+        }
+    }
+
+    maps[mapName] = map;
+}
+
+function load(map) {
     let mapName = map.toLowerCase().replace(" ", "");
     return json.stringify(generate(mapName));
 }
@@ -45,47 +81,16 @@ function get(map) {
 function generateAll() {
     let base = json.parse(json.read("db/cache/locations.json"));
     let keys = Object.keys(filepaths.maps);
+    let data = {};
 
     // load maps
     for (let mapName of keys) {
         if (typeof maps[mapName] === "undefined") {
-            maps[mapName] = json.parse(json.read(filepaths.maps[mapName].base));
-
-            let map = maps[mapName];
-            let mapPath = "db/maps/" + mapName + "/";
-
-            for (let exit in map.Exits) {
-                json.write(mapPath + "exits/exfill_" + exit + ".json", map.Exits[exit]);
-            }
-
-            for (let wave in map.waves) {
-                json.write(mapPath + "waves/wave_" + wave + ".json", map.waves[wave]);
-            }
-
-            for (let spawn in map.SpawnAreas) {
-                json.write(mapPath + "entries/infill_" + spawn + ".json", map.SpawnAreas[spawn]);
-            }
-
-            if (map.BossLocationSpawn !== false) {
-                for (let spawn in map.BossLocationSpawn) {
-                    json.write(mapPath + "bosses/boss_" + spawn + ".json", map.BossLocationSpawn[spawn]);
-                }
-            }
-
-            map.Loot = [];
-            map.Exits = [];
-            map.waves = [];
-            map.Exits = [];
-            map.SpawnAreas = [];
-            map.BossLocationSpawn = [];
-
-            json.write(filepaths.maps[mapName].base, maps[mapName]);
+            get(mapName);
         }
     }
 
     // use right id's
-    let data = {};
-
     for (let mapName in maps) {
         data[maps[mapName]._Id] = maps[mapName];
     }
