@@ -50,6 +50,13 @@ function generateAll() {
         }
     }
 
+    let data = maps;
+
+    for (let mapName in maps) {
+        data[maps[mapName]._Id] = maps[mapName];
+        delete data[mapName];
+    }
+
     base.data.locations = maps;
     return json.stringify(base);
 }
