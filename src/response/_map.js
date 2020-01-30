@@ -3,11 +3,10 @@
 require("../libs.js");
 
 let maps = {};
+let storedSession = "";     // rework this, shared state will cause problems on LAN
 
-let SessionID = ""
-
-function SetSession(session) {
-    SessionID = session
+function setSession(session) {
+    storedSession = session;
 }
 
 function generate(mapName) {
@@ -69,19 +68,26 @@ function load(mapName) {
 
 function get(map) {
     let mapName = map.toLowerCase().replace(" ", "");
-    if (mapName === 'laboratory') {
-        const pmcData = profile_f.profileServer.getPmcProfile(SessionID);
-        for (let card of pmcData.Inventory.items){
-            if (card._tpl === '5c94bbff86f7747ee735c08f' && card.slotId !== 'hideout'){
-                move_f.removeItemFromProfile(pmcData, card._id);
-                console.log("Keycard deleted");
+
+    // remove keycard when entering 
+    if (mapName === "laboratory") {
+        const pmcData = profile_f.profileServer.getPmcProfile(storedSession);
+
+        for (let item of pmcData.Inventory.items) {
+            if (item._tpl === "5c94bbff86f7747ee735c08f" && item.parentId === pmcData.Inventory.equipment) {
+                move_f.removeItemFromProfile(pmcData, item._id);
+                logger.logWarning("Keycard deleted");
+                break;
             }
         }
     }
+
     return json.stringify(generate(mapName));
 }
 
 function generateAll() {
+    logger.logError("If anyone sees this, tell PoloYolo to get rid of the shared state in src/response/_map.js ASAP");
+
     let base = json.parse(json.read("db/cache/locations.json"));
     let keys = Object.keys(filepaths.maps);
     let data = {};
@@ -102,6 +108,6 @@ function generateAll() {
     return json.stringify(base);
 }
 
+module.exports.setSession = setSession;
 module.exports.get = get;
 module.exports.generateAll = generateAll;
-module.exports.SetSession = SetSession;
