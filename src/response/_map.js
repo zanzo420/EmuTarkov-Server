@@ -7,9 +7,6 @@ let maps = {};
 function generate(mapName) {
     let data = json.parse(json.read(filepaths.maps[mapName].base));
 
-    // set backend url
-    data.BackendUrl = "https://' + ip +'/";
-
     // generate loot
     let lootCount = settings.gameplay.maploot[mapName];
     let keys = Object.keys(filepaths.maps[mapName].loot);
