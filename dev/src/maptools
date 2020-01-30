@@ -29,9 +29,8 @@ function generateAll() {
             }
 
             map.Loot = [];
-            map.Exits = [];
             map.waves = [];
-            map.Exits = [];
+            map.exits = [];
             map.SpawnAreas = [];
             map.BossLocationSpawn = [];
 

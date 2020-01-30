@@ -93,6 +93,5 @@
 			}
 		}
 	],
-	"BossLocationSpawn": [],
-	"Exits": []
+	"BossLocationSpawn": []
 }

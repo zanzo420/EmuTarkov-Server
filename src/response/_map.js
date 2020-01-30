@@ -37,37 +37,25 @@ function generate(mapName) {
 // todo: use cache system
 function load(mapName) {
     let map = json.parse(json.read(filepaths.maps[mapName].base));
-    let mapPath = "db/maps/" + mapName + "/";
-
-    map.exits = [];
-    json.write(filepaths.maps[mapName].base, map);
-
-    // set exfill locations
-    if (fs.existsSync(mapPath + "exits/")) {
-        for (let exit in map.exits) {
-            map.exits.push(json.parse(json.read(mapPath + "exits/exfill_" + exit + ".json")));
-        }
-    }
-
-    // set bot spawns
-    if (fs.existsSync(mapPath + "waves/")) {
-        for (let wave in map.waves) {
-            map.waves.push(json.parse(json.read(mapPath + "waves/wave_" + wave + ".json")));
-        }
-    }
 
     // set infill locations
-    if (fs.existsSync(mapPath + "entries/")) {
-        for (let spawn in map.SpawnAreas) {
-            map.SpawnAreas.push(json.parse(json.read(mapPath + "entries/infill_" + spawn + ".json")));
-        }
+    for (let spawn in filepaths.maps[mapName].entries) {
+        map.SpawnAreas.push(json.parse(json.read(filepaths.maps[mapName].entries[spawn])));
+    }
+
+    // set exfill locations
+    for (let exit in filepaths.maps[mapName].exits) {
+        map.exits.push(filepaths.maps[mapName].exits[exit]);
+    }
+
+    // set scav locations
+    for (let wave in filepaths.maps[mapName].waves) {
+        map.waves.push(json.parse(json.read(filepaths.maps[mapName].waves[wave])));
     }
 
     // set boss locations
-    if (fs.existsSync(mapPath + "bosses/") && map.BossLocationSpawn !== false) {
-        for (let spawn in map.BossLocationSpawn) {
-            map.BossLocationSpawn.push(json.parse(json.read(mapPath + "bosses/boss_" + spawn + ".json")));
-        }
+    for (let spawn in filepaths.maps[mapName].bosses) {
+        map.BossLocationSpawn.push(json.parse(json.read(filepaths.maps[mapName].bosses[spawn])));
     }
 
     maps[mapName] = map;
