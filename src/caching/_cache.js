@@ -31,11 +31,6 @@ function genericCacher(cachename, filepathNode, output = "") {
                 base.data[fileName] = fileData;
             break;
 
-            case "locations.json":
-                fileName = inputNames[i++];
-                base.data.locations[fileName] = fileData;
-            break;
-
             case "customization_outfits.json":
                 fileName = inputNames[i++];
                 base.data[fileName] = fileData;
@@ -53,10 +48,6 @@ function items() {
 
 function quests() {
     genericCacher("quests.json", filepaths.quests);
-}
-
-function locations() {
-    genericCacher("locations.json", filepaths.locations);
 }
 
 function languages() {
@@ -253,10 +244,6 @@ function all() {
 
     if (force || !fs.existsSync("user/cache/quests.json")) {
         quests();
-    }
-
-    if (force || !fs.existsSync("user/cache/locations.json")) {
-        locations();
     }
 
     if (force || !fs.existsSync("user/cache/locale_languages.json")) {

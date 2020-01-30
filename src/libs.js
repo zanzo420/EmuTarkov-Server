@@ -22,10 +22,6 @@ module.exports = function(isFirstLaunch = false, time = 0) {
 	global.settings = json.parse(json.read("user/server.config.json"));
 	global.ended_at = 0;
 	global.ip = settings.server.ip;
-	global.items = "";
-	global.quests = "";
-	global.locations = "";
-	global.weathers = '{}';
 
 	if (isFirstLaunch) {
 		logger.logSuccess("Main variables setted properly... [" + String(new Date() - time) + "]");
@@ -51,7 +47,6 @@ module.exports = function(isFirstLaunch = false, time = 0) {
 
 	// global data
 	global.items = json.parse(json.read(filepaths.user.cache.items));
-	global.locations = json.parse(json.read(filepaths.user.cache.locations));
 	global.weather = json.parse(json.read(filepaths.user.cache.weather));
 	global.quests = json.parse(json.read(filepaths.user.cache.quests));
 	global.globalSettings = json.parse(json.read(filepaths.user.cache.globals));

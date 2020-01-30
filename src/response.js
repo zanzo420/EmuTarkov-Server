@@ -163,7 +163,7 @@ function getWeather(url, info, sessionID) {
 }
 
 function getLocations(url, info, sessionID) {
-    return json.stringify(locations);
+    return map_f.generateAll();
 }
 
 function getTemplates(url, info, sessionID) {
@@ -378,13 +378,13 @@ function getResponse(req, body, sessionID) {
 
     // handle static requests
     if (typeof staticRoutes[url] !== "undefined") {
-        return staticRoutes[url](url, info, sessionID);
+        output = staticRoutes[url](url, info, sessionID);
     }
 
     // handle dynamic requests
     for (let key in dynamicRoutes) {
         if (url.indexOf(key) !== -1) {
-            return dynamicRoutes[key](url, info, sessionID);
+            output = dynamicRoutes[key](url, info, sessionID);
         }
     }
 
@@ -392,20 +392,15 @@ function getResponse(req, body, sessionID) {
     if (output === "") {
         logger.logError("[UNHANDLED][" + url + "] request data: " + json.stringify(info));
         output = '{"err":404, "errmsg":"UNHANDLED RESPONSE: ' + url + '", "data":null}';
-        return output;
     }
 
     // load from cache when server is in release mode
     if (typeof info.crc !== "undefined") {
         let crctest = json.parse(output);
 
-        if (typeof crctest.crc !== "undefined") {
-            if (info.crc.toString() === crctest.crc.toString()) {
-                logger.logWarning("[Loading from game cache files]");
-                output = nullResponse(url, info, sessionID);
-            } else {
-                output = json.stringify(crctest);
-            }
+        if (typeof crctest.crc !== "undefined" && output.crc === crctest.crc) {
+            logger.logWarning("[Loading from game cache files]");
+            output = nullResponse(url, info, sessionID);
         }
     }
 

@@ -40,7 +40,14 @@
 			"laboratory": 550,
 			"rezervbase": 1500,
 			"shoreline": 700,
-			"woods": 140
+			"woods": 140,
+			"hideout": 0,
+			"lighthouse": 0,
+			"privatearea": 0,
+			"suburbs": 0,
+			"tarkovstreets": 0,
+			"terminal": 0,
+			"town": 0
 		}
 	},
 	"mods": {
