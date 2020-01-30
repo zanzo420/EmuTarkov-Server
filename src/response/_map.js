@@ -6,6 +6,9 @@ let maps = {};
 
 function generate(mapName) {
     let data = maps[mapName];
+    console.log(mapName);
+    console.log(data);
+    console.log(Object.keys(filepaths.maps));
 
     // generate loot
     let lootCount = settings.gameplay.maploot[mapName];
@@ -27,11 +30,10 @@ function generate(mapName) {
             continue;
         }
 
-        // unique spawn
+        // add unique spawn
         data.Loot.push(item);
     }
 
-    // store map in memory
     return data;
 }
 
@@ -44,20 +46,26 @@ function generateAll() {
     let base = json.parse(json.read("db/cache/locations.json"));
     let keys = Object.keys(filepaths.maps);
 
+    // load maps
     for (let mapName of keys) {
         if (typeof maps[mapName] === "undefined") {
             maps[mapName] = json.parse(json.read(filepaths.maps[mapName].base));
+            console.log(mapName);
+            console.log(maps[mapName]);
+
+            maps[mapName].Loot = [];
+            json.write(filepaths.maps[mapName].base, maps[mapName]);
         }
     }
 
-    let data = maps;
+    // use right id's
+    let data = {};
 
     for (let mapName in maps) {
         data[maps[mapName]._Id] = maps[mapName];
-        delete data[mapName];
     }
 
-    base.data.locations = maps;
+    base.data.locations = data;
     return json.stringify(base);
 }
 
