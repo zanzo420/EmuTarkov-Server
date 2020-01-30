@@ -71,63 +71,7 @@
 		"DistToActivate": 250,
 		"MagnetPower": 40
 	},
-	"exits": [
-		{
-			"Name": "Tunnel",
-			"EntryPoints": "Riverside",
-			"Chance": 100,
-			"Id": "",
-			"MinTime": 0,
-			"MaxTime": 0,
-			"PlayersCount": 0,
-			"ExfiltrationTime": 8,
-			"RequirementTip": ""
-		},
-		{
-			"Name": "Rock Passage",
-			"EntryPoints": "Village,Riverside",
-			"Chance": 50,
-			"Id": "",
-			"MinTime": 0,
-			"MaxTime": 0,
-			"PlayersCount": 0,
-			"ExfiltrationTime": 8,
-			"RequirementTip": ""
-		},
-		{
-			"Name": "Pier Boat",
-			"EntryPoints": "Village,Riverside",
-			"Chance": 50,
-			"Id": "",
-			"MinTime": 0,
-			"MaxTime": 0,
-			"PlayersCount": 0,
-			"ExfiltrationTime": 30,
-			"RequirementTip": ""
-		},
-		{
-			"Name": "CCP Temporary",
-			"EntryPoints": "Village",
-			"Chance": 50,
-			"Id": "",
-			"MinTime": 0,
-			"MaxTime": 0,
-			"PlayersCount": 0,
-			"ExfiltrationTime": 8,
-			"RequirementTip": ""
-		},
-		{
-			"Name": "Road to Customs",
-			"EntryPoints": "Village",
-			"Chance": 100,
-			"Id": "",
-			"MinTime": 0,
-			"MaxTime": 0,
-			"PlayersCount": 0,
-			"ExfiltrationTime": 8,
-			"RequirementTip": ""
-		}
-	],
+	"exits": [],
 	"DisabledForScav": false,
 	"Id": "Shoreline",
 	"_Id": "5704e554d2720bac5b8b456e",

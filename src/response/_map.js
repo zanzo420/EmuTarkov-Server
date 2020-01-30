@@ -39,6 +39,9 @@ function load(mapName) {
     let map = json.parse(json.read(filepaths.maps[mapName].base));
     let mapPath = "db/maps/" + mapName + "/";
 
+    map.exits = [];
+    json.write(filepaths.maps[mapName].base, map);
+
     // set exfill locations
     if (fs.existsSync(mapPath + "exits/")) {
         for (let exit in map.exits) {

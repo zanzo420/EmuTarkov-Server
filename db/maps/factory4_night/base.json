@@ -71,38 +71,7 @@
 		"DistToSleep": 120,
 		"DistToActivate": 100
 	},
-	"exits": [
-		{
-			"Name": "Cellars",
-			"EntryPoints": "Factory",
-			"Chance": 100,
-			"Id": "",
-			"MinTime": 0,
-			"MaxTime": 0,
-			"PlayersCount": 0,
-			"ExfiltrationTime": 10
-		},
-		{
-			"Name": "Gate 3",
-			"EntryPoints": "Factory",
-			"Chance": 100,
-			"Id": "",
-			"MinTime": 0,
-			"MaxTime": 0,
-			"PlayersCount": 0,
-			"ExfiltrationTime": 10
-		},
-		{
-			"Name": "Gate 0",
-			"EntryPoints": "Factory",
-			"Chance": 100,
-			"Id": "",
-			"MinTime": 0,
-			"MaxTime": 0,
-			"PlayersCount": 0,
-			"ExfiltrationTime": 10
-		}
-	],
+	"exits": [],
 	"DisabledForScav": false,
 	"Id": "factory4_night",
 	"_Id": "59fc81d786f774390775787e",
