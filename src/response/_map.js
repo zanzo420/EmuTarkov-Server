@@ -96,5 +96,5 @@ function generateAll() {
     return json.stringify(base);
 }
 
-module.exports.get = get;
+module.exports.load = load;
 module.exports.generateAll = generateAll;
