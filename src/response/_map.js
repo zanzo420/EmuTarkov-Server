@@ -6,9 +6,6 @@ let maps = {};
 
 function generate(mapName) {
     let data = maps[mapName];
-    console.log(mapName);
-    console.log(data);
-    console.log(Object.keys(filepaths.maps));
 
     // generate loot
     let lootCount = settings.gameplay.maploot[mapName];
