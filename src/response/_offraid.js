@@ -118,40 +118,38 @@ function saveProgress(offraidData, sessionID) {
         }
     }
 
+    // Find insured items and filter out items still in inventory (if alive).
+    let insuredItems = pmcData.InsuredItems;
+    let retainedInsuranceItemIds = {};
+    let traderToInsuredItems = {};
+
+    // If character died, then want all the insured items on inventory.
+    // Otherwise, only get insured items not in offraidProfile's inventory.
+    if (!isDead) {
+        for (let insuredIndex in insuredItems) {
+            for (let item of offraidData.profile.Inventory.items) {
+                if (item._id === insuredItems[insuredIndex].itemId) {
+                    retainedInsuranceItemIds[item._id] = 1;
+                }
+            }
+        }
+    }
+
     // mark found items and replace item ID's
     offraidData.profile = markFoundItems(pmcData, offraidData.profile, isPlayerScav);
     offraidData.profile.Inventory.items = itm_hf.replaceIDs(offraidData.profile, offraidData.profile.Inventory.items);
-
-    let traderToInsuredItems = {};
 
     // set profile equipment to the raid equipment
     if (isPlayerScav) {
         scavData = setInventory(scavData, offraidData.profile);
     } else {
-        // Find insured items and filter out items still in inventory (if alive).
-        // Potential gotcha: itm_hf.replaceIDs don't replace insured item ids. Consider
-        // rearranging this block of code if this changes.
-        let insuredItems = pmcData.InsuredItems;
-        let retainedInsuranceItemIds = {};
-
-        // If character died, then want all the insured items on inventory.
-        // Otherwise, only get insured items not in offraidProfile's inventory.
-        if (!isDead) {
-            for (let insuredIndex in insuredItems) {
-                for (let item of offraidData.profile.Inventory.items) {
-                    if (item._id === insuredItems[insuredIndex].itemId) {
-                        retainedInsuranceItemIds[item._id] = 1;
-                    }
-                }
-            }
-        }
-
         for (let insuredIndex in insuredItems) {
             for (let item of pmcData.Inventory.items) {
                 if (item._id === insuredItems[insuredIndex].itemId && !(item._id in retainedInsuranceItemIds)) {
                     const traderId = insuredItems[insuredIndex].tid;
                     traderToInsuredItems[traderId] = traderToInsuredItems[traderId] || [];
                     traderToInsuredItems[traderId].push(item);
+                    insurance_f.remove(pmcData, item._id, sessionID);
                 }
             }
         }
@@ -197,7 +195,7 @@ function saveProgress(offraidData, sessionID) {
         };
         events_f.scheduledEventHandler.addToSchedule({
             type: "insuranceReturn",
-            sessionID: sessionID,
+            sessionId: sessionID,
             scheduledTime: Date.now() + utility.getRandomInt(trader.data.insurance.min_return_hour * 3600,
                                                              trader.data.insurance.max_return_hour * 3600) * 1000,
             data: {

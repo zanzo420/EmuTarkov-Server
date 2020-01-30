@@ -109,23 +109,20 @@ function sendResponse(req, resp, body, sessionID) {
 
     if (output === "IMAGE") {
         let splittedUrl = req.url.split('/');
-        let filepath = "";
-        let file = splittedUrl[splittedUrl.length - 1];
-        let baseNode = undefined;
-
-        file = file.replace(".jpg", "").replace(".png", "");
+        let fileName = splittedUrl[splittedUrl.length - 1].replace(".jpg", "").replace(".png", "");
+        let baseNode = {};
 
         // get images to look through
-        if (req.url.indexOf("/quest") != -1) {
+        if (req.url.indexOf("/quest") !== -1) {
             logger.logInfo("[IMG.quests]:" + req.url);
             baseNode = filepaths.images.quest;
-        } else if (req.url.indexOf("/handbook") != -1) {
+        } else if (req.url.indexOf("/handbook") !== -1) {
             logger.logInfo("[IMG.handbook]:" + req.url);
             baseNode = filepaths.images.handbook;
-        } else if (req.url.indexOf("/avatar") != -1) {
+        } else if (req.url.indexOf("/avatar") !== -1) {
             logger.logInfo("[IMG.trader]:" + req.url);
             baseNode = filepaths.images.trader;
-        } else if (req.url.indexOf("/banners") != -1) {
+        } else if (req.url.indexOf("/banners") !== -1) {
             logger.logInfo("[IMG.banners]:" + req.url);
             baseNode = filepaths.images.banners;
         } else {
@@ -133,25 +130,13 @@ function sendResponse(req, resp, body, sessionID) {
             baseNode = filepaths.images.hideout;
         }
 
-        // get image
-        let keys = Object.keys(baseNode);
-
-        for (let key of keys) {
-            if (key === file) {
-                filepath = baseNode[key];
-                break;
-            }
-        }
-
         // send image
-        header_f.sendFile(resp, filepath);
+        header_f.sendFile(resp, baseNode[fileName]);
         return;
     }
 
     if (output === "MAP") {
-        let mapName = req.url.replace("/api/location/", "").toLowerCase();
-        let map = map_f.get(mapName);
-        header_f.sendTextJson(resp, map);
+        header_f.sendTextJson(resp, map_f.get(req.url.replace("/api/location/", "")));
         return;
     }
 

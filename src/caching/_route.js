@@ -25,7 +25,6 @@ function genericFilepathCacher(type, basepath) {
             case "quests": filepaths.quests[fileName] = filePath; break;
             case "traders": filepaths.traders[fileName] = filePath; break;
             case "dialogues": filepaths.dialogues[fileName] = filePath; break;
-            case "locations": filepaths.locations[fileName] = filePath; break;
             case "customOutfits": filepaths.customization.outfits[fileName] = filePath; break;
             case "customOffers": filepaths.customization.offers[fileName] = filePath; break;
             case "hideoutAreas": filepaths.hideout.areas[fileName] = filePath; break;
@@ -54,10 +53,6 @@ function traders() {
 
 function dialogues() {
     genericFilepathCacher("dialogues", "db/dialogues");
-}
-
-function locations() {
-    genericFilepathCacher("locations", "db/locations");
 }
 
 function customizationOutfits() {
@@ -151,7 +146,7 @@ function maps() {
 
     for (let mapName of inputDir) {
         let dirName = "db/maps/" + mapName + "/";
-        let inputFiles = (mapName !== "hideout") ? fs.readdirSync(dirName + "loot/") : [];
+        let inputFiles = (fs.existsSync(dirName + "loot/")) ? fs.readdirSync(dirName + "loot/") : [];
         let baseNode = {"base": dirName + "base.json", "loot": {}};
 
         logger.logInfo("Routing: " + dirName);
@@ -351,7 +346,6 @@ function routeDatabase() {
     quests();
     traders();
     dialogues();
-    locations();
     customizationOutfits();
     customizationOffers();
     hideoutAreas();

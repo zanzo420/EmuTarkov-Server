@@ -261,8 +261,8 @@ function mergeItem(pmcData, body, sessionID) {
                     let stackItem0 = 1;
                     let stackItem1 = 1;
 
-                    if (typeof items.from[key].upd !== "undefined") {
-                        stackItem0 = items.from[key].upd.StackObjectsCount;
+                    if (typeof items.to[key].upd !== "undefined") {
+                        stackItem0 = items.to[key].upd.StackObjectsCount;
                     }
 
                     if (typeof items.from[key2].upd !== "undefined") {
@@ -270,10 +270,10 @@ function mergeItem(pmcData, body, sessionID) {
                     }
 
                     if (stackItem0 === 1) {
-                        Object.assign(items.from[key], {"upd": {"StackObjectsCount": 1}});
+                        Object.assign(items.to[key], {"upd": {"StackObjectsCount": 1}});
                     }
 
-                    items.from[key].upd.StackObjectsCount = stackItem0 + stackItem1;
+                    items.to[key].upd.StackObjectsCount = stackItem0 + stackItem1;
                     output.data.items.del.push({"_id": items.from[key2]._id});
                     items.from.splice(key2, 1);
                     return output;
