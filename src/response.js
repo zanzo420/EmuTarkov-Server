@@ -1,4 +1,5 @@
 "use strict";
+
 require('./libs.js');
 
 const staticRoutes = {
@@ -17,7 +18,6 @@ const staticRoutes = {
     "/client/locations": getLocations,
     "/client/handbook/templates": getTemplates,
     "/client/quest/list": getQuests,
-    "/client/getMetricsConfig": getMetrics,
     "/client/game/bot/generate": getBots,
     "/client/trading/api/getTradersList": getTraderList,
     "/client/server/list": getServer,
@@ -26,14 +26,11 @@ const staticRoutes = {
     "/client/chatServer/list": getChatServerList,
     "/client/game/profile/nickname/change": changeNickname,
     "/client/game/profile/voice/change": changeVoice,
-    "/client/match/group/status": getGroupStatus,
     "/client/repair/exec": handleRepair,
     "/client/game/keepalive": handleKeepAlive,
     "/client/game/version/validate": validateGameVersion,
     "/client/game/config": getGameConfig,
     "/client/customization": getCustomization,
-    "/client/trading/customization/5ac3b934156ae10c4430e83c/offers": getCustomizationOffers,
-    "/client/trading/customization/579dc571d53a0658a154fbec/offers": getCustomizationOffers,
     "/client/trading/customization/storage": getCustomizationStorage,
     "/client/hideout/production/recipes": getHideoutRecipes,
     "/client/hideout/settings": getHideoutSettings,
@@ -46,7 +43,6 @@ const staticRoutes = {
     "/client/game/profile/create": createProfile,
     "/client/insurance/items/list/cost": getInsuranceCost,
     "/client/game/logout": nullResponse,
-    "/client/putMetrics": nullResponse,
     "/client/match/exit": nullResponse,
     "/client/game/profile/savage/regenerate": regenerateScav,
     "/client/mail/dialog/list": getMailDialogList,
@@ -76,12 +72,12 @@ const dynamicRoutes = {
     "/client/trading/api/getUserAssortPrice/trader/": getProfilePurchases,
     "/client/trading/api/getTrader/": getTrader,
     "/client/trading/api/getTraderAssort/": getAssort,
+    "/client/trading/customization/": getCustomizationOffers,
     "/client/menu/locale/": getMenuLocale,
     "/client/locale/": getGlobalLocale,
     "/notifierBase": nullArrayResponse,
     "/notifierServer": notify,
     "/push/notifier/get/": nullArrayResponse
-
 };
 
 function nullResponse(url, info, sessionID) {
@@ -97,23 +93,7 @@ function showIndex(url, info, sessionID) {
 }
 
 function showInventoryChecker(url, info, sessionID) {
-    let output = "";
-    let inv = itm_hf.recheckInventoryFreeSpace(profile_f.profileServer.getPmcProfile(sessionID));
-
-    output += "<style>td{border:1px solid #aaa;}</style>Inventory Stash Usage:<br><table><tr><td>-</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9<br>";
-
-    for (let y = 0; y < inv.length; y++) {
-        output += '<tr><td>' + y + "</td>";
-
-        for (let x = 0; x < inv[0].length; x++) {
-            output += '<td ' + ((inv[y][x] === 1) ? 'style="background:#aaa"' : '') + '>' + inv[y][x] + "</td>";
-        }
-
-        output += "</tr>";
-    }
-
-    output += "</table>";
-    return output;
+    return index_f.inventory();
 }
 
 function notify(url, info) {
@@ -194,10 +174,6 @@ function getQuests(url, info, sessionID) {
     return json.stringify(quests);
 }
 
-function getMetrics(url, info, sessionID) {
-    return json.read(`{"err":0,"errmsg":null,"data":{"Keys":[0,8,10,13,16,20,26,30,33,45,53,66,100,500,750,1000],"NetProcessingBins":[0,1,2,3,4,5,6,7,8,10,13,16,20,26,30,33,45,53,66,100,500,750,1000],"RenderBins":[0,4,8,10,13,16,20,26,30,33,45,53,66,100,500,750,1000],"GameUpdateBins":[0,4,8,10,13,16,20,26,30,33,45,53,66,100,500,750,1000],"MemoryMeasureInterval":180}}`);
-}
-
 function getBots(url, info, sessionID) {
     return json.stringify(bots.generate(info));
 }
@@ -225,10 +201,6 @@ function changeNickname(url, info, sessionID) {
 function changeVoice(url, info, sessionID) {
     profile_f.profileServer.changeVoice(info, sessionID);
     return nullResponse(url, info, sessionID);
-}
-
-function getGroupStatus(url, info, sessionID) {
-    return '{ "err": 0, "errmsg": null, "data": { "players": [], "invite": [], "group": [] } }';
 }
 
 function handleRepair(url, info, sessionID) {
@@ -346,7 +318,6 @@ function saveProgress(url, info, sessionID) {
     return nullResponse;
 }
 
-
 function updateHealth(url, info, sessionID) {
     offraid_f.updateHealth(info, sessionID);
     return nullResponse;
@@ -393,7 +364,7 @@ function getGlobalLocale(url, info, sessionID) {
 function getResponse(req, body, sessionID) {
     let output = "";
     let url = req.url;
-    let info = json.parse("{}");
+    let info = {};
 
     // parse body
     if (body !== "") {

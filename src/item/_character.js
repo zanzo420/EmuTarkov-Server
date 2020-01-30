@@ -5,7 +5,7 @@ require('../libs.js');
 function eatItem(pmcData, body, sessionID) {
     item.resetOutput();
     
-    let output = item.getOutput()
+    let output = item.getOutput();
     let todelete = false;
     let maxResource = undefined;
     let effects = undefined;
@@ -52,6 +52,8 @@ function eatItem(pmcData, body, sessionID) {
 }
 
 function healPlayer(pmcData, body, sessionID) {
+    let output = item.getOutput();
+
     // healing body part
     for (let bdpart in pmcData.Health.BodyParts) {
         if (bdpart === body.part) {
@@ -70,7 +72,7 @@ function healPlayer(pmcData, body, sessionID) {
             }
 
             if (item.upd.MedKit.HpResource === 0) {
-                move_f.removeItem(pmcData, body.item, item.getOutput(), sessionID);
+                move_f.removeItem(pmcData, body.item, output, sessionID);
             }
         }
     }
