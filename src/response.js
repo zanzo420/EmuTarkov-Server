@@ -1,4 +1,5 @@
 "use strict";
+
 require('./libs.js');
 
 const staticRoutes = {
