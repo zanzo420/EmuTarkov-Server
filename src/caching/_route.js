@@ -146,7 +146,7 @@ function maps() {
 
     for (let mapName of inputDir) {
         let dirName = "db/maps/" + mapName + "/";
-        let inputFiles = (mapName !== "hideout") ? fs.readdirSync(dirName + "loot/") : [];
+        let inputFiles = (fs.existsSync(dirName + "loot/")) ? fs.readdirSync(dirName + "loot/") : [];
         let baseNode = {"base": dirName + "base.json", "loot": {}};
 
         logger.logInfo("Routing: " + dirName);
@@ -346,7 +346,6 @@ function routeDatabase() {
     quests();
     traders();
     dialogues();
-    locations();
     customizationOutfits();
     customizationOffers();
     hideoutAreas();
