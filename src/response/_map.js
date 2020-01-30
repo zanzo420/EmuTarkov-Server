@@ -35,7 +35,7 @@ function generate(mapName) {
 }
 
 // todo: use cache system
-function get(mapName) {
+function load(mapName) {
     let map = json.parse(json.read(filepaths.maps[mapName].base));
     let mapPath = "db/maps/" + mapName + "/";
 
@@ -70,7 +70,7 @@ function get(mapName) {
     maps[mapName] = map;
 }
 
-function load(map) {
+function get(map) {
     let mapName = map.toLowerCase().replace(" ", "");
     return json.stringify(generate(mapName));
 }
@@ -83,7 +83,7 @@ function generateAll() {
     // load maps
     for (let mapName of keys) {
         if (typeof maps[mapName] === "undefined") {
-            get(mapName);
+            load(mapName);
         }
     }
 
@@ -96,5 +96,5 @@ function generateAll() {
     return json.stringify(base);
 }
 
-module.exports.load = load;
+module.exports.get = get;
 module.exports.generateAll = generateAll;
