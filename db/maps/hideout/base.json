@@ -43,30 +43,7 @@
 	"Id": "hideout",
 	"_Id": "599319c986f7740dca3070a6",
 	"Loot": [],
-	"SpawnAreas": [
-		{
-			"Id": "Heaven 2",
-			"Sides": [
-				"Bear",
-				"Usec"
-			],
-			"Position": {
-				"x": 0,
-				"y": 0,
-				"z": 0
-			},
-			"Center": {
-				"x": 0,
-				"y": 0,
-				"z": 0
-			},
-			"Size": {
-				"x": 2.2,
-				"y": 2.04,
-				"z": 2.14
-			}
-		}
-	],
+	"SpawnAreas": [],
 	"Banners": [
 		{
 			"name": "Р—РђРћ В«TerraGroup LabsВ»",
@@ -84,5 +61,7 @@
 				"rcid": ""
 			}
 		}
-	]
+	],
+	"Exits": [],
+	"BossLocationSpawn": []
 }
