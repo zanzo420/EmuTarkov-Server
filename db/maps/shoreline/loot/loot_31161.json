@@ -1,0 +1,34 @@
+{
+	"Id": "Loot_barter[2] (51)4380992",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": -169.555054,
+		"y": -0.23,
+		"z": -88.578
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5e0675ad8b77ae772263832c",
+	"Items": [
+		{
+			"_id": "5e0675ad8b77ae772263832c",
+			"_tpl": "57372bd3245977670b7cd243"
+		},
+		{
+			"_id": "5e0675ad8b77ae772263832d",
+			"_tpl": "56dff026d2720bb8668b4567",
+			"parentId": "5e0675ad8b77ae772263832c",
+			"slotId": "cartridges",
+			"upd": {
+				"StackObjectsCount": 30
+			}
+		}
+	]
+}

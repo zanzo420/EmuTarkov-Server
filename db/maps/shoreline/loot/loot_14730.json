@@ -1,0 +1,34 @@
+{
+	"Id": "LootFood[2] (30)2114354",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": -275.86,
+		"y": -3.578,
+		"z": -95.1990051
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 187.425476,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5d31e3d5645bb73bbc08267e",
+	"Items": [
+		{
+			"_id": "5d31e3d5645bb73bbc08267e",
+			"_tpl": "5737339e2459776af261abeb"
+		},
+		{
+			"_id": "5d31e3d5645bb73bbc08267f",
+			"_tpl": "56dff216d2720bbd668b4568",
+			"parentId": "5d31e3d5645bb73bbc08267e",
+			"slotId": "cartridges",
+			"upd": {
+				"StackObjectsCount": 30
+			}
+		}
+	]
+}

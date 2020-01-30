@@ -1,0 +1,25 @@
+{
+	"Id": "loot_bilding (1)633132",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": true,
+	"Position": {
+		"x": -45.9119873,
+		"y": 13.61,
+		"z": 178.958984
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d046cd1e3d3a94507bb4",
+	"Items": [
+		{
+			"_id": "5db5d046cd1e3d3a94507bb4",
+			"_tpl": "5d1b39a386f774252339976f"
+		}
+	]
+}

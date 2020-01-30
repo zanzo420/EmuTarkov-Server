@@ -1,0 +1,25 @@
+{
+	"Id": "LootGarbage (1)2298316",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": -403.942,
+		"y": -0.673000336,
+		"z": 311.821
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5e0674992b233a57e4763892",
+	"Items": [
+		{
+			"_id": "5e0674992b233a57e4763892",
+			"_tpl": "573476d324597737da2adc13"
+		}
+	]
+}

@@ -1,0 +1,36 @@
+{
+	"Id": "Loot_backpack (5)4335882",
+	"IsStatic": false,
+	"useGravity": false,
+	"randomRotation": false,
+	"Position": {
+		"x": 171.504715,
+		"y": 6.086,
+		"z": 182.325531
+	},
+	"Rotation": {
+		"x": 277.386139,
+		"y": 180,
+		"z": 94.38043
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5d31e40e645bb73eed3d9d97",
+	"Items": [
+		{
+			"_id": "5d31e40e645bb73eed3d9d97",
+			"_tpl": "544a5cde4bdc2d39388b456b"
+		},
+		{
+			"_id": "5d31e40e645bb73eed3d9d98",
+			"_tpl": "591afe0186f77431bd616a11",
+			"parentId": "5d31e40e645bb73eed3d9d97",
+			"slotId": "main",
+			"location": {
+				"x": 0,
+				"y": 0,
+				"r": 0
+			}
+		}
+	]
+}

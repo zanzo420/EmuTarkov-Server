@@ -1,0 +1,44 @@
+{
+	"Id": "Loot_mod_ammo_mods (19)4335336",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": true,
+	"Position": {
+		"x": 653.441,
+		"y": 1.356,
+		"z": -17.253
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5d31e3d7645bb766be660a82",
+	"Items": [
+		{
+			"_id": "5d31e3d7645bb766be660a82",
+			"_tpl": "57372fc52459776998772ca1"
+		},
+		{
+			"_id": "5d31e3d7645bb766be660a83",
+			"_tpl": "56dff4ecd2720b5f5a8b4568",
+			"parentId": "5d31e3d7645bb766be660a82",
+			"slotId": "cartridges",
+			"upd": {
+				"StackObjectsCount": 60
+			}
+		},
+		{
+			"_id": "5d31e3d7645bb766be660a84",
+			"_tpl": "56dff4ecd2720b5f5a8b4568",
+			"parentId": "5d31e3d7645bb766be660a82",
+			"slotId": "cartridges",
+			"location": 1,
+			"upd": {
+				"StackObjectsCount": 60
+			}
+		}
+	]
+}

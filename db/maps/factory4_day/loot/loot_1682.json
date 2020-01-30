@@ -1,0 +1,25 @@
+{
+	"Id": "Loot_armor (5)1686014",
+	"IsStatic": false,
+	"useGravity": false,
+	"randomRotation": false,
+	"Position": {
+		"x": 59.9194641,
+		"y": 0.318000078,
+		"z": 14.6591339
+	},
+	"Rotation": {
+		"x": 281.577972,
+		"y": 255.634644,
+		"z": 168.354675
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5e067521abf057147c03d115",
+	"Items": [
+		{
+			"_id": "5e067521abf057147c03d115",
+			"_tpl": "5648a7494bdc2d9d488b4583"
+		}
+	]
+}

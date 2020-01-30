@@ -1,0 +1,44 @@
+{
+	"Id": "Loot_jigul_garbage (1)(Clone)692754",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": -69.9491,
+		"y": -6.34679747,
+		"z": -202.392426
+	},
+	"Rotation": {
+		"x": -0.000193059561,
+		"y": 243.55719,
+		"z": 183.296082
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5dd2961386f7740728172bfc",
+	"Items": [
+		{
+			"_id": "5dd2961386f7740728172bfc",
+			"_tpl": "57372fc52459776998772ca1"
+		},
+		{
+			"_id": "5dd2961386f7740728172bfd",
+			"_tpl": "56dff4ecd2720b5f5a8b4568",
+			"parentId": "5dd2961386f7740728172bfc",
+			"slotId": "cartridges",
+			"upd": {
+				"StackObjectsCount": 60
+			}
+		},
+		{
+			"_id": "5dd2961386f7740728172bfe",
+			"_tpl": "56dff4ecd2720b5f5a8b4568",
+			"parentId": "5dd2961386f7740728172bfc",
+			"slotId": "cartridges",
+			"location": 1,
+			"upd": {
+				"StackObjectsCount": 60
+			}
+		}
+	]
+}

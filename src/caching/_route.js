@@ -151,16 +151,16 @@ function maps() {
 
     for (let mapName of inputDir) {
         let dirName = "db/maps/" + mapName + "/";
-        let inputFiles = fs.readdirSync(dirName);
-        let baseNode = {};
+        let inputFiles = (mapName !== "hideout") ? fs.readdirSync(dirName + "loot/") : [];
+        let baseNode = {"base": dirName + "base.json", "loot": {}};
 
         logger.logInfo("Routing: " + dirName);
 
         for (let file in inputFiles) {
-            let filePath = dirName + inputFiles[file];
+            let filePath = dirName + "loot/" + inputFiles[file];
             let fileName = inputFiles[file].replace(".json", "");
 
-            baseNode[fileName] = filePath;
+            baseNode.loot[fileName] = filePath;
         }
 
         filepaths.maps[mapName] = baseNode;

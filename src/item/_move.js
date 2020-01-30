@@ -175,14 +175,13 @@ function removeItem(profileData, body, output, sessionID) {
     let toDo = [body];
 
     //Find the item and all of it's relates
-    if (toDo[0] !== undefined && toDo[0] !== null && toDo[0] !== "undefined") {
-        removeItemFromProfile(profileData, toDo[0], output);
-
-        return output;
+    if (toDo[0] === undefined || toDo[0] === null || toDo[0] === "undefined") {
+        logger.logError("item id is not valid");
+        return "BAD";
     }
 
-    logger.logError("item id is not valid");
-    return "BAD";
+    removeItemFromProfile(profileData, toDo[0], output);
+    return output;
 }
 
 function discardItem(pmcData, body, sessionID) {
@@ -253,7 +252,6 @@ function mergeItem(pmcData, body, sessionID) {
     item.resetOutput();
 
     let output = item.getOutput();
-
     let items = getOwnerInventoryItems(body, sessionID);
 
     for (let key in items.to) {
@@ -410,15 +408,20 @@ function addItem(pmcData, body, output, sessionID, foundInRaid = false) {
                     for (let y = 0; y <= stashY - tmpSizeY; y++) {
                         for (let x = 0; x <= stashX - tmpSizeX; x++) {
                             let badSlot = "no";
-                            break_BadSlot:
-                                for (let itemY = 0; itemY < tmpSizeY; itemY++) {
-                                    for (let itemX = 0; itemX < tmpSizeX; itemX++) {
-                                        if (StashFS_2D[y + itemY][x + itemX] !== 0) {
-                                            badSlot = "yes";
-                                            break break_BadSlot;
-                                        }
+
+                            for (let itemY = 0; itemY < tmpSizeY; itemY++) {
+                                for (let itemX = 0; itemX < tmpSizeX; itemX++) {
+                                    if (StashFS_2D[y + itemY][x + itemX] !== 0) {
+                                        badSlot = "yes";
+                                        break;
                                     }
                                 }
+
+                                if (badSlot === "yes") {
+                                    break;
+                                }
+                            }
+
                             if (badSlot === "yes") {
                                 continue;
                             }
@@ -459,7 +462,9 @@ function addItem(pmcData, body, output, sessionID, foundInRaid = false) {
                                 for (let tmpKey in tmpTraderAssort.data.items) {
                                     if (tmpTraderAssort.data.items[tmpKey].parentId && tmpTraderAssort.data.items[tmpKey].parentId === toDo[0][0]) {
                                         newItem = utility.generateNewItemId();
+                                        
                                         let SlotID = tmpTraderAssort.data.items[tmpKey].slotId;
+
                                         if (SlotID === "hideout") {
                                             output.data.items.new.push({
                                                 "_id": newItem,

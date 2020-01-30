@@ -1,0 +1,25 @@
+{
+	"Id": "LootTools[2] (146)2107272",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": true,
+	"Position": {
+		"x": 446.5616,
+		"y": -53.479,
+		"z": 108.386848
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5d31e3fa645bb716d02dd217",
+	"Items": [
+		{
+			"_id": "5d31e3fa645bb716d02dd217",
+			"_tpl": "59e35abd86f7741778269d82"
+		}
+	]
+}

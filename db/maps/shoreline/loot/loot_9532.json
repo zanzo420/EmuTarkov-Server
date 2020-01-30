@@ -1,0 +1,34 @@
+{
+	"Id": "Loot_meds[2] (21)2108716",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": -157.44397,
+		"y": 2.976,
+		"z": -77.40201
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 19.8223133,
+		"z": 1.08051992e-7
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5d31e3c4645bb716d02dcbc4",
+	"Items": [
+		{
+			"_id": "5d31e3c4645bb716d02dcbc4",
+			"_tpl": "5737273924597765dd374461"
+		},
+		{
+			"_id": "5d31e3c4645bb716d02dcbc5",
+			"_tpl": "57371f8d24597761006c6a81",
+			"parentId": "5d31e3c4645bb716d02dcbc4",
+			"slotId": "cartridges",
+			"upd": {
+				"StackObjectsCount": 16
+			}
+		}
+	]
+}

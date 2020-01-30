@@ -1,0 +1,25 @@
+{
+	"Id": "Loot_barter[10]4382244",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": false,
+	"Position": {
+		"x": 295.39502,
+		"y": -55.198,
+		"z": 122.700989
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 213.296249,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5e0675b8abf057147c03d4fc",
+	"Items": [
+		{
+			"_id": "5e0675b8abf057147c03d4fc",
+			"_tpl": "5733279d245977289b77ec24"
+		}
+	]
+}

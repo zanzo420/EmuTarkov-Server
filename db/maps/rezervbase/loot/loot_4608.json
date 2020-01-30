@@ -1,0 +1,25 @@
+{
+	"Id": "loot_el_scheme (18)597142",
+	"IsStatic": false,
+	"useGravity": false,
+	"randomRotation": true,
+	"Position": {
+		"x": -140.890991,
+		"y": 0.548,
+		"z": -5.30599976
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 135.458725,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d03b533aa77c477a55d5",
+	"Items": [
+		{
+			"_id": "5db5d03b533aa77c477a55d5",
+			"_tpl": "5c052f6886f7746b1e3db148"
+		}
+	]
+}

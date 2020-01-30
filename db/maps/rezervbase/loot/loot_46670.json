@@ -1,0 +1,64 @@
+{
+	"Id": "GunsafeSpawn 3_2(Clone)5969798",
+	"IsStatic": false,
+	"useGravity": false,
+	"randomRotation": false,
+	"Position": {
+		"x": -41.60077,
+		"y": 18.6250935,
+		"z": 174.1325
+	},
+	"Rotation": {
+		"x": 270,
+		"y": 182.101074,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5e06761396074431445d49e6",
+	"Items": [
+		{
+			"_id": "5e06761396074431445d49e6",
+			"_tpl": "55801eed4bdc2d89578b4588"
+		},
+		{
+			"_id": "5e06761396074431445d49e7",
+			"_tpl": "559ba5b34bdc2d1f1a8b4582",
+			"parentId": "5e06761396074431445d49e6",
+			"slotId": "mod_magazine"
+		},
+		{
+			"_id": "5e06761396074431445d49ec",
+			"_tpl": "5887431f2459777e1612938f",
+			"parentId": "5e06761396074431445d49e7",
+			"slotId": "cartridges",
+			"upd": {
+				"StackObjectsCount": 8
+			}
+		},
+		{
+			"_id": "5e06761396074431445d49e8",
+			"_tpl": "56083e1b4bdc2dc8488b4572",
+			"parentId": "5e06761396074431445d49e6",
+			"slotId": "mod_sight_rear"
+		},
+		{
+			"_id": "5e06761396074431445d49e9",
+			"_tpl": "56083eab4bdc2d26448b456a",
+			"parentId": "5e06761396074431445d49e6",
+			"slotId": "mod_tactical"
+		},
+		{
+			"_id": "5e06761396074431445d49ea",
+			"_tpl": "560e620e4bdc2d724b8b456b",
+			"parentId": "5e06761396074431445d49e6",
+			"slotId": "mod_muzzle"
+		},
+		{
+			"_id": "5e06761396074431445d49eb",
+			"_tpl": "56ea8222d2720b69698b4567",
+			"parentId": "5e06761396074431445d49e6",
+			"slotId": "mod_bipod"
+		}
+	]
+}

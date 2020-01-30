@@ -1,0 +1,25 @@
+{
+	"Id": "loot_jeverly (9)594996",
+	"IsStatic": false,
+	"useGravity": true,
+	"randomRotation": true,
+	"Position": {
+		"x": -94.60486,
+		"y": -6.771577,
+		"z": 33.41031
+	},
+	"Rotation": {
+		"x": 0,
+		"y": 0,
+		"z": 0
+	},
+	"IsGroupPosition": false,
+	"GroupPositions": [],
+	"Root": "5db5d047cd1e3d3a94507c54",
+	"Items": [
+		{
+			"_id": "5db5d047cd1e3d3a94507c54",
+			"_tpl": "590de71386f774347051a052"
+		}
+	]
+}
