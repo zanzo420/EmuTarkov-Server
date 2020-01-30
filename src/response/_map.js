@@ -4,6 +4,12 @@ require("../libs.js");
 
 let maps = {};
 
+let SessionID = ""
+
+function SetSession(session) {
+    SessionID = session
+}
+
 function generate(mapName) {
     let data = maps[mapName];
 
@@ -75,6 +81,15 @@ function load(mapName) {
 
 function get(map) {
     let mapName = map.toLowerCase().replace(" ", "");
+    if (mapName === 'laboratory') {
+        const pmcData = profile_f.profileServer.getPmcProfile(SessionID);
+        for (let card of pmcData.Inventory.items){
+            if (card._tpl === '5c94bbff86f7747ee735c08f' && card.slotId !== 'hideout'){
+                move_f.removeItemFromProfile(pmcData, card._id);
+                console.log("Keycard deleted");
+            }
+        }
+    }
     return json.stringify(generate(mapName));
 }
 
@@ -101,3 +116,4 @@ function generateAll() {
 
 module.exports.get = get;
 module.exports.generateAll = generateAll;
+module.exports.SetSession = SetSession;
