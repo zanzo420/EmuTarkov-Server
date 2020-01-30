@@ -2,35 +2,100 @@
 
 require('../libs.js');
 
+function sortOffersByID(a, b) {
+    return a.intId - b.intId;
+}
+function sortOffersByRating(a, b) {
+    return a.user.rating - b.user.rating;
+}
+function sortOffersByName(a, b) {
+    // @TODO: Get localized item names
+    try {
+        let aa = itm_hf.getItem(a._id)[1]._name;
+        let bb = itm_hf.getItem(b._id)[1]._name;
+
+        aa = aa.substring(aa.indexOf('_')+1);
+        bb = bb.substring(bb.indexOf('_')+1);
+
+        return aa.localeCompare(bb);
+    } catch (e) {}
+
+    return 0;
+}
+function sortOffersByPrice(a, b) {
+    return a.requirements[0].count - b.requirements[0].count;
+}
+function sortOffersByExpiry(a, b) {
+    return a.endTime - b.endTime;
+}
+
+function sortOffers(request, offers) {
+    // Sort results
+    switch (request.sortType) {
+        case 0: // ID
+            offers.sort(sortOffersByID);
+            break;
+        case 3: // Merchant (rating)
+            offers.sort(sortOffersByRating);
+            break;
+        case 4: // Offer (title)
+            offers.sort(sortOffersByName);
+            break;
+        case 5: // Price
+            offers.sort(sortOffersByPrice);
+            break;
+        case 6: // Expires in
+            offers.sort(sortOffersByExpiry);
+            break;
+    }
+
+    if (request.sortDirection == 1) // 0=ASC 1=DESC
+        offers.reverse();
+
+    return offers;
+}
+
 function getOffers(request) {
     let response = json.parse(json.read(filepaths.ragfair.search));
 
     if (Object.entries(request.buildItems).length != 0) {
         createOfferFromBuild(request.buildItems,response);
-    } else if (request.handbookId !== "" && request.linkedSearchId !== "") {
+    }
+    else if (request.handbookId !== "" && request.linkedSearchId !== "") {
         //list specific category from a linked search
         let linkedSearch = getLinkedSearchList(request.linkedSearchId,response);
         let categorySearch = getCategoryList(request.handbookId);
+        let offers = [];
 
         for (let p1 in categorySearch) {
             for (let search in linkedSearch) {
                 if (p1 == search) {
-                    response.data.offers.push(createOffer(search, linkedSearch[search]));
+                    offers.push(createOffer(search, linkedSearch[search]));
                 }
-            }   
+            }
         }
-    } else if (request.linkedSearchId !== "") {
-        let offers = getLinkedSearchList(request.linkedSearchId,response);
+
+        response.data.offers = sortOffers(request, offers);
+    }
+    else if (request.linkedSearchId !== "") {
+        let offers_tpl = getLinkedSearchList(request.linkedSearchId,response);
+        let offers = [];
 
         for (let price in offers) {
-            response.data.offers.push(createOffer(price, offers[price]));
+            offers.push(createOffer(price, offers_tpl[price]));
         }
-    } else if (request.handbookId !== "") {
-        let offers = getCategoryList(request.handbookId);
 
-        for (let price in offers) {
-            response.data.offers.push(createOffer(price , offers[price]));
+        response.data.offers = sortOffers(request, offers);
+    }
+    else if (request.handbookId !== "") {
+        let offers_tpl = getCategoryList(request.handbookId);
+        let offers = [];
+
+        for (let price in offers_tpl) {
+            offers.push(createOffer(price, offers_tpl[price]));
         }
+
+        response.data.offers = sortOffers(request, offers);
     }
 
     return json.stringify(response);
@@ -63,7 +128,7 @@ function getLinkedSearchList(linkedSearchId, response) {
                 if (item.Id === patron) {
                     tableOfItems[patron] = item.Price;
                     response.data.categories[patron] = 1;
-                }   
+                }
             }
         }
     }
@@ -109,7 +174,7 @@ function getCategoryList(handbookId) {
                         for (let item of templates.data.Items) {
                             if (item.ParentId === categ2.Id) {
                                 tableOfItems[item.Id] = item.Price;
-                            }   
+                            }
                         }
                     }
                 }
@@ -159,10 +224,10 @@ function createOffer(template, price) {
 
     offerBase._id = template;
     offerBase.items[0]._tpl = template;
-    offerBase.requirements[0].count = Math.round(price * settings.gameplay.trading.ragfairMultiplier);;
+    offerBase.requirements[0].count = Math.round(price * settings.gameplay.trading.ragfairMultiplier);
 	//offerBase.startTime = utility.getTimestamp() - 1000;
     //offerBase.endTime = utility.getTimestamp() + 43200;
-    
+
     return offerBase;
 }
 
