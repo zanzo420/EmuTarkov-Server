@@ -375,16 +375,14 @@ function getResponse(req, body, sessionID) {
     if (url.indexOf("?retry=") !== -1) {
         url = url.split("?retry=")[0];
     }
-
-    // handle static requests
+    
     if (typeof staticRoutes[url] !== "undefined") {
         output = staticRoutes[url](url, info, sessionID);
-    }
-
-    // handle dynamic requests
-    for (let key in dynamicRoutes) {
-        if (url.indexOf(key) !== -1) {
-            output = dynamicRoutes[key](url, info, sessionID);
+    } else {
+        for (let key in dynamicRoutes) {
+            if (url.indexOf(key) !== -1) {
+                output = dynamicRoutes[key](url, info, sessionID);
+            }
         }
     }
 
