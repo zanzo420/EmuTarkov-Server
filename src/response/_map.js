@@ -50,7 +50,7 @@ function load(mapName) {
 
     // set exfill locations
     for (let exit in filepaths.maps[mapName].exits) {
-        map.exits.push(filepaths.maps[mapName].exits[exit]);
+        map.exits.push(json.parse(json.read(filepaths.maps[mapName].exits[exit])));
     }
 
     // set scav locations
