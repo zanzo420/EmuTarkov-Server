@@ -49,7 +49,7 @@ function get(map) {
 }
 
 function generateAll() {
-    let base = json.parse(json.read(filepaths.cache.locations));
+    let base = json.parse(json.read("db/cache/locations.json"));
     let keys = Object.keys(filepaths.maps);
 
     // force generation of a new map preset

@@ -376,6 +376,7 @@ function getResponse(req, body, sessionID) {
         url = url.split("?retry=")[0];
     }
     
+    // route request
     if (typeof staticRoutes[url] !== "undefined") {
         output = staticRoutes[url](url, info, sessionID);
     } else {
