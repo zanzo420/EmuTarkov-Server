@@ -44,7 +44,7 @@ function generateAll() {
     let base = json.parse(json.read("db/cache/locations.json"));
     let keys = Object.keys(filepaths.maps);
 
-    for (let mapName in keys) {
+    for (let mapName of keys) {
         if (typeof maps[mapName] === "undefined") {
             maps[mapName] = json.parse(json.read(filepaths.maps[mapName].base));
         }
