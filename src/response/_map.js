@@ -5,7 +5,7 @@ require("../libs.js");
 let maps = {};
 
 function generate(mapName) {
-    let data = json.parse(json.read(filepaths.maps[mapName].base));
+    let data = maps[mapName];
 
     // generate loot
     let lootCount = settings.gameplay.maploot[mapName];
@@ -32,26 +32,22 @@ function generate(mapName) {
     }
 
     // store map in memory
-    maps[mapName] = data;
+    return data;
 }
 
 function get(map) {
     let mapName = map.toLowerCase().replace(" ", "");
-
-    if (typeof maps[mapName] === "undefined") {
-        generate(mapName);
-    }
-
-    return json.stringify(maps[mapName]);
+    return json.stringify(generate(mapName));
 }
 
 function generateAll() {
     let base = json.parse(json.read("db/cache/locations.json"));
     let keys = Object.keys(filepaths.maps);
 
-    // force generation of a new map preset
-    for (let map in keys) {
-        generate(keys[map]);
+    for (let mapName in keys) {
+        if (typeof maps[mapName] === "undefined") {
+            maps[mapName] = json.parse(json.read(filepaths.maps[mapName].base));
+        }
     }
 
     base.data.locations = maps;
