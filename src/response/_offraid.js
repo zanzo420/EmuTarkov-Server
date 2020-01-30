@@ -152,6 +152,7 @@ function saveProgress(offraidData, sessionID) {
                     const traderId = insuredItems[insuredIndex].tid;
                     traderToInsuredItems[traderId] = traderToInsuredItems[traderId] || [];
                     traderToInsuredItems[traderId].push(item);
+                    insurance_f.remove(pmcData, item._id, sessionID);
                 }
             }
         }

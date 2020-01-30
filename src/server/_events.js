@@ -78,16 +78,6 @@ function processInsuranceReturn(event) {
 	if (utility.getRandomInt(0, 99) < settings.gameplay.trading.insureReturnChance) {
 		let insuranceFailedTemplates = json.parse(json.read(filepaths.dialogues[event.data.traderId])).insuranceFailed;
 		event.data.messageContent.templateId = insuranceFailedTemplates[utility.getRandomInt(0, insuranceFailedTemplates.length)];
-
-		let pmcData = profile_f.profileServer.getPmcProfile();
-		for (let item in event.data.items) {
-			for (let insurance of pmcData.InsuredItems) {
-				if (item._id === insurance.itemId) {
-					insurance_f.remove(pmcData, insurance.itemId, event.sessionId);
-				}
-			}
-		}
-
 		event.data.items = [];
 	}
 
