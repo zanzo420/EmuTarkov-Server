@@ -50,10 +50,35 @@ function generateAll() {
     for (let mapName of keys) {
         if (typeof maps[mapName] === "undefined") {
             maps[mapName] = json.parse(json.read(filepaths.maps[mapName].base));
-            console.log(mapName);
-            console.log(maps[mapName]);
 
-            maps[mapName].Loot = [];
+            let map = maps[mapName];
+            let mapPath = "db/maps/" + mapName + "/";
+
+            for (let exit in map.Exits) {
+                json.write(mapPath + "exits/exfill_" + exit + ".json", map.Exits[exit]);
+            }
+
+            for (let wave in map.waves) {
+                json.write(mapPath + "waves/wave_" + wave + ".json", map.waves[wave]);
+            }
+
+            for (let spawn in map.SpawnAreas) {
+                json.write(mapPath + "entries/infill_" + spawn + ".json", map.SpawnAreas[spawn]);
+            }
+
+            if (map.BossLocationSpawn !== false) {
+                for (let spawn in map.BossLocationSpawn) {
+                    json.write(mapPath + "bosses/boss_" + spawn + ".json", map.BossLocationSpawn[spawn]);
+                }
+            }
+
+            map.Loot = [];
+            map.Exits = [];
+            map.waves = [];
+            map.Exits = [];
+            map.SpawnAreas = [];
+            map.BossLocationSpawn = [];
+
             json.write(filepaths.maps[mapName].base, maps[mapName]);
         }
     }

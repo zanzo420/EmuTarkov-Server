@@ -25,32 +25,7 @@
 	"IconX": 72,
 	"IconY": 413,
 	"filter_ex": [],
-	"waves": [
-		{
-			"number": 0,
-			"time_min": 1,
-			"time_max": 2,
-			"slots_min": 3,
-			"slots_max": 6,
-			"SpawnPoints": "",
-			"BotSide": "Usec",
-			"BotPreset": "hard",
-			"WildSpawnType": "assault",
-			"isPlayers": false
-		},
-		{
-			"number": 1,
-			"time_min": 10,
-			"time_max": 12,
-			"slots_min": 3,
-			"slots_max": 5,
-			"SpawnPoints": "",
-			"BotSide": "Savage",
-			"BotPreset": "normal",
-			"WildSpawnType": "assault",
-			"isPlayers": false
-		}
-	],
+	"waves": [],
 	"limits": [],
 	"AveragePlayTime": 100,
 	"AveragePlayerLevel": 10,
@@ -115,5 +90,6 @@
 			}
 		}
 	],
-	"BossLocationSpawn": []
+	"BossLocationSpawn": [],
+	"Exits": []
 }
