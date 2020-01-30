@@ -10,8 +10,8 @@ function generateAll() {
             let map = maps[mapName];
             let mapPath = "db/maps/" + mapName + "/";
 
-            for (let exit in map.Exits) {
-                json.write(mapPath + "exits/exfill_" + exit + ".json", map.Exits[exit]);
+            for (let exit in map.exits) {
+                json.write(mapPath + "exits/exfill_" + exit + ".json", map.exits[exit]);
             }
 
             for (let wave in map.waves) {

@@ -39,31 +39,31 @@ function get(mapName) {
     let map = json.parse(json.read(filepaths.maps[mapName].base));
     let mapPath = "db/maps/" + mapName + "/";
 
-    // set exit locations
+    // set exfill locations
     if (fs.existsSync(mapPath + "exits/")) {
-        for (let exit in map.Exits) {
-            map.Exits[exit].push(json.parse(json.read(mapPath + "exits/exfill_" + exit + ".json")));
+        for (let exit in map.exits) {
+            map.exits.push(json.parse(json.read(mapPath + "exits/exfill_" + exit + ".json")));
         }
     }
 
     // set bot spawns
     if (fs.existsSync(mapPath + "waves/")) {
         for (let wave in map.waves) {
-            map.waves[wave].push(json.parse(json.read(mapPath + "waves/wave_" + wave + ".json")));
+            map.waves.push(json.parse(json.read(mapPath + "waves/wave_" + wave + ".json")));
         }
     }
 
     // set infill locations
     if (fs.existsSync(mapPath + "entries/")) {
         for (let spawn in map.SpawnAreas) {
-            map.SpawnAreas[spawn].push(json.parse(json.read(mapPath + "entries/infill_" + spawn + ".json")));
+            map.SpawnAreas.push(json.parse(json.read(mapPath + "entries/infill_" + spawn + ".json")));
         }
     }
 
     // set boss locations
     if (fs.existsSync(mapPath + "bosses/") && map.BossLocationSpawn !== false) {
         for (let spawn in map.BossLocationSpawn) {
-            map.BossLocationSpawn[spawn].push(json.parse(json.read(mapPath + "bosses/boss_" + spawn + ".json")));
+            map.BossLocationSpawn.push(json.parse(json.read(mapPath + "bosses/boss_" + spawn + ".json")));
         }
     }
 
