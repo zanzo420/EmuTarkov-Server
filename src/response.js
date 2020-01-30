@@ -17,7 +17,6 @@ const staticRoutes = {
     "/client/locations": getLocations,
     "/client/handbook/templates": getTemplates,
     "/client/quest/list": getQuests,
-    "/client/getMetricsConfig": getMetrics,
     "/client/game/bot/generate": getBots,
     "/client/trading/api/getTradersList": getTraderList,
     "/client/server/list": getServer,
@@ -45,7 +44,6 @@ const staticRoutes = {
     "/client/game/profile/create": createProfile,
     "/client/insurance/items/list/cost": getInsuranceCost,
     "/client/game/logout": nullResponse,
-    "/client/putMetrics": nullResponse,
     "/client/match/exit": nullResponse,
     "/client/game/profile/savage/regenerate": regenerateScav,
     "/client/mail/dialog/list": getMailDialogList,
@@ -191,11 +189,6 @@ function getTemplates(url, info, sessionID) {
 
 function getQuests(url, info, sessionID) {
     return json.stringify(quests);
-}
-
-function getMetrics(url, info, sessionID) {
-    logger.logWarning("METRICS");
-    return json.read(`{"err":0,"errmsg":null,"data":{"Keys":[0,8,10,13,16,20,26,30,33,45,53,66,100,500,750,1000],"NetProcessingBins":[0,1,2,3,4,5,6,7,8,10,13,16,20,26,30,33,45,53,66,100,500,750,1000],"RenderBins":[0,4,8,10,13,16,20,26,30,33,45,53,66,100,500,750,1000],"GameUpdateBins":[0,4,8,10,13,16,20,26,30,33,45,53,66,100,500,750,1000],"MemoryMeasureInterval":180}}`);
 }
 
 function getBots(url, info, sessionID) {
