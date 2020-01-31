@@ -75,7 +75,7 @@ function deleteInventory(pmcData, sessionID) {
     return pmcData;
 }
 
-function setHealth(pmcData) {
+function setHealth(pmcData, sessionID) {
     let node = healths[sessionID];
     let health = pmcData.Health;
     
