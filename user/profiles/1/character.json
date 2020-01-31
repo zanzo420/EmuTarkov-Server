@@ -8,7 +8,7 @@
 		"Side": "Bear",
 		"Voice": "Bear_2",
 		"Level": "69",
-		"Experience": 13133309,
+		"Experience": 13133319,
 		"RegistrationDate": 1576516011,
 		"GameVersion": "edge_of_darkness",
 		"AccountType": 0,
@@ -124,7 +124,7 @@
 					"r": "Horizontal"
 				},
 				"upd": {
-					"StackObjectsCount": 97387247
+					"StackObjectsCount": 97287247
 				}
 			},
 			{
@@ -735,6 +735,21 @@
 				"upd": {
 					"StackObjectsCount": 1
 				}
+			},
+			{
+				"_id": "I0302340179137502556wO6A",
+				"_tpl": "5c94bbff86f7747ee735c08f",
+				"parentId": "I01377426353328308my42QF",
+				"slotId": "pocket3",
+				"location": {
+					"x": 0,
+					"y": 0,
+					"r": "Horizontal",
+					"isSearched": true
+				},
+				"upd": {
+					"StackObjectsCount": 1
+				}
 			}
 		],
 		"equipment": "5df7b9abef12bf7a252437a1",
@@ -1137,7 +1152,9 @@
 		"TotalInGameTime": 0,
 		"SurvivorClass": "Unknown"
 	},
-	"Encyclopedia": {},
+	"Encyclopedia": {
+		"5c94bbff86f7747ee735c08f": true
+	},
 	"ConditionCounters": {
 		"Counters": []
 	},
@@ -1637,7 +1654,7 @@
 		},
 		"ragfair": {
 			"currentLevel": 1,
-			"currentSalesSum": 1055769,
+			"currentSalesSum": 1155769,
 			"currentStanding": 0
 		}
 	},

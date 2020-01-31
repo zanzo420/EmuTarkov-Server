@@ -146,16 +146,24 @@ function maps() {
 
     for (let mapName of inputDir) {
         let dirName = "db/maps/" + mapName + "/";
-        let inputFiles = (fs.existsSync(dirName + "loot/")) ? fs.readdirSync(dirName + "loot/") : [];
-        let baseNode = {"base": dirName + "base.json", "loot": {}};
+        let baseNode = {"base": dirName + "base.json", "entries": {}, "exits": {}, "waves": {}, "bosses": {}, "loot": {}};
+        let subdirs = ["entries", "exits", "waves", "bosses", "loot"];
 
         logger.logInfo("Routing: " + dirName);
 
-        for (let file in inputFiles) {
-            let filePath = dirName + "loot/" + inputFiles[file];
-            let fileName = inputFiles[file].replace(".json", "");
+        // get files from folder
+        for (let subdir of subdirs) {
+            let inputFiles = (fs.existsSync(dirName + subdir + "/")) ? fs.readdirSync(dirName + subdir + "/") : [];
+            let subNode = baseNode[subdir];
 
-            baseNode.loot[fileName] = filePath;
+            for (let file in inputFiles) {
+                let filePath = dirName + subdir + "/" + inputFiles[file];
+                let fileName = inputFiles[file].replace(".json", "");
+
+                subNode[fileName] = filePath;
+            }
+
+            baseNode[subdir] = subNode;
         }
 
         filepaths.maps[mapName] = baseNode;

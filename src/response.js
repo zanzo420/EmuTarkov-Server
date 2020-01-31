@@ -65,7 +65,7 @@ const staticRoutes = {
 };
 
 const dynamicRoutes = {
-    "/api/location": getMapLocation,
+    "/api/location": getMap,
     ".jpg": getImage,
     ".png": getImage,
     "/?last_id": handleNotifierCustomLink,
@@ -328,7 +328,7 @@ function getAllAttachments(url, info, sessionID) {
     return '{"err":0,"errmsg":null,"data":' + json.stringify(data) + '}';
 }
 
-function getMapLocation(url, info, sessionID) {
+function getMap(url, info, sessionID) {
     return "MAP";
 }
 

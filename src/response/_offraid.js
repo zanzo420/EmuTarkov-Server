@@ -2,6 +2,8 @@
 
 require("../libs.js");
 
+let healths = {};
+
 function markFoundItems(pmcData, offraidData, isPlayerScav) {
     // mark items found in raid
     for (let offraidItem of offraidData.Inventory.items) {
@@ -73,24 +75,20 @@ function deleteInventory(pmcData, sessionID) {
     return pmcData;
 }
 
-function removeHealth(pmcData) {
-    if (!settings.gameplay.inraid.saveHealthEnabled) {
-        return;
-    }
+function setHealth(pmcData) {
+    let node = healths[sessionID];
+    let health = pmcData.Health;
+    
+    health.BodyParts.Head.Health.Current = (node.Head === 0) ? (health.BodyParts.Head.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
+    health.BodyParts.Chest.Health.Current = (node.Chest === 0) ? (health.BodyParts.Chest.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Chest;
+    health.BodyParts.Stomach.Health.Current = (node.Stomach === 0) ? (health.BodyParts.Stomach.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
+    health.BodyParts.LeftArm.Health.Current = (node.LeftArm === 0) ? (health.BodyParts.LeftArm.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
+    health.BodyParts.RightArm.Health.Current = (node.RightArm === 0) ? (health.BodyParts.RightArm.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
+    health.BodyParts.LeftLeg.Health.Current = (node.LeftLeg === 0) ? (health.BodyParts.LeftLeg.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
+    health.BodyParts.RightLeg.Health.Current = (node.RightLeg === 0) ? (health.BodyParts.RightLeg.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
 
-    let body = pmcData.Health.BodyParts;
-    let multiplier = settings.gameplay.inraid.saveHealthMultiplier;
-
-    body.Head.Health.Current = (body.Head.Health.Maximum * multiplier);
-    body.Chest.Health.Current = (body.Chest.Health.Maximum * multiplier);
-    body.Stomach.Health.Current = (body.Stomach.Health.Maximum * multiplier);
-    body.LeftArm.Health.Current = (body.LeftArm.Health.Maximum * multiplier);
-    body.RightArm.Health.Current = (body.RightArm.Health.Maximum * multiplier);
-    body.LeftLeg.Health.Current = (body.LeftLeg.Health.Maximum * multiplier);
-    body.RightLeg.Health.Current = (body.RightLeg.Health.Maximum * multiplier);
-
-    pmcData.Health.BodyParts = body;
-    return pmcData;
+    pmcData.Health = health;
+    delete healths[sessionID];
 }
 
 function saveProgress(offraidData, sessionID) {
@@ -116,6 +114,9 @@ function saveProgress(offraidData, sessionID) {
         if (pmcData.Info.Experience > 13129881) {
             pmcData.Info.Experience = 13129881;
         }
+
+        // set player health now
+        setHealth(pmcData);
     }
 
     // Find insured items and filter out items still in inventory (if alive).
@@ -160,7 +161,7 @@ function saveProgress(offraidData, sessionID) {
     // terminate early for player scavs because we don't care about whether they died.
     if (isPlayerScav) {
         return;
-    }    
+    }
 
     // remove inventory if player died
     if (isDead) {
@@ -207,8 +208,52 @@ function saveProgress(offraidData, sessionID) {
     }
 }
 
+// TODO: apofis please give me char id with it so scav damage and energy won't be applied
 function updateHealth(info, sessionID) {
-    logger.logWarning("player condition update event");
+    if (!settings.gameplay.inraid.saveHealthEnabled) {
+        return;
+    }
+
+    let pmcData = profile_f.profileServer.getPmcProfile(sessionID);
+
+    if (typeof healths[sessionID] === "undefined") {
+        healths[sessionID] = {
+            "Head": pmcData.Health.BodyParts.Head.Health.Current,
+            "Chest": pmcData.Health.BodyParts.Chest.Health.Current,
+            "Stomach": pmcData.Health.BodyParts.Stomach.Health.Current,
+            "LeftArm": pmcData.Health.BodyParts.LeftArm.Health.Current,
+            "RightArm": pmcData.Health.BodyParts.RightArm.Health.Current,
+            "LeftLeg": pmcData.Health.BodyParts.LeftLeg.Health.Current,
+            "RightLeg": pmcData.Health.BodyParts.RightLeg.Health.Current
+        };
+    }
+
+    switch (info.type) {
+        case "HydrationChanged":
+            pmcData.Health.Hydration.Current += (pmcData.Health.Hydration.Current > pmcData.Health.Hydration.Maximum) ? 0 : parseInt(info.value);
+            break;
+
+        case "EnergyChanged":
+            pmcData.Health.Energy.Current += (pmcData.Health.Energy.Current > pmcData.Health.Energy.Maximum) ? 0 : parseInt(info.value);
+            break;
+
+        case "HealthChanged":
+            let health = healths[sessionID];
+            health[info.bodyPart] = parseInt(info.value);
+            healths[sessionID] = health;
+            break;
+
+        case "Died":
+            healths[sessionID].Head = 0;
+            healths[sessionID].Chest = 0;
+            healths[sessionID].Stomach = 0;
+            healths[sessionID].LeftArm = 0;
+            healths[sessionID].RightArm = 0;
+            healths[sessionID].LeftLeg = 0;
+            healths[sessionID].RightLeg = 0;
+            break;
+    }
+
     logger.logData(info);
 }
 

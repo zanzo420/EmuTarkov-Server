@@ -1,4 +1,5 @@
 ﻿"use strict";
+
 require('../libs.js');
 
 function showWatermark() {
@@ -99,6 +100,7 @@ function sendResponse(req, resp, body, sessionID) {
         // until we actually have something to send because otherwise we'd spam the client
         // and the client would abort the connection due to spam.
         notificationWaitAsync(resp, sessionID);
+        map_f.setSession(sessionID);
         return;
     }
 
@@ -170,9 +172,8 @@ function handleRequest(req, resp) {
         });
     }
 
-    if (req.method === "PUT") { // offline profile saving
-        logger.logWarning("Put!");
-
+    // emulib responses
+    if (req.method === "PUT") {
         req.on('data', function (data) {
             // receive data
             if (req.headers.hasOwnProperty("expect")) {
