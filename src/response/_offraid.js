@@ -116,7 +116,7 @@ function saveProgress(offraidData, sessionID) {
         }
 
         // set player health now
-        setHealth(pmcData);
+        setHealth(pmcData, sessionID);
     }
 
     // Find insured items and filter out items still in inventory (if alive).
