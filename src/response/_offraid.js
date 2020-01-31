@@ -75,10 +75,29 @@ function deleteInventory(pmcData, sessionID) {
     return pmcData;
 }
 
-function setHealth(pmcData, sessionID) {
+function removeHealth(pmcData, sessionID)
+{
+    if (typeof healths[sessionID] !== "undefined")
+        delete healths[sessionID];
+}
+
+function setHealth(pmcData, sessionID)
+{
+    if (typeof healths[sessionID] === "undefined") {
+        healths[sessionID] = {
+            "Head": pmcData.Health.BodyParts.Head.Health.Current,
+            "Chest": pmcData.Health.BodyParts.Chest.Health.Current,
+            "Stomach": pmcData.Health.BodyParts.Stomach.Health.Current,
+            "LeftArm": pmcData.Health.BodyParts.LeftArm.Health.Current,
+            "RightArm": pmcData.Health.BodyParts.RightArm.Health.Current,
+            "LeftLeg": pmcData.Health.BodyParts.LeftLeg.Health.Current,
+            "RightLeg": pmcData.Health.BodyParts.RightLeg.Health.Current
+        };
+    }
+
     let node = healths[sessionID];
     let health = pmcData.Health;
-    
+
     health.BodyParts.Head.Health.Current = (node.Head === 0) ? (health.BodyParts.Head.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
     health.BodyParts.Chest.Health.Current = (node.Chest === 0) ? (health.BodyParts.Chest.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Chest;
     health.BodyParts.Stomach.Health.Current = (node.Stomach === 0) ? (health.BodyParts.Stomach.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
@@ -166,7 +185,7 @@ function saveProgress(offraidData, sessionID) {
     // remove inventory if player died
     if (isDead) {
         pmcData = deleteInventory(pmcData, sessionID);
-        pmcData = removeHealth(pmcData);
+        pmcData = removeHealth(pmcData, sessionID);
     }
 
     // Send insurance message to player.
