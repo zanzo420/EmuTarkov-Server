@@ -2,6 +2,8 @@
 
 require("../libs.js");
 
+let healths = {};
+
 function markFoundItems(pmcData, offraidData, isPlayerScav) {
     // mark items found in raid
     for (let offraidItem of offraidData.Inventory.items) {
@@ -73,6 +75,22 @@ function deleteInventory(pmcData, sessionID) {
     return pmcData;
 }
 
+function setHealth(pmcData) {
+    let node = healths[sessionID];
+    let health = pmcData.Health;
+    
+    health.BodyParts.Head.Health.Current = (node.Head === 0) ? (health.BodyParts.Head.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
+    health.BodyParts.Chest.Health.Current = (node.Chest === 0) ? (health.BodyParts.Chest.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Chest;
+    health.BodyParts.Stomach.Health.Current = (node.Stomach === 0) ? (health.BodyParts.Stomach.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
+    health.BodyParts.LeftArm.Health.Current = (node.LeftArm === 0) ? (health.BodyParts.LeftArm.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
+    health.BodyParts.RightArm.Health.Current = (node.RightArm === 0) ? (health.BodyParts.RightArm.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
+    health.BodyParts.LeftLeg.Health.Current = (node.LeftLeg === 0) ? (health.BodyParts.LeftLeg.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
+    health.BodyParts.RightLeg.Health.Current = (node.RightLeg === 0) ? (health.BodyParts.RightLeg.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
+
+    pmcData.Health = health;
+    delete healths[sessionID];
+}
+
 function saveProgress(offraidData, sessionID) {
     if (!settings.gameplay.inraid.saveLootEnabled) {
         return;
@@ -96,6 +114,9 @@ function saveProgress(offraidData, sessionID) {
         if (pmcData.Info.Experience > 13129881) {
             pmcData.Info.Experience = 13129881;
         }
+
+        // set player health now
+        setHealth(pmcData);
     }
 
     // Find insured items and filter out items still in inventory (if alive).
@@ -140,7 +161,7 @@ function saveProgress(offraidData, sessionID) {
     // terminate early for player scavs because we don't care about whether they died.
     if (isPlayerScav) {
         return;
-    }    
+    }
 
     // remove inventory if player died
     if (isDead) {
@@ -187,39 +208,48 @@ function saveProgress(offraidData, sessionID) {
     }
 }
 
-function setHealth(pmcData, bodyPart, value) {
-    let amount = (value === 0) ? (body.Head.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : value; 
-    pmcData.Health.BodyParts[BodyParts].Health.Current = amount;
-}
-
 function updateHealth(info, sessionID) {
     if (!settings.gameplay.inraid.saveHealthEnabled) {
         return;
+    }
+
+    if (typeof healths[sessionID] === "undefined") {
+        healths[sessionID] = {
+            "Head": 0,
+            "Chest": 0,
+            "Stomach": 0,
+            "LeftArm": 0,
+            "RightArm": 0,
+            "LeftLeg": 0,
+            "RightLeg": 0
+        };
     }
 
     let pmcData = profile_f.profileServer.getPmcProfile(sessionID);
 
     switch (info.type) {
         case "HydrationChanged":
-            pmcData.Health.Hydration.Current += info.value;
+            pmcData.Health.Hydration.Current += (pmcData.Health.Hydration.Current > pmcData.Health.Hydration.Maximum) ? 0 : parseInt(info.value);
             break;
 
         case "EnergyChanged":
-            pmcData.Health.Energy.Current += info.value;
+            pmcData.Health.Energy.Current += (pmcData.Health.Energy.Current > pmcData.Health.Energy.Maximum) ? 0 : parseInt(info.value);
             break;
 
         case "HealthChanged":
-            setHealth(pmcData, info.bodyPart, info.value);
+            let health = health[sessionID];
+            health[info.bodyPart] = parseInt(info.value);
+            healths[sessionID] = health;
             break;
 
         case "Died":
-            setHealth(pmcData, "Head", 0);
-            setHealth(pmcData, "Chest", 0);
-            setHealth(pmcData, "Stomach", 0);
-            setHealth(pmcData, "LeftArm", 0);
-            setHealth(pmcData, "RightArm", 0);
-            setHealth(pmcData, "LeftLeg", 0);
-            setHealth(pmcData, "RightLeg", 0);
+            healths[sessionID].Head = 0;
+            healths[sessionID].Chest = 0;
+            healths[sessionID].Stomach = 0;
+            healths[sessionID].LeftArm = 0;
+            healths[sessionID].RightArm = 0;
+            healths[sessionID].LeftLeg = 0;
+            healths[sessionID].RightLeg = 0;
             break;
     }
 
