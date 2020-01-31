@@ -172,9 +172,8 @@ function handleRequest(req, resp) {
         });
     }
 
-    if (req.method === "PUT") { // offline profile saving
-        logger.logWarning("Put!");
-
+    // emulib responses
+    if (req.method === "PUT") {
         req.on('data', function (data) {
             // receive data
             if (req.headers.hasOwnProperty("expect")) {

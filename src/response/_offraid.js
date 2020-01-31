@@ -73,26 +73,6 @@ function deleteInventory(pmcData, sessionID) {
     return pmcData;
 }
 
-function removeHealth(pmcData) {
-    if (!settings.gameplay.inraid.saveHealthEnabled) {
-        return;
-    }
-
-    let body = pmcData.Health.BodyParts;
-    let multiplier = settings.gameplay.inraid.saveHealthMultiplier;
-
-    body.Head.Health.Current = (body.Head.Health.Maximum * multiplier);
-    body.Chest.Health.Current = (body.Chest.Health.Maximum * multiplier);
-    body.Stomach.Health.Current = (body.Stomach.Health.Maximum * multiplier);
-    body.LeftArm.Health.Current = (body.LeftArm.Health.Maximum * multiplier);
-    body.RightArm.Health.Current = (body.RightArm.Health.Maximum * multiplier);
-    body.LeftLeg.Health.Current = (body.LeftLeg.Health.Maximum * multiplier);
-    body.RightLeg.Health.Current = (body.RightLeg.Health.Maximum * multiplier);
-
-    pmcData.Health.BodyParts = body;
-    return pmcData;
-}
-
 function saveProgress(offraidData, sessionID) {
     if (!settings.gameplay.inraid.saveLootEnabled) {
         return;
@@ -207,8 +187,42 @@ function saveProgress(offraidData, sessionID) {
     }
 }
 
+function setHealth(pmcData, bodyPart, value) {
+    let amount = (value === 0) ? (body.Head.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : value; 
+    pmcData.Health.BodyParts[BodyParts].Health.Current = amount;
+}
+
 function updateHealth(info, sessionID) {
-    logger.logWarning("player condition update event");
+    if (!settings.gameplay.inraid.saveHealthEnabled) {
+        return;
+    }
+
+    let pmcData = profile_f.profileServer.getPmcProfile(sessionID);
+
+    switch (info.type) {
+        case "HydrationChanged":
+            pmcData.Health.Hydration.Current += info.value;
+            break;
+
+        case "EnergyChanged":
+            pmcData.Health.Energy.Current += info.value;
+            break;
+
+        case "HealthChanged":
+            setHealth(pmcData, info.bodyPart, info.value);
+            break;
+
+        case "Died":
+            setHealth(pmcData, "Head", 0);
+            setHealth(pmcData, "Chest", 0);
+            setHealth(pmcData, "Stomach", 0);
+            setHealth(pmcData, "LeftArm", 0);
+            setHealth(pmcData, "RightArm", 0);
+            setHealth(pmcData, "LeftLeg", 0);
+            setHealth(pmcData, "RightLeg", 0);
+            break;
+    }
+
     logger.logData(info);
 }
 
