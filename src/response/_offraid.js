@@ -85,13 +85,13 @@ function setHealth(pmcData, sessionID)
 {
     if (typeof healths[sessionID] === "undefined") {
         healths[sessionID] = {
-            "Head": pmcData.Health.BodyParts.Head.Health.Current,
-            "Chest": pmcData.Health.BodyParts.Chest.Health.Current,
-            "Stomach": pmcData.Health.BodyParts.Stomach.Health.Current,
-            "LeftArm": pmcData.Health.BodyParts.LeftArm.Health.Current,
-            "RightArm": pmcData.Health.BodyParts.RightArm.Health.Current,
-            "LeftLeg": pmcData.Health.BodyParts.LeftLeg.Health.Current,
-            "RightLeg": pmcData.Health.BodyParts.RightLeg.Health.Current
+            "Head": pmcData.Health.BodyParts.Head.Health.Maximum,
+            "Chest": pmcData.Health.BodyParts.Chest.Health.Maximum,
+            "Stomach": pmcData.Health.BodyParts.Stomach.Health.Maximum,
+            "LeftArm": pmcData.Health.BodyParts.LeftArm.Health.Maximum,
+            "RightArm": pmcData.Health.BodyParts.RightArm.Health.Maximum,
+            "LeftLeg": pmcData.Health.BodyParts.LeftLeg.Health.Maximum,
+            "RightLeg": pmcData.Health.BodyParts.RightLeg.Health.Maximum
         };
     }
 
