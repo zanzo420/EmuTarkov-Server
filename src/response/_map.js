@@ -63,7 +63,6 @@ function load(mapName) {
 
 function get(map) {
     let mapName = map.toLowerCase().replace(" ", "");
-    offraid_f.setMapName(mapName)
     return json.stringify(generate(mapName));
 }
 

@@ -4,12 +4,6 @@ require("../libs.js");
 
 let healths = {};
 
-let mapName = "";
-
-function setMapName(map) {
-    if (map){mapName = map}
-}
-
 function markFoundItems(pmcData, offraidData, isPlayerScav) {
     // mark items found in raid
     for (let offraidItem of offraidData.Inventory.items) {
@@ -129,15 +123,16 @@ function saveProgress(offraidData, sessionID) {
         RemoveLabKeyCard(offraidData.profile.Inventory.items);
     }
 
-    //Well remove that stupid labs keycard at the end of raid
-    function RemoveLabKeyCard(offRaidData){
-            
-        if (mapName === 'laboratory'){
-            for (let item of offRaidData){
-                if (item._tpl === "5c94bbff86f7747ee735c08f" && item.slotId !== 'Hideout') {
-                    move_f.removeItemFromProfile(offraidData.profile, item._id);
-                    break;
-                }
+    // remove the labs keycard at the end of raid in labs
+    function RemoveLabKeyCard(offraidData) {
+        if (offraidData.profile.Info.EntryPoint !== "Laboratory") {
+            return;
+        }
+
+        for (let item of offraidData) {
+            if (item._tpl === "5c94bbff86f7747ee735c08f" && item.slotId !== "Hideout") {
+                move_f.removeItemFromProfile(offraidData.profile, item._id);
+                break;
             }
         }
     }
