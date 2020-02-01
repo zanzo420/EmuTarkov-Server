@@ -84,8 +84,8 @@ class MapServer {
         let data = {};
 
         // use right id's
-        for (let map of this.maps) {
-            data[map._Id] = map;
+        for (let mapName in this.maps) {
+            data[this.maps[mapName]._Id] = this.map[mapName];
         }
 
         base.data.locations = data;
