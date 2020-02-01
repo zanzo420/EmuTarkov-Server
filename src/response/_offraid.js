@@ -119,6 +119,7 @@ function saveProgress(offraidData, sessionID) {
 
         // set player health now
         setHealth(pmcData, sessionID);
+
         // Remove the Lab card now
         RemoveLabKeyCard(offraidData.profile.Inventory.items);
     }
