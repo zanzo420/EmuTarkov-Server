@@ -5,13 +5,15 @@ require("../libs.js");
 /* MapServer class maintains list of maps for each sessionID in memory. */
 class MapServer {
     constructor() {
-        this.maps = {};
         this.initializeMaps();
     }
 
     /* Load all the maps into memory. */
     initializeMaps() {
+        logger.logWarning("Loading maps into RAM...");
+
         let keys = Object.keys(filepaths.maps);
+        this.maps = {};
 
         for (let mapName of keys) {
             let node = filepaths.maps[mapName];
@@ -85,7 +87,7 @@ class MapServer {
 
         // use right id's
         for (let mapName in this.maps) {
-            data[this.maps[mapName]._Id] = this.map[mapName];
+            data[this.maps[mapName]._Id] = this.maps[mapName];
         }
 
         base.data.locations = data;
