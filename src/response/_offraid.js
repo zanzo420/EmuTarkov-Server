@@ -137,7 +137,6 @@ function saveProgress(offraidData, sessionID) {
         }
     }
 
-
     // Find insured items and filter out items still in inventory (if alive).
     let insuredItems = pmcData.InsuredItems;
     let retainedInsuranceItemIds = {};
