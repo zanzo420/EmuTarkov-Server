@@ -100,7 +100,6 @@ function sendResponse(req, resp, body, sessionID) {
         // until we actually have something to send because otherwise we'd spam the client
         // and the client would abort the connection due to spam.
         notificationWaitAsync(resp, sessionID);
-        map_f.setSession(sessionID);
         return;
     }
 

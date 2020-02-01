@@ -4,6 +4,13 @@ require("../libs.js");
 
 let healths = {};
 
+let mapName = "";
+
+function setMapName(map) {
+    console.log(map)
+    if (map){mapName = map}
+}
+
 function markFoundItems(pmcData, offraidData, isPlayerScav) {
     // mark items found in raid
     for (let offraidItem of offraidData.Inventory.items) {
@@ -117,7 +124,23 @@ function saveProgress(offraidData, sessionID) {
 
         // set player health now
         setHealth(pmcData, sessionID);
+        // Remove the Lab card now
+        RemoveLabKeyCard(offraidData.profile.Inventory.items);
     }
+
+    //Well remove that stupid labs keycard at the end of raid
+    function RemoveLabKeyCard(offRaidData){
+            
+        if (mapName === 'laboratory'){
+            for (let item of offRaidData){
+                if (item._tpl === "5c94bbff86f7747ee735c08f" && item.slotId !== 'Hideout') {
+                    move_f.removeItemFromProfile(offraidData.profile, item._id);
+                    break;
+                }
+            }
+        }
+    }
+
 
     // Find insured items and filter out items still in inventory (if alive).
     let insuredItems = pmcData.InsuredItems;
@@ -255,6 +278,6 @@ function updateHealth(info, sessionID) {
 
     logger.logData(info);
 }
-
+module.exports.setMapName = setMapName;
 module.exports.saveProgress = saveProgress;
 module.exports.updateHealth = updateHealth;
