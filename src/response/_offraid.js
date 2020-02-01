@@ -93,6 +93,20 @@ function setHealth(pmcData, sessionID) {
     delete healths[sessionID];
 }
 
+// remove the labs keycard at the end of raid in labs
+function RemoveLabKeyCard(offraidData) {
+    if (offraidData.profile.Info.EntryPoint !== "Laboratory") {
+        return;
+    }
+
+    for (let item of offraidData.profile.Inventory.items) {
+        if (item._tpl === "5c94bbff86f7747ee735c08f" && item.slotId !== "Hideout") {
+            move_f.removeItemFromProfile(offraidData.profile, item._id);
+            break;
+        }
+    }
+}
+
 function saveProgress(offraidData, sessionID) {
     if (!settings.gameplay.inraid.saveLootEnabled) {
         return;
@@ -121,21 +135,7 @@ function saveProgress(offraidData, sessionID) {
         setHealth(pmcData, sessionID);
 
         // Remove the Lab card now
-        RemoveLabKeyCard(offraidData.profile.Inventory.items);
-    }
-
-    // remove the labs keycard at the end of raid in labs
-    function RemoveLabKeyCard(offraidData) {
-        if (offraidData.profile.Info.EntryPoint !== "Laboratory") {
-            return;
-        }
-
-        for (let item of offraidData) {
-            if (item._tpl === "5c94bbff86f7747ee735c08f" && item.slotId !== "Hideout") {
-                move_f.removeItemFromProfile(offraidData.profile, item._id);
-                break;
-            }
-        }
+        RemoveLabKeyCard(offraidData);
     }
 
     // Find insured items and filter out items still in inventory (if alive).
