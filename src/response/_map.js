@@ -2,90 +2,95 @@
 
 require("../libs.js");
 
-let maps = {};
+/* MapServer class maintains list of maps for each sessionID in memory. */
+class MapServer {
+    constructor() {
+        this.maps = {};
+        this.initializeMaps();
+    }
 
-function generate(mapName) {
-    let data = maps[mapName];
+    /* Load all the maps into memory. */
+    initializeMaps() {
+        let keys = Object.keys(filepaths.maps);
 
-    // generate loot
-    let lootCount = settings.gameplay.maploot[mapName];
-    let keys = Object.keys(filepaths.maps[mapName].loot);
+        for (let mapName of keys) {
+            let node = filepaths.maps[mapName];
+            let map = json.parse(json.read(node.base));
 
-    for (let i = 0; i < lootCount; i++) {
-        let item = json.parse(json.read(filepaths.maps[mapName].loot[keys[utility.getRandomInt(0, keys.length - 1)]]));
-        let found = false;
-
-        // check for duplicate
-        for (let loot of data.Loot) {
-            if (item.Id == loot.Id) {
-                found = true;
-                break;
+            // set infill locations
+            for (let entry of node.entries) {
+                map.SpawnAreas.push(json.parse(json.read(entry)));
             }
-        }
 
-        if (found) {
-            continue;
-        }
+            // set exfill locations
+            for (let exit of node.exits) {
+                map.exits.push(json.parse(json.read(exit)));
+            }
 
-        // add unique spawn
-        data.Loot.push(item);
-    }
+            // set scav locations
+            for (let wave of node.waves) {
+                map.waves.push(json.parse(json.read(wave)));
+            }
 
-    return data;
-}
+            // set boss locations
+            for (let spawn of node.bosses) {
+                map.BossLocationSpawn.push(json.parse(json.read(spawn)));
+            }
 
-// todo: use cache system
-function load(mapName) {
-    let map = json.parse(json.read(filepaths.maps[mapName].base));
-
-    // set infill locations
-    for (let spawn in filepaths.maps[mapName].entries) {
-        map.SpawnAreas.push(json.parse(json.read(filepaths.maps[mapName].entries[spawn])));
-    }
-
-    // set exfill locations
-    for (let exit in filepaths.maps[mapName].exits) {
-        map.exits.push(json.parse(json.read(filepaths.maps[mapName].exits[exit])));
-    }
-
-    // set scav locations
-    for (let wave in filepaths.maps[mapName].waves) {
-        map.waves.push(json.parse(json.read(filepaths.maps[mapName].waves[wave])));
-    }
-
-    // set boss locations
-    for (let spawn in filepaths.maps[mapName].bosses) {
-        map.BossLocationSpawn.push(json.parse(json.read(filepaths.maps[mapName].bosses[spawn])));
-    }
-
-    maps[mapName] = map;
-}
-
-function get(map) {
-    let mapName = map.toLowerCase().replace(" ", "");
-    return json.stringify(generate(mapName));
-}
-
-function generateAll() {
-    let base = json.parse(json.read("db/cache/locations.json"));
-    let keys = Object.keys(filepaths.maps);
-    let data = {};
-
-    // load maps
-    for (let mapName of keys) {
-        if (typeof maps[mapName] === "undefined") {
-            load(mapName);
+            this.maps[mapName] = map;
         }
     }
 
-    // use right id's
-    for (let mapName in maps) {
-        data[maps[mapName]._Id] = maps[mapName];
+    /* generates a random map preset to use for local session */
+    generate(mapName) {
+        let data = this.maps[mapName];
+
+        // generate loot
+        let lootCount = settings.gameplay.maploot[mapName];
+        let keys = Object.keys(filepaths.maps[mapName].loot);
+
+        for (let i = 0; i < lootCount; i++) {
+            let item = json.parse(json.read(filepaths.maps[mapName].loot[keys[utility.getRandomInt(0, keys.length - 1)]]));
+            let found = false;
+
+            // check for duplicate
+            for (let loot of data.Loot) {
+                if (item.Id == loot.Id) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                continue;
+            }
+
+            // add unique spawn
+            data.Loot.push(item);
+        }
+
+        return data;
     }
 
-    base.data.locations = data;
-    return json.stringify(base);
+    /* get a map with generated loot data */
+    get(map) {
+        let mapName = map.toLowerCase().replace(" ", "");
+        return json.stringify(this.generate(mapName));
+    }
+
+    /* get all maps without loot data */
+    generateAll() {
+        let base = json.parse(json.read("db/cache/locations.json"));
+        let data = {};
+
+        // use right id's
+        for (let map of this.maps) {
+            data[map._Id] = map;
+        }
+
+        base.data.locations = data;
+        return json.stringify(base);
+    }
 }
 
-module.exports.get = get;
-module.exports.generateAll = generateAll;
+module.exports.MapServer = MapServer;

@@ -29,6 +29,7 @@ class ProfileServer {
         if (typeof this.profiles[sessionID]['pmc'] === "undefined") {
             return;
         }
+        
         json.write(getPmcPath(sessionID), this.profiles[sessionID]['pmc']);
     }
 
