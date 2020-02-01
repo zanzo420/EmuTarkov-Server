@@ -237,8 +237,8 @@ function updateHealth(info, sessionID) {
     // save current state of the player
     if (typeof healths[sessionID] === "undefined") {
         healths[sessionID] = {
-            "Hydration": pmcData.Health.Hydration.Current,
-            "Energy": pmcData.Health.Energy.Current,
+            "Hydration": 0,
+            "Energy": 0,
             "Head": pmcData.Health.BodyParts.Head.Health.Current,
             "Chest": pmcData.Health.BodyParts.Chest.Health.Current,
             "Stomach": pmcData.Health.BodyParts.Stomach.Health.Current,

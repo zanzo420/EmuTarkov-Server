@@ -67,8 +67,6 @@ function get(map) {
 }
 
 function generateAll() {
-    logger.logError("If anyone sees this, tell PoloYolo to get rid of the shared state in src/response/_map.js ASAP");
-
     let base = json.parse(json.read("db/cache/locations.json"));
     let keys = Object.keys(filepaths.maps);
     let data = {};
