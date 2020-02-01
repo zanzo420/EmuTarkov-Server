@@ -209,7 +209,7 @@ function saveProgress(offraidData, sessionID) {
             systemData: {
                 date: utility.getDate(),
                 time: utility.getTime(),
-                location: pmcData.Info.EEntryPoint
+                location: pmcData.Info.EntryPoint
             }
         };
         events_f.scheduledEventHandler.addToSchedule({
