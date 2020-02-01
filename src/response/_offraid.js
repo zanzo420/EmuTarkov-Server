@@ -7,7 +7,6 @@ let healths = {};
 let mapName = "";
 
 function setMapName(map) {
-    console.log(map)
     if (map){mapName = map}
 }
 
