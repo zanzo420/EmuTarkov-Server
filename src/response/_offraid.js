@@ -75,10 +75,29 @@ function deleteInventory(pmcData, sessionID) {
     return pmcData;
 }
 
-function setHealth(pmcData) {
+function removeHealth(pmcData, sessionID)
+{
+    if (typeof healths[sessionID] !== "undefined")
+        delete healths[sessionID];
+}
+
+function setHealth(pmcData, sessionID)
+{
+    if (typeof healths[sessionID] === "undefined") {
+        healths[sessionID] = {
+            "Head": pmcData.Health.BodyParts.Head.Health.Maximum,
+            "Chest": pmcData.Health.BodyParts.Chest.Health.Maximum,
+            "Stomach": pmcData.Health.BodyParts.Stomach.Health.Maximum,
+            "LeftArm": pmcData.Health.BodyParts.LeftArm.Health.Maximum,
+            "RightArm": pmcData.Health.BodyParts.RightArm.Health.Maximum,
+            "LeftLeg": pmcData.Health.BodyParts.LeftLeg.Health.Maximum,
+            "RightLeg": pmcData.Health.BodyParts.RightLeg.Health.Maximum
+        };
+    }
+
     let node = healths[sessionID];
     let health = pmcData.Health;
-    
+
     health.BodyParts.Head.Health.Current = (node.Head === 0) ? (health.BodyParts.Head.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
     health.BodyParts.Chest.Health.Current = (node.Chest === 0) ? (health.BodyParts.Chest.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Chest;
     health.BodyParts.Stomach.Health.Current = (node.Stomach === 0) ? (health.BodyParts.Stomach.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
@@ -116,7 +135,7 @@ function saveProgress(offraidData, sessionID) {
         }
 
         // set player health now
-        setHealth(pmcData);
+        setHealth(pmcData, sessionID);
     }
 
     // Find insured items and filter out items still in inventory (if alive).
@@ -166,7 +185,7 @@ function saveProgress(offraidData, sessionID) {
     // remove inventory if player died
     if (isDead) {
         pmcData = deleteInventory(pmcData, sessionID);
-        pmcData = removeHealth(pmcData);
+        pmcData = removeHealth(pmcData, sessionID);
     }
 
     // Send insurance message to player.
