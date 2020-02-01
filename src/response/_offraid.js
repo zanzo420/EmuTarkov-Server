@@ -79,8 +79,8 @@ function setHealth(pmcData, sessionID) {
     let node = healths[sessionID];
     let health = pmcData.Health;
 
-    health.Hydration.Current += (health.Hydration.Current > health.Hydration.Maximum || health.Hydration.Current <= 0) ? 0 : node.Hydration;
-    health.Energy.Current += (health.Energy.Current > health.Energy.Maximum || health.Energy.Current <= 0) ? 0 : node.Energy;
+    health.Hydration.Current += (health.Hydration.Current > health.Hydration.Maximum || health.Hydration.Current < node.Hydration) ? 0 : node.Hydration;
+    health.Energy.Current += (health.Energy.Current > health.Energy.Maximum || health.Energy.Current < node.Energy) ? 0 : node.Energy;
     health.BodyParts.Head.Health.Current = (node.Head === 0) ? (health.BodyParts.Head.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
     health.BodyParts.Chest.Health.Current = (node.Chest === 0) ? (health.BodyParts.Chest.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Chest;
     health.BodyParts.Stomach.Health.Current = (node.Stomach === 0) ? (health.BodyParts.Stomach.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
