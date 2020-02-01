@@ -1614,48 +1614,225 @@
 	"TraderStandings": {
 		"54cb50c76803fa8b248b4571": {
 			"currentLevel": 4,
-			"currentSalesSum": 2370258,
-			"currentStanding": 0.5
+			"currentSalesSum": 2300000,
+			"currentStanding": 0.5,
+			"NextLoyalty": null,
+			"loyaltyLevels": {
+				"0": {
+					"minLevel": 1,
+					"minSalesSum": 0,
+					"minStanding": 0
+				},
+				"1": {
+					"minLevel": 15,
+					"minSalesSum": 1000000,
+					"minStanding": 0.2
+				},
+				"2": {
+					"minLevel": 22,
+					"minSalesSum": 1500000,
+					"minStanding": 0.35
+				},
+				"3": {
+					"minLevel": 33,
+					"minSalesSum": 2300000,
+					"minStanding": 0.5
+				}
+			}
 		},
 		"54cb57776803fa99248b456e": {
 			"currentLevel": 4,
 			"currentSalesSum": 900000,
-			"currentStanding": 0.6
+			"currentStanding": 0.6,
+			"NextLoyalty": null,
+			"loyaltyLevels": {
+				"0": {
+					"minLevel": 0,
+					"minSalesSum": 0,
+					"minStanding": 0
+				},
+				"1": {
+					"minLevel": 13,
+					"minSalesSum": 400000,
+					"minStanding": 0.15
+				},
+				"2": {
+					"minLevel": 20,
+					"minSalesSum": 700000,
+					"minStanding": 0.3
+				},
+				"3": {
+					"minLevel": 32,
+					"minSalesSum": 900000,
+					"minStanding": 0.6
+				}
+			}
 		},
 		"579dc571d53a0658a154fbec": {
 			"currentLevel": 1,
 			"currentSalesSum": 0,
-			"currentStanding": 0
+			"currentStanding": 0,
+			"NextLoyalty": null,
+			"loyaltyLevels": {
+				"0": {
+					"minLevel": 1,
+					"minSalesSum": 0,
+					"minStanding": 0
+				}
+			}
 		},
 		"58330581ace78e27b8b10cee": {
 			"currentLevel": 4,
 			"currentSalesSum": 2600000,
-			"currentStanding": 0.75
+			"currentStanding": 0.75,
+			"NextLoyalty": null,
+			"loyaltyLevels": {
+				"0": {
+					"minLevel": 1,
+					"minSalesSum": 0,
+					"minStanding": 0
+				},
+				"1": {
+					"minLevel": 15,
+					"minSalesSum": 1100000,
+					"minStanding": 0.2
+				},
+				"2": {
+					"minLevel": 28,
+					"minSalesSum": 1600000,
+					"minStanding": 0.4
+				},
+				"3": {
+					"minLevel": 35,
+					"minSalesSum": 2600000,
+					"minStanding": 0.75
+				}
+			}
 		},
 		"5935c25fb3acc3127c3d8cd9": {
 			"currentLevel": 4,
 			"currentSalesSum": 32000,
-			"currentStanding": 0.6
+			"currentStanding": 0.6,
+			"NextLoyalty": null,
+			"loyaltyLevels": {
+				"0": {
+					"minLevel": 1,
+					"minSalesSum": 0,
+					"minStanding": 0
+				},
+				"1": {
+					"minLevel": 10,
+					"minSalesSum": 13000,
+					"minStanding": 0
+				},
+				"2": {
+					"minLevel": 18,
+					"minSalesSum": 25000,
+					"minStanding": 0.3
+				},
+				"3": {
+					"minLevel": 29,
+					"minSalesSum": 32000,
+					"minStanding": 0.6
+				}
+			}
 		},
 		"5a7c2eca46aef81a7ca2145d": {
 			"currentLevel": 4,
 			"currentSalesSum": 2500000,
-			"currentStanding": 0.5
+			"currentStanding": 0.5,
+			"NextLoyalty": null,
+			"loyaltyLevels": {
+				"0": {
+					"minLevel": 1,
+					"minSalesSum": 0,
+					"minStanding": 0
+				},
+				"1": {
+					"minLevel": 20,
+					"minSalesSum": 1000000,
+					"minStanding": 0.15
+				},
+				"2": {
+					"minLevel": 30,
+					"minSalesSum": 1600000,
+					"minStanding": 0.3
+				},
+				"3": {
+					"minLevel": 40,
+					"minSalesSum": 2500000,
+					"minStanding": 0.6
+				}
+			}
 		},
 		"5ac3b934156ae10c4430e83c": {
 			"currentLevel": 4,
 			"currentSalesSum": 2500000,
-			"currentStanding": 0.6
+			"currentStanding": 0.6,
+			"NextLoyalty": null,
+			"loyaltyLevels": {
+				"0": {
+					"minLevel": 1,
+					"minSalesSum": 0,
+					"minStanding": 0
+				},
+				"1": {
+					"minLevel": 15,
+					"minSalesSum": 1000000,
+					"minStanding": 0
+				},
+				"2": {
+					"minLevel": 30,
+					"minSalesSum": 1600000,
+					"minStanding": 0.3
+				},
+				"3": {
+					"minLevel": 40,
+					"minSalesSum": 2500000,
+					"minStanding": 0.6
+				}
+			}
 		},
 		"5c0647fdd443bc2504c2d371": {
 			"currentLevel": 1,
 			"currentSalesSum": 2300000,
-			"currentStanding": 0.5
+			"currentStanding": 0.5,
+			"NextLoyalty": null,
+			"loyaltyLevels": {
+				"0": {
+					"minLevel": 1,
+					"minSalesSum": 0,
+					"minStanding": 0
+				},
+				"1": {
+					"minLevel": 15,
+					"minSalesSum": 1000000,
+					"minStanding": 0.2
+				},
+				"2": {
+					"minLevel": 22,
+					"minSalesSum": 1500000,
+					"minStanding": 0.35
+				},
+				"3": {
+					"minLevel": 33,
+					"minSalesSum": 2300000,
+					"minStanding": 0.5
+				}
+			}
 		},
 		"ragfair": {
 			"currentLevel": 1,
 			"currentSalesSum": 1155769,
-			"currentStanding": 0
+			"currentStanding": 0,
+			"NextLoyalty": null,
+			"loyaltyLevels": {
+				"0": {
+					"minLevel": 1,
+					"minSalesSum": 0,
+					"minStanding": 0
+				}
+			}
 		}
 	},
 	"RagfairInfo": {
