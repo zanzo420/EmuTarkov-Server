@@ -229,15 +229,11 @@ function updateHealth(info, sessionID) {
 
     switch (info.type) {
         case "HydrationChanged":
-            console.log("Hydration");
-            console.log(info.value);
-            //pmcData.Health.Hydration.Current += (pmcData.Health.Hydration.Current > pmcData.Health.Hydration.Maximum) ? 0 : parseInt(info.value);
+            pmcData.Health.Hydration.Current += (pmcData.Health.Hydration.Current > pmcData.Health.Hydration.Maximum) ? 0 : parseInt(info.diff);
             break;
 
         case "EnergyChanged":
-                console.log("Energy");
-            console.log(info.value);
-            //pmcData.Health.Energy.Current += (pmcData.Health.Energy.Current > pmcData.Health.Energy.Maximum) ? 0 : parseInt(info.value);
+            pmcData.Health.Energy.Current += (pmcData.Health.Energy.Current > pmcData.Health.Energy.Maximum) ? 0 : parseInt(info.diff);
             break;
 
         case "HealthChanged":
