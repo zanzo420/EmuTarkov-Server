@@ -229,11 +229,11 @@ function updateHealth(info, sessionID) {
 
     switch (info.type) {
         case "HydrationChanged":
-            pmcData.Health.Hydration.Current += (pmcData.Health.Hydration.Current > pmcData.Health.Hydration.Maximum) ? 0 : parseInt(info.diff);
+            pmcData.Health.Hydration.Current += (pmcData.Health.Hydration.Current > pmcData.Health.Hydration.Maximum || pmcData.Health.Hydration.Current <= 0) ? 0 : parseInt(info.diff);
             break;
 
         case "EnergyChanged":
-            pmcData.Health.Energy.Current += (pmcData.Health.Energy.Current > pmcData.Health.Energy.Maximum) ? 0 : parseInt(info.diff);
+            pmcData.Health.Energy.Current += (pmcData.Health.Energy.Current > pmcData.Health.Energy.Maximum || pmcData.Health.Energy.Current <= 0) ? 0 : parseInt(info.diff);
             break;
 
         case "HealthChanged":
