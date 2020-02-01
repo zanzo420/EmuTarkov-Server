@@ -18,23 +18,23 @@ class MapServer {
             let map = json.parse(json.read(node.base));
 
             // set infill locations
-            for (let entry of node.entries) {
-                map.SpawnAreas.push(json.parse(json.read(entry)));
+            for (let entry in node.entries) {
+                map.SpawnAreas.push(json.parse(json.read(node.entries[entry])));
             }
 
             // set exfill locations
-            for (let exit of node.exits) {
-                map.exits.push(json.parse(json.read(exit)));
+            for (let exit in node.exits) {
+                map.exits.push(json.parse(json.read(node.exits[exit])));
             }
 
             // set scav locations
-            for (let wave of node.waves) {
-                map.waves.push(json.parse(json.read(wave)));
+            for (let wave in node.waves) {
+                map.waves.push(json.parse(json.read(node.waves[wave])));
             }
 
             // set boss locations
-            for (let spawn of node.bosses) {
-                map.BossLocationSpawn.push(json.parse(json.read(spawn)));
+            for (let spawn in node.bosses) {
+                map.BossLocationSpawn.push(json.parse(json.read(node.bosses[spawn])));
             }
 
             this.maps[mapName] = map;
@@ -93,4 +93,4 @@ class MapServer {
     }
 }
 
-module.exports.MapServer = MapServer;
+module.exports.MapServer = new MapServer();
