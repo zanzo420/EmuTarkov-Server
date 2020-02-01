@@ -51,8 +51,7 @@ class ProfileServer {
         let pmcData = this.getProfile(sessionID, 'pmc');
 
         if (pmcData.Stats.TotalSessionExperience > 0) {
-            const sessionExp = pmcData.Stats.TotalSessionExperience;
-            pmcData.Info.Experience += sessionExp;
+            pmcData.Info.Experience += pmcData.Stats.TotalSessionExperience;
             pmcData.Stats.TotalSessionExperience = 0;
         }
 
