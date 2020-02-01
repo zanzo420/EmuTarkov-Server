@@ -75,7 +75,7 @@ function deleteInventory(pmcData, sessionID) {
     return pmcData;
 }
 
-function setHealth(pmcData) {
+function setHealth(pmcData, sessionID) {
     let node = healths[sessionID];
     let health = pmcData.Health;
     
@@ -116,7 +116,7 @@ function saveProgress(offraidData, sessionID) {
         }
 
         // set player health now
-        setHealth(pmcData);
+        setHealth(pmcData, sessionID);
     }
 
     // Find insured items and filter out items still in inventory (if alive).
@@ -166,7 +166,6 @@ function saveProgress(offraidData, sessionID) {
     // remove inventory if player died
     if (isDead) {
         pmcData = deleteInventory(pmcData, sessionID);
-        pmcData = removeHealth(pmcData);
     }
 
     // Send insurance message to player.
@@ -191,7 +190,7 @@ function saveProgress(offraidData, sessionID) {
             systemData: {
                 date: utility.getDate(),
                 time: utility.getTime(),
-                location: "wastelands"  // Don't think there's a way of getting locations right now, so a placeholder it is.
+                location: pmcData.Info.EEntryPoint
             }
         };
         events_f.scheduledEventHandler.addToSchedule({
@@ -218,23 +217,27 @@ function updateHealth(info, sessionID) {
 
     if (typeof healths[sessionID] === "undefined") {
         healths[sessionID] = {
-            "Head": pmcData.Health.BodyParts.Head.Health.Current,
-            "Chest": pmcData.Health.BodyParts.Chest.Health.Current,
-            "Stomach": pmcData.Health.BodyParts.Stomach.Health.Current,
-            "LeftArm": pmcData.Health.BodyParts.LeftArm.Health.Current,
-            "RightArm": pmcData.Health.BodyParts.RightArm.Health.Current,
-            "LeftLeg": pmcData.Health.BodyParts.LeftLeg.Health.Current,
-            "RightLeg": pmcData.Health.BodyParts.RightLeg.Health.Current
+            "Head": pmcData.Health.BodyParts.Head.Health.Maximum,
+            "Chest": pmcData.Health.BodyParts.Chest.Health.Maximum,
+            "Stomach": pmcData.Health.BodyParts.Stomach.Health.Maximum,
+            "LeftArm": pmcData.Health.BodyParts.LeftArm.Health.Maximum,
+            "RightArm": pmcData.Health.BodyParts.RightArm.Health.Maximum,
+            "LeftLeg": pmcData.Health.BodyParts.LeftLeg.Health.Maximum,
+            "RightLeg": pmcData.Health.BodyParts.RightLeg.Health.Maximum
         };
     }
 
     switch (info.type) {
         case "HydrationChanged":
-            pmcData.Health.Hydration.Current += (pmcData.Health.Hydration.Current > pmcData.Health.Hydration.Maximum) ? 0 : parseInt(info.value);
+            console.log("Hydration");
+            console.log(info.value);
+            //pmcData.Health.Hydration.Current += (pmcData.Health.Hydration.Current > pmcData.Health.Hydration.Maximum) ? 0 : parseInt(info.value);
             break;
 
         case "EnergyChanged":
-            pmcData.Health.Energy.Current += (pmcData.Health.Energy.Current > pmcData.Health.Energy.Maximum) ? 0 : parseInt(info.value);
+                console.log("Energy");
+            console.log(info.value);
+            //pmcData.Health.Energy.Current += (pmcData.Health.Energy.Current > pmcData.Health.Energy.Maximum) ? 0 : parseInt(info.value);
             break;
 
         case "HealthChanged":
