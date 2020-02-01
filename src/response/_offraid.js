@@ -79,6 +79,8 @@ function setHealth(pmcData, sessionID) {
     let node = healths[sessionID];
     let health = pmcData.Health;
 
+    health.Hydration.Current += (health.Hydration.Current > health.Hydration.Maximum || health.Hydration.Current <= 0) ? 0 : node.Hydration;
+    health.Energy.Current += (health.Energy.Current > health.Energy.Maximum || health.Energy.Current <= 0) ? 0 : node.Energy;
     health.BodyParts.Head.Health.Current = (node.Head === 0) ? (health.BodyParts.Head.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
     health.BodyParts.Chest.Health.Current = (node.Chest === 0) ? (health.BodyParts.Chest.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Chest;
     health.BodyParts.Stomach.Health.Current = (node.Stomach === 0) ? (health.BodyParts.Stomach.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
@@ -215,31 +217,35 @@ function updateHealth(info, sessionID) {
 
     let pmcData = profile_f.profileServer.getPmcProfile(sessionID);
 
+    // save current state of the player
     if (typeof healths[sessionID] === "undefined") {
         healths[sessionID] = {
-            "Head": pmcData.Health.BodyParts.Head.Health.Maximum,
-            "Chest": pmcData.Health.BodyParts.Chest.Health.Maximum,
-            "Stomach": pmcData.Health.BodyParts.Stomach.Health.Maximum,
-            "LeftArm": pmcData.Health.BodyParts.LeftArm.Health.Maximum,
-            "RightArm": pmcData.Health.BodyParts.RightArm.Health.Maximum,
-            "LeftLeg": pmcData.Health.BodyParts.LeftLeg.Health.Maximum,
-            "RightLeg": pmcData.Health.BodyParts.RightLeg.Health.Maximum
+            "Hydration": pmcData.Health.Hydration.Current,
+            "Energy": pmcData.Health.Energy.Current,
+            "Head": pmcData.Health.BodyParts.Head.Health.Current,
+            "Chest": pmcData.Health.BodyParts.Chest.Health.Current,
+            "Stomach": pmcData.Health.BodyParts.Stomach.Health.Current,
+            "LeftArm": pmcData.Health.BodyParts.LeftArm.Health.Current,
+            "RightArm": pmcData.Health.BodyParts.RightArm.Health.Current,
+            "LeftLeg": pmcData.Health.BodyParts.LeftLeg.Health.Current,
+            "RightLeg": pmcData.Health.BodyParts.RightLeg.Health.Current
         };
     }
 
+    // update health to apply after raid
+    let health = healths[sessionID];
+
     switch (info.type) {
         case "HydrationChanged":
-            pmcData.Health.Hydration.Current += (pmcData.Health.Hydration.Current > pmcData.Health.Hydration.Maximum || pmcData.Health.Hydration.Current <= 0) ? 0 : parseInt(info.diff);
+            health["Hydration"] += parseInt(info.diff);
             break;
 
         case "EnergyChanged":
-            pmcData.Health.Energy.Current += (pmcData.Health.Energy.Current > pmcData.Health.Energy.Maximum || pmcData.Health.Energy.Current <= 0) ? 0 : parseInt(info.diff);
+            health["Energy"] += parseInt(info.diff);
             break;
 
         case "HealthChanged":
-            let health = healths[sessionID];
             health[info.bodyPart] = parseInt(info.value);
-            healths[sessionID] = health;
             break;
 
         case "Died":
@@ -253,7 +259,7 @@ function updateHealth(info, sessionID) {
             break;
     }
 
-    logger.logData(info);
+    healths[sessionID] = health;
 }
 
 module.exports.saveProgress = saveProgress;
