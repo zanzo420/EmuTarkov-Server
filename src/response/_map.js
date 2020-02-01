@@ -3,11 +3,6 @@
 require("../libs.js");
 
 let maps = {};
-let storedSession = "";     // rework this, shared state will cause problems on LAN
-
-function setSession(session) {
-    storedSession = session;
-}
 
 function generate(mapName) {
     let data = maps[mapName];
@@ -68,20 +63,7 @@ function load(mapName) {
 
 function get(map) {
     let mapName = map.toLowerCase().replace(" ", "");
-
-    // remove keycard when entering 
-    if (mapName === "laboratory") {
-        const pmcData = profile_f.profileServer.getPmcProfile(storedSession);
-
-        for (let item of pmcData.Inventory.items) {
-            if (item._tpl === "5c94bbff86f7747ee735c08f" && item.parentId === pmcData.Inventory.equipment) {
-                move_f.removeItemFromProfile(pmcData, item._id);
-                logger.logWarning("Keycard deleted");
-                break;
-            }
-        }
-    }
-
+    offraid_f.setMapName(mapName)
     return json.stringify(generate(mapName));
 }
 
@@ -108,6 +90,5 @@ function generateAll() {
     return json.stringify(base);
 }
 
-module.exports.setSession = setSession;
 module.exports.get = get;
 module.exports.generateAll = generateAll;
