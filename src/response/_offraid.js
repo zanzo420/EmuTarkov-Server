@@ -278,6 +278,6 @@ function updateHealth(info, sessionID) {
 
     healths[sessionID] = health;
 }
-module.exports.setMapName = setMapName;
+
 module.exports.saveProgress = saveProgress;
 module.exports.updateHealth = updateHealth;
