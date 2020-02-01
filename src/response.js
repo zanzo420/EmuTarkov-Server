@@ -319,7 +319,7 @@ function saveProgress(url, info, sessionID) {
 }
 
 function updateHealth(url, info, sessionID) {
-    offraid_f.updateHealth(info, sessionID);
+    health.healthServer.updateHealth(info, sessionID);
     return nullResponse;
 }
 
