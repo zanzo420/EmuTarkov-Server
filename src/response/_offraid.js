@@ -2,8 +2,6 @@
 
 require("../libs.js");
 
-let healths = {};
-
 function markFoundItems(pmcData, offraidData, isPlayerScav) {
     // mark items found in raid
     for (let offraidItem of offraidData.Inventory.items) {
@@ -75,26 +73,8 @@ function deleteInventory(pmcData, sessionID) {
     return pmcData;
 }
 
-function setHealth(pmcData, sessionID) {
-    let node = healths[sessionID];
-    let health = pmcData.Health;
-
-    health.Hydration.Current += node.Hydration;
-    health.Energy.Current += node.Energy;
-    health.BodyParts.Head.Health.Current = (node.Head === 0) ? (health.BodyParts.Head.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
-    health.BodyParts.Chest.Health.Current = (node.Chest === 0) ? (health.BodyParts.Chest.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Chest;
-    health.BodyParts.Stomach.Health.Current = (node.Stomach === 0) ? (health.BodyParts.Stomach.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Stomach;
-    health.BodyParts.LeftArm.Health.Current = (node.LeftArm === 0) ? (health.BodyParts.LeftArm.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.LeftArm;
-    health.BodyParts.RightArm.Health.Current = (node.RightArm === 0) ? (health.BodyParts.RightArm.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.RightArm;
-    health.BodyParts.LeftLeg.Health.Current = (node.LeftLeg === 0) ? (health.BodyParts.LeftLeg.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.LeftLeg;
-    health.BodyParts.RightLeg.Health.Current = (node.RightLeg === 0) ? (health.BodyParts.RightLeg.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.RightLeg;
-
-    pmcData.Health = health;
-    delete healths[sessionID];
-}
-
 // remove the labs keycard at the end of raid in labs
-function RemoveLabKeyCard(offraidData) {
+function removeLabKeyCard(offraidData) {
     if (offraidData.profile.Info.EntryPoint !== "Laboratory") {
         return;
     }
@@ -132,10 +112,10 @@ function saveProgress(offraidData, sessionID) {
         }
 
         // set player health now
-        setHealth(pmcData, sessionID);
+        health_f.healthServer.setHealth(pmcData, sessionID);
 
         // Remove the Lab card now
-        RemoveLabKeyCard(offraidData);
+        removeLabKeyCard(offraidData);
     }
 
     // Find insured items and filter out items still in inventory (if alive).
@@ -226,58 +206,4 @@ function saveProgress(offraidData, sessionID) {
     }
 }
 
-// TODO: apofis please give me char id with it so scav damage and energy won't be applied
-function updateHealth(info, sessionID) {
-    if (!settings.gameplay.inraid.saveHealthEnabled) {
-        return;
-    }
-
-    let pmcData = profile_f.profileServer.getPmcProfile(sessionID);
-
-    // save current state of the player
-    if (typeof healths[sessionID] === "undefined") {
-        healths[sessionID] = {
-            "Hydration": 0,
-            "Energy": 0,
-            "Head": pmcData.Health.BodyParts.Head.Health.Current,
-            "Chest": pmcData.Health.BodyParts.Chest.Health.Current,
-            "Stomach": pmcData.Health.BodyParts.Stomach.Health.Current,
-            "LeftArm": pmcData.Health.BodyParts.LeftArm.Health.Current,
-            "RightArm": pmcData.Health.BodyParts.RightArm.Health.Current,
-            "LeftLeg": pmcData.Health.BodyParts.LeftLeg.Health.Current,
-            "RightLeg": pmcData.Health.BodyParts.RightLeg.Health.Current
-        };
-    }
-
-    // update health to apply after raid
-    let health = healths[sessionID];
-
-    switch (info.type) {
-        case "HydrationChanged":
-            health["Hydration"] += parseInt(info.diff);
-            break;
-
-        case "EnergyChanged":
-            health["Energy"] += parseInt(info.diff);
-            break;
-
-        case "HealthChanged":
-            health[info.bodyPart] = parseInt(info.value);
-            break;
-
-        case "Died":
-            healths[sessionID].Head = 0;
-            healths[sessionID].Chest = 0;
-            healths[sessionID].Stomach = 0;
-            healths[sessionID].LeftArm = 0;
-            healths[sessionID].RightArm = 0;
-            healths[sessionID].LeftLeg = 0;
-            healths[sessionID].RightLeg = 0;
-            break;
-    }
-
-    healths[sessionID] = health;
-}
-
 module.exports.saveProgress = saveProgress;
-module.exports.updateHealth = updateHealth;

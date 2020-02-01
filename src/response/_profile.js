@@ -43,6 +43,7 @@ class ProfileServer {
             this.initializeProfile(sessionID);
             trader_f.traderServer.initializeTraders(sessionID);
             dialogue_f.dialogueServer.initializeDialogue(sessionID);
+            health_f.healthServer.initializeHealth(sessionID);
         }
 
         return this.profiles[sessionID][type];
@@ -94,9 +95,7 @@ class ProfileServer {
         json.write(folder + "dialogue.json", {});
 
         // Also load to memory.
-        this.initializeProfile(account.id);
-        trader_f.traderServer.initializeTraders(account.id);
-        dialogue_f.dialogueServer.initializeDialogue(account.id);
+        this.getProfile(sessionID, 'pmc');
 
         // don't wipe profile again
         account_f.accountServer.setWipe(account.id, false);

@@ -163,7 +163,7 @@ function getWeather(url, info, sessionID) {
 }
 
 function getLocations(url, info, sessionID) {
-    return map_f.MapServer.generateAll();
+    return map_f.mapServer.generateAll();
 }
 
 function getTemplates(url, info, sessionID) {

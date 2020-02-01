@@ -2,7 +2,7 @@
 
 require("../libs.js");
 
-/* MapServer class maintains list of maps for each sessionID in memory. */
+/* MapServer class maintains list of maps in memory. */
 class MapServer {
     constructor() {
         this.initializeMaps();
@@ -95,4 +95,4 @@ class MapServer {
     }
 }
 
-module.exports.MapServer = new MapServer();
+module.exports.mapServer = new MapServer();

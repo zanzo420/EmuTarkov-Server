@@ -137,7 +137,7 @@ function sendResponse(req, resp, body, sessionID) {
     }
 
     if (output === "MAP") {
-        header_f.sendTextJson(resp, map_f.MapServer.get(req.url.replace("/api/location/", "")));
+        header_f.sendTextJson(resp, map_f.mapServer.get(req.url.replace("/api/location/", "")));
         return;
     }
 
