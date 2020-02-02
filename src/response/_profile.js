@@ -82,10 +82,15 @@ class ProfileServer {
         storage.data._id = "pmc" + account.id;
         storage.data.suites = (info.side === "Usec") ? ["5cde9ec17d6c8b04723cf479", "5cde9e957d6c8b0474535da7"] : ["5cd946231388ce000d572fe3", "5cd945d71388ce000a659dfb"];
 
-        // create traders        
+        // set trader standing      
         for (let trader of Object.keys(filepaths.traders)) {
-            trader_f.traderServer.initializeTrader(trader, account.id);
-            pmcData.TraderStandings[trader] = getTraderStanding(trader, account.id);
+            pmcData.TraderStandings[trader] = {
+                "currentLevel": 1,
+                "currentSalesSum": 0,
+                "currentStanding": 0,
+                "NextLoyalty": null,
+                "loyaltyLevels": (trader_f.traderServer.getTrader(trader)).data.loyalty.loyaltyLevels
+            };
         }
 
         // create profile
@@ -94,7 +99,7 @@ class ProfileServer {
         json.write(folder + "userbuilds.json", {});
         json.write(folder + "dialogue.json", {});
 
-        // Also load to memory.
+        // load to memory.
         this.getProfile(sessionID, 'pmc');
 
         // don't wipe profile again
@@ -135,11 +140,6 @@ class ProfileServer {
 function getPmcPath(sessionID) {
     let pmcPath = filepaths.user.profiles.character;
     return pmcPath.replace("__REPLACEME__", sessionID);;
-}
-
-function getTraderStanding(tid, sessionID) {
-    const loyaltyLevels = (trader_f.traderServer.getTrader(tid, sessionID)).data.loyalty.loyaltyLevels;
-    return {"currentLevel": 1, "currentSalesSum": 0, "currentStanding": 0, "NextLoyalty": null, "loyaltyLevels": loyaltyLevels};
 }
 
 function addChildPrice(data, parentID, childPrice) {

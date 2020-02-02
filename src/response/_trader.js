@@ -6,29 +6,22 @@ require('../libs.js');
 class TraderServer {
     constructor() {
         this.traders = {};
+        this.initializeTraders();
     }
 
     /* Load all the traders into memory. */
     initializeTraders() {
+        logger.logWarning("Loading traders into RAM...");
+
         this.traders = {};
 
-        for (let fileId in filepaths.traders) {
-            let traderData = json.parse(json.read(filepaths.traders[fileId]));
-            this.traders[traderData._id] = {
-                info: traderData
-            };
+        for (let id in filepaths.traders) {
+            this.traders[id] = json.parse(json.read(filepaths.traders[id]));
         }
     }
 
-    /* Load a single trader into memory. Used during profile generation. */
-    initializeTrader(id, sessionID) {
-        this.traders[id] = {
-            info: json.parse(json.read(filepaths.traders[id]))
-        };
-    }
-
-    getTrader(id, sessionID) {
-        return {err: 0, errmsg: "", data: this.traders[id].info};
+    getTrader(id) {
+        return {err: 0, errmsg: "", data: this.traders[id]};
     }
 
     getAllTraders(sessionID) {

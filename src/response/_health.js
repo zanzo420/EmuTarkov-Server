@@ -30,6 +30,8 @@ class HealthServer {
             return;
         }
     
+        console.log(this.healths);
+
         // update health to apply after raid
         let health = this.healths[sessionID];
     
@@ -62,6 +64,10 @@ class HealthServer {
 
     /* apply the health changes and delete stored ones */
     setHealth(pmcData, sessionID) {
+        if (!settings.gameplay.inraid.saveHealthEnabled) {
+            return;
+        }
+
         let node = this.healths[sessionID];
         let health = pmcData.Health;
     

@@ -5,6 +5,7 @@ require("../libs.js");
 /* MapServer class maintains list of maps in memory. */
 class MapServer {
     constructor() {
+        this.maps = {};
         this.initializeMaps();
     }
 
@@ -12,8 +13,8 @@ class MapServer {
     initializeMaps() {
         logger.logWarning("Loading maps into RAM...");
 
-        let keys = Object.keys(filepaths.maps);
         this.maps = {};
+        let keys = Object.keys(filepaths.maps);
 
         for (let mapName of keys) {
             let node = filepaths.maps[mapName];
