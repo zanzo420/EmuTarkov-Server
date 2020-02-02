@@ -26,11 +26,6 @@ class HealthServer {
 
     /* stores the player health changes */
     updateHealth(info, sessionID) {
-        if (!settings.gameplay.inraid.saveHealthEnabled) {
-            return;
-        }
-
-        // update health to apply after raid
         let node = this.healths[sessionID];
 
         switch (info.type) {
@@ -69,16 +64,14 @@ class HealthServer {
 
         let node = this.healths[sessionID];
         let health = pmcData.Health;
+        let keys = Object.keys(health.BodyParts);
     
         health.Hydration.Current += node.Hydration;
         health.Energy.Current += node.Energy;
-        health.BodyParts.Head.Health.Current = (node.Head === 0) ? (health.BodyParts.Head.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Head;
-        health.BodyParts.Chest.Health.Current = (node.Chest === 0) ? (health.BodyParts.Chest.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Chest;
-        health.BodyParts.Stomach.Health.Current = (node.Stomach === 0) ? (health.BodyParts.Stomach.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.Stomach;
-        health.BodyParts.LeftArm.Health.Current = (node.LeftArm === 0) ? (health.BodyParts.LeftArm.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.LeftArm;
-        health.BodyParts.RightArm.Health.Current = (node.RightArm === 0) ? (health.BodyParts.RightArm.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.RightArm;
-        health.BodyParts.LeftLeg.Health.Current = (node.LeftLeg === 0) ? (health.BodyParts.LeftLeg.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.LeftLeg;
-        health.BodyParts.RightLeg.Health.Current = (node.RightLeg === 0) ? (health.BodyParts.RightLeg.Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node.RightLeg;
+
+        for (let bodyPart of keys) {
+            health.BodyParts[bodyPart].Health.Current = (node[bodyPart] === 0) ? (health.BodyParts[bodyPart].Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node[bodyPart];
+        }
     
         pmcData.Health = health;
         this.initializeHealth(sessionID);
