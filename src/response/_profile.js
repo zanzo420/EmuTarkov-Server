@@ -41,7 +41,6 @@ class ProfileServer {
     getProfile(sessionID, type) {
         if (!(sessionID in this.profiles)) {
             this.initializeProfile(sessionID);
-            trader_f.traderServer.initializeTraders(sessionID);
             dialogue_f.dialogueServer.initializeDialogue(sessionID);
             health_f.healthServer.initializeHealth(sessionID);
         }
