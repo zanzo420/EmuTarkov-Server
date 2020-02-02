@@ -22,6 +22,9 @@ class HealthServer {
             "LeftLeg": pmcData.Health.BodyParts.LeftLeg.Health.Current,
             "RightLeg": pmcData.Health.BodyParts.RightLeg.Health.Current
         };
+
+        logger.logWarning("Data");
+        logger.logData(this.healths);
     }
 
     /* stores the player health changes */
@@ -30,7 +33,8 @@ class HealthServer {
             return;
         }
     
-        console.log(this.healths);
+        logger.logWarning("Data");
+        logger.logData(this.healths);
 
         // update health to apply after raid
         let health = this.healths[sessionID];
@@ -45,7 +49,15 @@ class HealthServer {
                 break;
     
             case "HealthChanged":
-                health[info.bodyPart] = parseInt(info.value);
+                switch(info.bodyPart) {
+                    case "Head": healths[sessionID].Head = parseInt(info.value); break;
+                    case "Chest": healths[sessionID].Chest = parseInt(info.value); break;
+                    case "Stomach": healths[sessionID].Stomach = parseInt(info.value); break;
+                    case "LeftArm": healths[sessionID].LeftArm = parseInt(info.value); break;
+                    case "RightArm": healths[sessionID].RightArm = parseInt(info.value); break;
+                    case "LeftLeg": healths[sessionID].LeftLeg = parseInt(info.value); break;
+                    case "RightLeg": healths[sessionID].RightLeg = parseInt(info.value); break;
+                }
                 break;
     
             case "Died":

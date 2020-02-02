@@ -29,7 +29,7 @@ class TraderServer {
         let traders = [];
 
         for (let traderId in this.traders) {
-            let trader = this.traders[traderId].info;
+            let trader = this.traders[traderId];
 
             if (traderId === "ragfair") {
                 continue;
@@ -46,7 +46,7 @@ class TraderServer {
 
     lvlUp(id, sessionID) {
         let pmcData = profile_f.profileServer.getPmcProfile(sessionID);
-        let loyaltyLevels = this.traders[id].info.loyalty.loyaltyLevels;
+        let loyaltyLevels = this.traders[id].loyalty.loyaltyLevels;
 
         // level up player
         let checkedExp = 0;
@@ -97,7 +97,7 @@ class TraderServer {
 
         let base = json.parse(json.read(filepaths.user.cache["assort_" + traderId]));
         let keys = Object.keys(base.data.loyal_level_items);
-        let level = this.traders[traderId].info.loyalty.currentLevel;
+        let level = this.traders[traderId].loyalty.currentLevel;
 
         // 1 is min level, 4 is max level
         for (let i = 1; i < 4; i++) {
