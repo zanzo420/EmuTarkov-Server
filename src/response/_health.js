@@ -22,9 +22,6 @@ class HealthServer {
             "LeftLeg": pmcData.Health.BodyParts.LeftLeg.Health.Current,
             "RightLeg": pmcData.Health.BodyParts.RightLeg.Health.Current
         };
-
-        logger.logWarning("Data");
-        logger.logData(this.healths);
     }
 
     /* stores the player health changes */
@@ -32,9 +29,6 @@ class HealthServer {
         if (!settings.gameplay.inraid.saveHealthEnabled) {
             return;
         }
-    
-        logger.logWarning("Data");
-        logger.logData(this.healths);
 
         // update health to apply after raid
         let health = this.healths[sessionID];

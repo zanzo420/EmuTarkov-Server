@@ -319,7 +319,7 @@ function saveProgress(url, info, sessionID) {
 }
 
 function updateHealth(url, info, sessionID) {
-    health.healthServer.updateHealth(info, sessionID);
+    health_f.healthServer.updateHealth(info, sessionID);
     return nullResponse;
 }
 
