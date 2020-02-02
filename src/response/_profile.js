@@ -88,7 +88,7 @@ class ProfileServer {
                 "currentSalesSum": 0,
                 "currentStanding": 0,
                 "NextLoyalty": null,
-                "loyaltyLevels": (trader_f.traderServer.getTrader(trader)).data.loyalty.loyaltyLevels
+                "loyaltyLevels": ((trader_f.traderServer.getTrader(trader)).data.loyalty.loyaltyLevels)
             };
         }
 
