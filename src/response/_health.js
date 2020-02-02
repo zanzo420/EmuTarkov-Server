@@ -70,8 +70,7 @@ class HealthServer {
                 pmcData.Health.BodyParts[item].Health.Current = (node[item] === 0) ? (pmcData.Health.BodyParts[item].Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node[item];
             } else {
                 pmcData.Health[item].Current += node[item];
-            }
-            
+            }   
         }
     
         this.initializeHealth(sessionID);
