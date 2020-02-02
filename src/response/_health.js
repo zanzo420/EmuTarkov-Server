@@ -35,7 +35,7 @@ class HealthServer {
                 break;
     
             case "HealthChanged":
-                node[info.bodyPart] = info.value;
+                node[info.item] = info.value;
                 break;
     
             case "Died":
@@ -63,17 +63,17 @@ class HealthServer {
         }
 
         let node = this.healths[sessionID];
-        let health = pmcData.Health;
-        let keys = Object.keys(health.BodyParts);
-    
-        health.Hydration.Current += node.Hydration;
-        health.Energy.Current += node.Energy;
+        let keys = Object.keys(node);        
 
-        for (let bodyPart of keys) {
-            health.BodyParts[bodyPart].Health.Current = (node[bodyPart] === 0) ? (health.BodyParts[bodyPart].Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node[bodyPart];
+        for (let item of keys) {
+            if (item !== "Hydration" && item !== "Energy") {
+                pmcData.Health.BodyParts[item].Health.Current = (node[item] === 0) ? (pmcData.Health.BodyParts[item].Health.Maximum * settings.gameplay.inraid.saveHealthMultiplier) : node[item];
+            } else {
+                pmcData.Health[item].Current += node[item];
+            }
+            
         }
     
-        pmcData.Health = health;
         this.initializeHealth(sessionID);
     }
 }
